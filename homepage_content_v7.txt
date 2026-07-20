@@ -1,0 +1,44 @@
+Created At: 2026-07-14T16:03:40Z
+Completed At: 2026-07-14T16:03:43Z
+
+				The command completed successfully.
+				Output:
+				<truncated 577 lines>
+	<div class="wp-block-stackable-heading stk-block-heading stk-block-heading--v2 stk-block stk-1d19bea" id="question-3-placeholder" data-block-id="1d19bea"><style>@media screen and (max-width: 767px){.stk-1d19bea .stk-block-heading__text{font-size:1.3rem !important;}}</style><h3 class="stk-block-heading__text">What are the pricing options involved?</h3></div>
+	<!-- /wp:stackable/heading -->
+	
+	<!-- wp:stackable/icon {"uniqueId":"831a0c4","icon":"\u003csvg data-prefix=\u0022fas\u0022 data-icon=\u0022chevron-down\u0022 class=\u0022svg-inline\u002d\u002dfa fa-chevron-down fa-w-14\u0022 xmlns=\u0022http://www.w3.org/2000/svg\u0022 viewBox=\u00220 0 448 512\u0022 aria-hidden=\u0022true\u0022\u003e\u003cpath fill=\u0022currentColor\u0022 d=\u0022M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\u0022\u003e\u003c/path\u003e\u003c/svg\u003e"} -->
+	<div class="wp-block-stackable-icon stk-block-icon stk-block stk-831a0c4" data-block-id="831a0c4"><span class="stk--svg-wrapper"><div class="stk--inner-svg"><svg style="height:0;width:0"><defs><linearGradient id="linear-gradient-831a0c4" x1="0" x2="100%" y1="0" y2="0"><stop offset="0%" style="stop-opacity:1;stop-color:var(--linear-gradient-831-a-0-c-4-color-1)"></stop><stop offset="100%" style="stop-opacity:1;stop-color:var(--linear-gradient-831-a-0-c-4-color-2)"></stop></linearGradient></defs></svg><svg data-prefix="fas" data-icon="chevron-down" class="svg-inline--fa fa-chevron-down fa-w-14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" width="32" height="32"><path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path></svg></div></span></div>
+	<!-- /wp:stackable/icon --></div></div>
+	<!-- /wp:stackable/icon-label --></div></div></summary>
+	<!-- /wp:stackable/column -->
+	
+	<!-- wp:stackable/column {"uniqueId":"408c81e","className":"stk-block-accordion__content"} -->
+	<div class="wp-block-stackable-column stk-block-column stk-column stk-block stk-408c81e stk-block-accordion__content" data-v="4" data-block-id="408c81e"><div class="stk-column-wrapper stk-block-column__content stk-container stk-408c81e-container stk--no-background stk--no-padding"><div class="stk-block-content stk-inner-blocks stk-408c81e-inner-blocks"><!-- wp:stackable/text {"uniqueId":"d66987c","fontSizeMobile":"1.1","fontSizeUnitMobile":"rem"} -->
+	<div class="wp-block-stackable-text stk-block-text stk-block stk-d66987c" data-block-id="d66987c"><style>@media screen and (max-width: 767px){.stk-d66987c .stk-block-text__text{font-size:1.1rem !important;}}</style><p class="stk-block-text__text">We offer several pricing options to suit different needs. You can view a detailed breakdown of our plans and features on our Pricing Page. We have a free tier, monthly subscriptions, and annual plans.</p></div>
+	<!-- /wp:stackable/text --></div></div></div>
+	<!-- /wp:stackable/column --></details>
+	<!-- /wp:stackable/accordion -->
+	
+	<!-- wp:stackable/accordion {"uniqueId":"3d2eba2","className":"is-style-default"} -->
+	<details class="wp-block-stackable-accordion stk-block-accordion stk-inner-blocks stk-block-content stk-block stk-3d2eba2 is-style-default" data-block-id="3d2eba2"><!-- wp:stackable/column {"uniqueId":"7ba42ea","hasContainer":true,"htmlTag":"summary","templateLock":"insert","className":"stk\u002d\u002dcontainer-small stk-block-accordion__heading"} -->
+	<summary class="wp-block-stackable-column stk-block-column stk-column stk-block stk-7ba42ea stk--container-small stk-block-accordion__heading" data-v="4" data-block-id="7ba42ea"><div class="stk-column-wrapper stk-block-column__content stk-container stk-7ba42ea-container stk-hover-parent"><div class="stk-block-content stk-inner-blocks stk-7ba42ea-inner-blocks"><!-- wp:stackable/icon-label {"uniqueId":"bcc8f3b"} -->
+	<div class="wp-block-stackable-icon-label stk-block-icon-label stk-block stk-bcc8f3b" data-block-id="bcc8f3b"><div class="stk-row stk-inner-blocks stk-block-content"><!-- wp:stackable/heading {"uniqueId":"9f15ee0","hasP":true,"textTag":"h3","fontSizeMobile":"1.3","fontSizeUnitMobile":"rem"} -->
+	<div class="wp-block-stackable-heading stk-block-heading stk-block-heading--v2 stk-block stk-9f15ee0" id="question-4-placeholder" data-block-id="9f15ee0"><style>@media screen and (max-width: 767px){.stk-9f15ee0 .stk-block-heading__text{font-size:1.3rem !important;}}</style><h3 class="stk-block-heading__text">What payment methods do you accept?</h3></div>
+	<!-- /wp:stackable/heading -->
+	
+	<!-- wp:stackable/icon {"uniqueId":"1dbda55","icon":"\u003csvg data-prefix=\u0022fas\u0022 data-icon=\u0022chevron-down\u0022 class=\u0022svg-inline\u002d\u002dfa fa-chevron-down fa-w-14\u0022 xmlns=\u0022http://www.w3.org/2000/svg\u0022 viewBox=\u00220 0 448 512\u0022 aria-hidden=\u0022true\u0022\u003e\u003cpath fill=\u0022currentColor\u0022 d=\u0022M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\u0022\u003e\u003c/path\u003e\u003c/svg\u003e"} -->
+	<div class="wp-block-stackable-icon stk-block-icon stk-block stk-1dbda55" data-block-id="1dbda55"><span class="stk--svg-wrapper"><div class="stk--inner-svg"><svg style="height:0;width:0"><defs><linearGradient id="linear-gradient-1dbda55" x1="0" x2="100%" y1="0" y2="0"><stop offset="0%" style="stop-opacity:1;stop-color:var(--linear-gradient-1-dbda-55-color-1)"></stop><stop offset="100%" style="stop-opacity:1;stop-color:var(--linear-gradient-1-dbda-55-color-2)"></stop></linearGradient></defs></svg><svg data-prefix="fas" data-icon="chevron-down" class="svg-inline--fa fa-chevron-down fa-w-14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" width="32" height="32"><path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path></svg></div></span></div>
+	<!-- /wp:stackable/icon --></div></div>
+	<!-- /wp:stackable/icon-label --></div></div></summary>
+	<!-- /wp:stackable/column -->
+	
+	<!-- wp:stackable/column {"uniqueId":"dd1ce46","className":"stk-block-accordion__content"} -->
+	<div class="wp-block-stackable-column stk-block-column stk-column stk-block stk-dd1ce46 stk-block-accordion__content" data-v="4" data-block-id="dd1ce46"><div class="stk-column-wrapper stk-block-column__content stk-container stk-dd1ce46-container stk--no-background stk--no-padding"><div class="stk-block-content stk-inner-blocks stk-dd1ce46-inner-blocks"><!-- wp:stackable/text {"uniqueId":"aee16f6","fontSizeMobile":"1.1","fontSizeUnitMobile":"rem"} -->
+	<div class="wp-block-stackable-text stk-block-text stk-block stk-aee16f6" data-block-id="aee16f6"><style>@media screen and (max-width: 767px){.stk-aee16f6 .stk-block-text__text{font-size:1.1rem !important;}}</style><p class="stk-block-text__text">We accept various convenient payment methods, including major credit cards (Visa, MasterCard, American Express), and in some cases, bank transfers. You can select your preferred payment method during the checkout or subscription process.</p></div>
+	<!-- /wp:stackable/text --></div></div></div>
+	<!-- /wp:stackable/column --></details>
+	<!-- /wp:stackable/accordion --></div></div></div>
+	<!-- /wp:stackable/column --></div></div>
+	<!-- /wp:stackable/columns -->
+
