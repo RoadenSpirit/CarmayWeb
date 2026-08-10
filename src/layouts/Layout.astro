@@ -8,7 +8,7 @@ const { title, description = "Carmay Outfit - Moda, Calzado y Tecnología en Cub
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang="es" class="scroll-smooth dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,14 +22,14 @@ const { title, description = "Carmay Outfit - Moda, Calzado y Tecnología en Cub
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-gray-50 text-gray-900 antialiased selection:bg-purple-600 selection:text-white">
+  <body class="bg-[#0f0e17] text-gray-100 antialiased selection:bg-purple-600 selection:text-white min-h-screen flex flex-col">
     <slot />
   </body>
 </html>
 
 <style is:global>
   html {
-    color-scheme: light dark;
+    color-scheme: dark;
   }
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -37,5 +37,15 @@ const { title, description = "Carmay Outfit - Moda, Calzado y Tecnología en Cub
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     text-wrap: balance;
+  }
+  .glass-card {
+    background: rgba(26, 22, 37, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .glass-card-hover:hover {
+    background: rgba(35, 28, 50, 0.85);
+    border-color: rgba(168, 85, 247, 0.3);
   }
 </style>

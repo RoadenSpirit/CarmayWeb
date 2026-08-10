@@ -12,29 +12,29 @@ interface Props {
 const { title, price, regularPrice, image, category, isTrending = false, permalink } = Astro.props;
 ---
 
-<div class="group bg-white rounded-2xl overflow-hidden border border-purple-100/80 shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-transform transition-shadow duration-300 flex flex-col justify-between">
+<div class="group glass-card glass-card-hover rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between transition-all duration-300">
   <div>
     <!-- Contenedor de Imagen con Badge -->
-    <div class="relative overflow-hidden aspect-square bg-gray-100">
+    <div class="relative overflow-hidden aspect-square bg-gray-900">
       <img 
         src={image} 
         alt={title} 
         width="600"
         height="600"
-        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
         loading="lazy"
       />
       
       {isTrending && (
         <div class="absolute top-3 left-3 z-10">
-          <span class="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-rose-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md tracking-wider border border-white/80">
+          <span class="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-rose-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md tracking-wider border border-white/20">
             🔥 Trending
           </span>
         </div>
       )}
 
       <div class="absolute top-3 right-3 z-10">
-        <span class="bg-white/90 backdrop-blur-md text-purple-900 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+        <span class="bg-black/60 backdrop-blur-md text-purple-200 text-xs font-bold px-2.5 py-1 rounded-full border border-white/10">
           {category}
         </span>
       </div>
@@ -42,16 +42,16 @@ const { title, price, regularPrice, image, category, isTrending = false, permali
 
     <!-- Contenido -->
     <div class="p-5">
-      <h3 class="font-bold text-gray-900 group-hover:text-purple-900 transition-colors line-clamp-2 text-sm sm:text-base mb-2">
+      <h3 class="font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-2 text-sm sm:text-base mb-2">
         {title}
       </h3>
 
       <div class="flex items-baseline gap-2 mt-2">
-        <span class="text-lg sm:text-xl font-extrabold text-purple-900">
+        <span class="text-lg sm:text-xl font-extrabold text-amber-400">
           {price}
         </span>
         {regularPrice && (
-          <span class="text-xs sm:text-sm text-gray-400 line-through">
+          <span class="text-xs sm:text-sm text-gray-500 line-through">
             {regularPrice}
           </span>
         )}
@@ -63,7 +63,7 @@ const { title, price, regularPrice, image, category, isTrending = false, permali
   <div class="p-5 pt-0">
     <a 
       href={permalink}
-      class="block w-full text-center bg-gradient-to-r from-purple-900 to-purple-700 hover:from-orange-500 hover:to-amber-500 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform transition-shadow duration-300 text-sm focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
+      class="block w-full text-center bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-300 text-sm focus-visible:ring-2 focus-visible:ring-purple-500"
     >
       Ver Detalles &amp; Comprar
     </a>

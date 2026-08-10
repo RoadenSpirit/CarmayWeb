@@ -1,0 +1,73 @@
+---
+const categories = [
+  {
+    name: "Calzado",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
+    count: "Ver Colección",
+    link: "/products?category=calzado"
+  },
+  {
+    name: "Ropa",
+    image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80",
+    count: "Moda Actual",
+    link: "/products?category=ropa"
+  },
+  {
+    name: "Bolsos y Mochilas",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
+    count: "Estilo & Confort",
+    link: "/products?category=bolsos"
+  },
+  {
+    name: "Tecnología",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+    count: "Suscripciones IA",
+    link: "https://ia.carmayn8n.cloud"
+  },
+  {
+    name: "Accesorios",
+    image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=600&q=80",
+    count: "Detalles Únicos",
+    link: "/products?category=accesorios"
+  }
+];
+---
+
+<section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="text-center max-w-2xl mx-auto mb-16">
+    <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">Explora por Secciones</span>
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+      Nuestras Categorías Principales
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+    {categories.map((cat, idx) => (
+      <a 
+        href={cat.link}
+        class="group relative overflow-hidden rounded-2xl aspect-[4/5] glass-card flex flex-col justify-end p-6 border border-white/10 hover:border-amber-500/50 transition-all duration-500 shadow-xl"
+      >
+        <!-- Imagen de fondo -->
+        <img 
+          src={cat.image} 
+          alt={cat.name}
+          width="400"
+          height="500"
+          class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 opacity-60 group-hover:opacity-80"
+          loading="lazy"
+        />
+
+        <!-- Overlay con gradiente oscuro -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0f0e17] via-[#0f0e17]/40 to-transparent"></div>
+
+        <!-- Contenido -->
+        <div class="relative z-10">
+          <span class="text-xs font-bold text-amber-400 tracking-wider uppercase block mb-1">{cat.count}</span>
+          <h3 class="text-xl font-black text-white group-hover:text-amber-300 transition-colors">
+            {cat.name}
+          </h3>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>

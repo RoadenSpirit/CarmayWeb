@@ -1,0 +1,46 @@
+---
+const faqs = [
+  {
+    question: "¿Cómo puedo comprar en Carmay Outfit desde Cuba?",
+    answer: "Puedes seleccionar tus productos en nuestra tienda web y contactar por WhatsApp con un gestor. Aceptamos pago en efectivo en nuestra tienda física, transferencia CUP (Transfermóvil/EnZona) o USD."
+  },
+  {
+    question: "¿Cómo funcionan las suscripciones de Inteligencia Artificial?",
+    answer: "Te proporcionamos una cuenta de Google exclusiva en la cual activamos la suscripción premium que solicites (ChatGPT Plus/Pro, Claude Pro, Gemini Ultra). Tienes posesión única de la cuenta durante tu ciclo de 30 días."
+  },
+  {
+    question: "¿Dónde se encuentra la tienda física y cuál es su horario?",
+    answer: "Estamos en Avellaneda No. 260 entre San Esteban y San Martín, Camagüey. Atendemos de lunes a viernes de 8:30 AM a 5:00 PM y sábados de 8:30 AM a 2:00 PM."
+  },
+  {
+    question: "¿Hacen envíos a otras provincias?",
+    answer: "Sí, coordinamos envíos seguros y rápidos según tus necesidades de transporte y logística disponible."
+  }
+];
+---
+
+<section class="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="text-center mb-16">
+    <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">Resolviendo tus dudas</span>
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+      Preguntas Frecuentes (FAQ)
+    </h2>
+  </div>
+
+  <div class="space-y-4">
+    {faqs.map((faq, idx) => (
+      <details class="glass-card rounded-2xl p-6 sm:p-8 border border-white/10 group transition-all duration-300">
+        <summary class="font-bold text-white text-base sm:text-lg cursor-pointer flex items-center justify-between select-none">
+          <span class="flex items-center gap-3">
+            <span class="text-amber-400 font-black">0{idx + 1}.</span>
+            <span>{faq.question}</span>
+          </span>
+          <span class="text-purple-400 group-open:rotate-180 transition-transform text-xl">↓</span>
+        </summary>
+        <p class="text-gray-300 text-sm sm:text-base mt-4 pl-7 leading-relaxed">
+          {faq.answer}
+        </p>
+      </details>
+    ))}
+  </div>
+</section>

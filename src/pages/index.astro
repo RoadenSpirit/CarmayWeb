@@ -1,11 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import ProductCard from '../components/ProductCard.astro';
+import Hero from '../components/Hero.astro';
+import ValueProps from '../components/ValueProps.astro';
+import Categories from '../components/Categories.astro';
+import ProductShowcase from '../components/ProductShowcase.astro';
+import CompanyVision from '../components/CompanyVision.astro';
+import Testimonials from '../components/Testimonials.astro';
+import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
 
-// Datos de prueba (Prototipo Frontend conectado a la identidad visual de Carmay)
-const featuredProducts = [
+// Muestras de productos intercalados (Simulando API WooCommerce con diseño moderno)
+const bestSellers = [
   {
     title: "Chancleta de Baño Ipanema Classic Pro",
     price: "$18.00 USD",
@@ -18,25 +24,23 @@ const featuredProducts = [
   {
     title: "Suscripción Oficial ChatGPT Plus (OpenAI)",
     price: "$25.00 USD",
-    regularPrice: "",
     image: "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=600&q=80",
     category: "Inteligencia Artificial",
     isTrending: true,
     permalink: "https://ia.carmayn8n.cloud"
   },
   {
-    title: "Zapatillas Deportivas Urban Style v4",
-    price: "$45.00 USD",
-    regularPrice: "$55.00 USD",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
-    category: "Moda",
+    title: "Mochila Antirrobo Urbana Ejecutiva",
+    price: "$38.00 USD",
+    regularPrice: "$45.00 USD",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
+    category: "Bolsos y Mochilas",
     isTrending: false,
     permalink: "https://carmayoutfit.com/products/"
   },
   {
     title: "Suscripción Claude Pro (Anthropic)",
     price: "$25.00 USD",
-    regularPrice: "",
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
     category: "Tecnología",
     isTrending: true,
@@ -44,18 +48,41 @@ const featuredProducts = [
   }
 ];
 
-const faqs = [
+const specialOffers = [
   {
-    question: "¿Cómo puedo comprar en Carmay Outfit desde Cuba?",
-    answer: "Puedes seleccionar tus productos en la web o contactar directamente a nuestros gestores por WhatsApp. Aceptamos pagos en efectivo en nuestra tienda física en Camagüey, transferencia local CUP o USD."
+    title: "Zapatillas Deportivas Urban Style v4",
+    price: "$40.00 USD",
+    regularPrice: "$55.00 USD",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
+    category: "Calzado",
+    isTrending: true,
+    permalink: "https://carmayoutfit.com/products/"
   },
   {
-    question: "¿Cómo funcionan las suscripciones de Inteligencia Artificial?",
-    answer: "Te proporcionamos una cuenta de Google exclusiva y segura sobre la cual activamos la suscripción oficial premium que elijas (ChatGPT, Claude o Gemini) con renovación mensual flexible."
+    title: "Bolso Casual de Cuero Sintético Premium",
+    price: "$28.00 USD",
+    regularPrice: "$35.00 USD",
+    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80",
+    category: "Bolsos",
+    isTrending: false,
+    permalink: "https://carmayoutfit.com/products/"
   },
   {
-    question: "¿Dónde se encuentra la tienda física?",
-    answer: "Estamos ubicados en Avellaneda No. 260 entre San Esteban y San Martín, Camagüey, Cuba. ¡Te esperamos!"
+    title: "Suscripción Gemini AI Pro (Google)",
+    price: "$25.00 USD",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+    category: "Tecnología",
+    isTrending: false,
+    permalink: "https://ia.carmayn8n.cloud"
+  },
+  {
+    title: "Gafas de Sol Estilo Moderno UV400",
+    price: "$15.00 USD",
+    regularPrice: "$20.00 USD",
+    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80",
+    category: "Accesorios",
+    isTrending: false,
+    permalink: "https://carmayoutfit.com/products/"
   }
 ];
 ---
@@ -63,109 +90,38 @@ const faqs = [
 <Layout title="Carmay Outfit • Moda, Calzado y Tecnología en Cuba">
   <Header />
 
-  <!-- Hero Section con Gradientes Vivos y Estética IA Carmay -->
-  <section class="relative overflow-hidden bg-gradient-to-br from-purple-950 via-purple-900 to-indigo-950 text-white py-24 sm:py-32">
-    <!-- Círculos decorativos con gradiente difuminado -->
-    <div class="absolute top-1/4 -left-32 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-10 -right-32 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+  <!-- 1. Hero Principal -->
+  <Hero />
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-white/10 backdrop-blur-md text-amber-300 border border-white/15 mb-6 shadow-inner">
-        ✨ Nueva Era Digital en Cuba • E-commerce & IA
-      </span>
+  <!-- 2. Banner de Valor Añadido -->
+  <ValueProps />
 
-      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white mb-6 leading-tight">
-        Moda, Estilo y el Futuro <br class="hidden sm:inline" />
-        <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent">
-          de la Tecnología
-        </span>
-      </h1>
+  <!-- 3. Categorías Principales (5 Cards) -->
+  <Categories />
 
-      <p class="max-w-2xl mx-auto text-lg sm:text-xl text-purple-200 mb-10 font-normal leading-relaxed">
-        Descubre nuestro catálogo exclusivo de calzado, ropa y las herramientas de Inteligencia Artificial más potentes del mundo con pago local en Cuba.
-      </p>
+  <!-- 4. Muestra Intercalada 1: Más Vendidos -->
+  <ProductShowcase 
+    subtitle="Los favoritos de nuestros clientes" 
+    title="Productos Más Vendidos" 
+    products={bestSellers} 
+  />
 
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="#catalogo" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold px-8 py-4 rounded-2xl shadow-xl shadow-orange-600/30 hover:-translate-y-0.5 transition-all text-base">
-          🛍️ Explorar Catálogo
-        </a>
-        <a href="https://ia.carmayn8n.cloud" target="_blank" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold px-8 py-4 rounded-2xl backdrop-blur-md border border-white/20 transition-all text-base">
-          🤖 Ver Planes de IA
-        </a>
-      </div>
-    </div>
-  </section>
+  <!-- 5. Visión y Proyecciones de la Empresa -->
+  <CompanyVision />
 
-  <!-- Catálogo Destacado -->
-  <section id="catalogo" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-      <div>
-        <span class="text-purple-700 font-bold text-xs uppercase tracking-widest block mb-2">Lo más popular</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
-          Productos y Suscripciones Destacadas
-        </h2>
-      </div>
-      <a href="https://carmayoutfit.com/products/" target="_blank" class="mt-4 md:mt-0 inline-flex items-center gap-2 text-purple-900 font-bold hover:text-purple-600 transition-colors">
-        <span>Ver tienda completa en WordPress</span>
-        <span>&rarr;</span>
-      </a>
-    </div>
+  <!-- 6. Muestra Intercalada 2: Ofertas Especiales -->
+  <ProductShowcase 
+    subtitle="Aprovecha antes que se agoten" 
+    title="Rebajas y Ofertas Activas" 
+    products={specialOffers} 
+  />
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      {featuredProducts.map(product => (
-        <ProductCard {...product} />
-      ))}
-    </div>
-  </section>
+  <!-- 7. Opiniones de Clientes (Social Proof con Facebook) -->
+  <Testimonials />
 
-  <!-- Sección Destacada Carmay IA Banner -->
-  <section class="py-16 bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 text-white my-12 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-    
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-10">
-      <div class="space-y-4 max-w-xl text-center lg:text-left">
-        <span class="bg-amber-400 text-gray-900 text-xs font-black uppercase px-3 py-1 rounded-full shadow-md">
-          Plataforma Exclusiva
-        </span>
-        <h2 class="text-3xl sm:text-4xl font-black tracking-tight">
-          ¿Necesitas ChatGPT, Claude o Gemini en Cuba?
-        </h2>
-        <p class="text-purple-200 text-sm sm:text-base leading-relaxed">
-          Integra la inteligencia artificial más avanzada en tu día a día para programación, marketing, estudios o negocios con cuentas oficiales y pago local.
-        </p>
-      </div>
-      <div>
-        <a href="https://ia.carmayn8n.cloud" target="_blank" class="inline-flex items-center gap-2 bg-white text-purple-950 hover:bg-amber-300 font-extrabold px-8 py-4 rounded-2xl shadow-2xl transition-all text-base hover:-translate-y-1">
-          <span>Ver Portal de Inteligencia Artificial</span>
-          <span>🚀</span>
-        </a>
-      </div>
-    </div>
-  </section>
+  <!-- 8. Preguntas Frecuentes (FAQ) -->
+  <FAQ />
 
-  <!-- FAQ Section -->
-  <section class="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <span class="text-purple-700 font-bold text-xs uppercase tracking-widest block mb-2">Resolvemos tus dudas</span>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
-        Preguntas Frecuentes
-      </h2>
-    </div>
-
-    <div class="space-y-6">
-      {faqs.map(faq => (
-        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-purple-100 shadow-sm hover:shadow-md transition-shadow">
-          <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-start gap-3">
-            <span class="text-purple-700 font-black">Q.</span>
-            <span>{faq.question}</span>
-          </h3>
-          <p class="text-gray-600 text-sm sm:text-base pl-7 leading-relaxed">
-            {faq.answer}
-          </p>
-        </div>
-      ))}
-    </div>
-  </section>
-
+  <!-- 9. Footer Rediseñado -->
   <Footer />
 </Layout>
