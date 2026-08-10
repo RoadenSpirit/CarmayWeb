@@ -12,13 +12,15 @@ interface Props {
 const { title, price, regularPrice, image, category, isTrending = false, permalink } = Astro.props;
 ---
 
-<div class="group bg-white rounded-2xl overflow-hidden border border-purple-100/80 shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+<div class="group bg-white rounded-2xl overflow-hidden border border-purple-100/80 shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-transform transition-shadow duration-300 flex flex-col justify-between">
   <div>
     <!-- Contenedor de Imagen con Badge -->
     <div class="relative overflow-hidden aspect-square bg-gray-100">
       <img 
         src={image} 
         alt={title} 
+        width="600"
+        height="600"
         class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
         loading="lazy"
       />
@@ -61,9 +63,9 @@ const { title, price, regularPrice, image, category, isTrending = false, permali
   <div class="p-5 pt-0">
     <a 
       href={permalink}
-      class="block w-full text-center bg-gradient-to-r from-purple-900 to-purple-700 hover:from-orange-500 hover:to-amber-500 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-sm"
+      class="block w-full text-center bg-gradient-to-r from-purple-900 to-purple-700 hover:from-orange-500 hover:to-amber-500 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform transition-shadow duration-300 text-sm focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2"
     >
-      Ver Detalles & Comprar
+      Ver Detalles &amp; Comprar
     </a>
   </div>
 </div>
