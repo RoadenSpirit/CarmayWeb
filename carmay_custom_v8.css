@@ -1,0 +1,178 @@
+/* =======================================================
+   CARMAY OUTFIT: CSS PERSONALIZADO UNIFICADO (V8 - MODERN REDESIGN)
+   Basado en la estética moderna de IA Carmay y adaptado a WooCommerce
+   ======================================================= */
+
+/* === I. ESTILOS DE PRODUCTO EN HOME & SHOP (Identidad Visual Moderna) === */
+.home li.product {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(109, 30, 104, 0.08) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.home li.product:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 20px 40px rgba(109, 30, 104, 0.12) !important;
+    border-color: rgba(109, 30, 104, 0.25) !important;
+}
+
+.home li.product h2.woocommerce-loop-product__title a { 
+    color: #1a1a1a !important; 
+    font-weight: 700 !important;
+}
+
+.home li.product span.price { 
+    color: #6d1e68 !important; 
+    font-weight: 800 !important;
+}
+
+.home li.product span.price ins, 
+.home li.product span.price ins .woocommerce-Price-amount { 
+    color: #fb7701 !important; 
+}
+
+.home li.product span.price del, 
+.home li.product span.price del .woocommerce-Price-amount { 
+    color: rgba(0, 0, 0, 0.4) !important; 
+}
+
+.home li.product .entry-excerpt p { 
+    color: #555555 !important; 
+}
+
+/* === II. REGLAS GLOBALES PARA BOTONES (Modern Glass & Gradients) === */
+.home li.product .button,
+.home li.product .add_to_cart_button,
+.home li.product .added_to_cart {
+    background: linear-gradient(135deg, #6d1e68 0%, #8f2b8a 100%) !important;
+    color: #ffffff !important;
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(109, 30, 104, 0.25) !important;
+    transition: all 0.25s ease-in-out !important;
+}
+
+/* Estado Hover y Active para Botones */
+.home li.product .button:hover,
+.home li.product .button:active,
+.home li.product .add_to_cart_button:hover,
+.home li.product .add_to_cart_button:active,
+.home li.product .added_to_cart:hover,
+.home li.product .added_to_cart:active {
+    background: linear-gradient(135deg, #fb7701 0%, #ff8c00) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(251, 119, 1, 0.35) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* === III. OPTIMIZACIÓN MÓVIL Y LIMPIEZA DE CAMPOS === */
+@media (max-width: 768px) {
+    
+    /* 1. Ocultar campos innecesarios y variaciones en móvil */
+    .home li.product .star-rating,
+    .home li.product .entry-excerpt,
+    .home li.product .woocommerce-loop-product__category,
+    .home li.product li.meta-categories,
+    .home li.product .variations,
+    .home li.product .variable-items-wrapper, 
+    .home li.product .woo-variation-swatches,
+    .home li.product .tawcvs-swatches,
+    .home li.product .swatches-select,
+    .home li.product .quantity {
+        display: none !important;
+    }
+
+    /* 2. Compactación de Espacios */
+    .home li.product .woocommerce-loop-product__link img {
+        margin-bottom: 6px !important;
+        border-radius: 12px 12px 0 0 !important;
+    }
+
+    .home li.product h2.woocommerce-loop-product__title {
+        font-size: 0.88rem !important;
+        margin: 4px 8px 2px 8px !important;
+        line-height: 1.2 !important;
+    }
+
+    .home li.product span.price {
+        display: block !important;
+        margin: 0 8px 8px 8px !important;
+        line-height: 1 !important;
+        font-size: 0.98rem !important;
+    }
+
+    /* 3. Estructura de Rejilla (2 Columnas Modernas) */
+    .home ul.products {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 4px !important;
+    }
+
+    .home li.product {
+        width: 100% !important;
+        float: none !important;
+        margin-bottom: 0 !important;
+        border-radius: 14px !important;
+    }
+
+    /* 4. Unificación de Botones en Móvil */
+    .home li.product .button,
+    .home li.product .added_to_cart {
+        padding: 9px 12px !important;
+        font-size: 0.82rem !important;
+        width: calc(100% - 16px) !important;
+        margin: 0 8px 10px 8px !important;
+        display: block !important;
+        text-align: center;
+        border-radius: 50px !important;
+    }
+}
+
+/* === IV. BADGE DE CATEGORÍA Y TRENDING === */
+li.meta-categories a, .woocommerce-loop-product__category a {
+    background: linear-gradient(135deg, rgba(109, 30, 104, 0.08) 0%, rgba(109, 30, 104, 0.15) 100%) !important; 
+    color: #6d1e68 !important;
+    padding: 4px 10px !important; 
+    border-radius: 20px !important;
+    font-size: 0.7rem !important; 
+    font-weight: 600 !important;
+    border: 1px solid rgba(109, 30, 104, 0.2) !important;
+}
+
+.carmay-pill-trending {
+    background: linear-gradient(135deg, #ff8c00 0%, #e63946 100%) !important;
+    color: #ffffff !important;
+    font-size: 9px !important;
+    font-weight: 900 !important;
+    padding: 5px 16px !important;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    border-radius: 50px !important;
+    box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3) !important;
+}
+
+/* === V. AJUSTES DE CHECKOUT, CONTACTO Y FOOTER === */
+.carmay-delivery-field, .woocommerce-checkout .form-row .optional { 
+    display: none !important; 
+}
+
+#billing_address_1_field.validate-required label .required, 
+.carmay-delivery-field label .required { 
+    display: inline !important; 
+}
+
+/* Ocultar footer en Carrito, Checkout y Página de Contacto */
+body.woocommerce-cart #footer, 
+body.woocommerce-checkout #footer,
+body.woocommerce-cart #footer-widgets, 
+body.woocommerce-checkout #footer-widgets,
+body.page-id-672 #footer, 
+body.page-id-672 #footer-widgets,
+body.page-id-672 .ct-footer { 
+    display: none !important; 
+}

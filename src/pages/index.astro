@@ -10,84 +10,26 @@ import Testimonials from '../components/Testimonials.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
 
-// Muestras de productos (Ropa, Calzado, Bolsos, Accesorios)
-const bestSellers = [
-  {
-    title: "Chancleta de Baño Ipanema Classic Pro",
-    price: "$18.00 USD",
-    regularPrice: "$22.00 USD",
-    image: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?auto=format&fit=crop&w=600&q=80",
-    category: "Calzado",
-    isTrending: true,
-    permalink: "https://carmayoutfit.com/product/chancleta-de-bano-ipanema/"
-  },
-  {
-    title: "Zapatillas Deportivas Urban Style v4",
-    price: "$45.00 USD",
-    regularPrice: "$55.00 USD",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
-    category: "Calzado",
-    isTrending: true,
-    permalink: "https://carmayoutfit.com/products/"
-  },
-  {
-    title: "Mochila Antirrobo Urbana Ejecutiva",
-    price: "$38.00 USD",
-    regularPrice: "$45.00 USD",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
-    category: "Bolsos y Mochilas",
-    isTrending: false,
-    permalink: "https://carmayoutfit.com/products/"
-  },
-  {
-    title: "Bolso Casual de Cuero Sintético Premium",
-    price: "$28.00 USD",
-    regularPrice: "$35.00 USD",
-    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80",
-    category: "Bolsos",
-    isTrending: false,
-    permalink: "https://carmayoutfit.com/products/"
-  }
-];
+// Datos reales de WooCommerce (build time, vía src/api).
+// Los fetch van con fallback a [] para que un corte de la API no rompa el build.
+import { woo } from '../api';
 
-const specialOffers = [
-  {
-    title: "Camisa Casual de Lino para Verano",
-    price: "$22.00 USD",
-    regularPrice: "$28.00 USD",
-    image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80",
-    category: "Ropa",
-    isTrending: true,
-    permalink: "https://carmayoutfit.com/products/"
-  },
-  {
-    title: "Gafas de Sol Estilo Moderno UV400",
-    price: "$15.00 USD",
-    regularPrice: "$20.00 USD",
-    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80",
-    category: "Accesorios",
-    isTrending: false,
-    permalink: "https://carmayoutfit.com/products/"
-  },
-  {
-    title: "Sandalias de Verano Confort Plus",
-    price: "$20.00 USD",
-    regularPrice: "$25.00 USD",
-    image: "https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=600&q=80",
-    category: "Calzado",
-    isTrending: false,
-    permalink: "https://carmayoutfit.com/products/"
-  },
-  {
-    title: "Mochila Escolar y Casual Impermeable",
-    price: "$30.00 USD",
-    regularPrice: "$38.00 USD",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
-    category: "Bolsos y Mochilas",
-    isTrending: true,
-    permalink: "https://carmayoutfit.com/products/"
-  }
-];
+const withFallback = <T,>(promise: Promise<T[]>, fallback: T[] = []): Promise<T[]> =>
+  promise.catch(() => fallback);
+
+const [bestSellersRaw, offersRaw] = await Promise.all([
+  withFallback(woo.products.getBestSellers(8)),
+  withFallback(woo.products.getOnSale(8)),
+]);
+
+// Se muestran solo productos con imagen real; los "más vendidos" deben tener ventas.
+const bestSellers = bestSellersRaw
+  .filter((product) => product.totalSales > 0 && product.hasRealImage)
+  .map((product) => product.toCard());
+
+const specialOffers = offersRaw
+  .filter((product) => product.isInStock && product.hasRealImage)
+  .map((product) => product.toCard());
 ---
 
 <Layout title="Carmay Outfit • La tienda más completa de Camagüey">

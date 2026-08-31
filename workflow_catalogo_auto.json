@@ -1,0 +1,123 @@
+{
+  "name": "Catalogo Web Auto - Carmay Outfit",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger-1",
+      "name": "Cuando hagas clic en Ejecutar",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1LbjE6NzELt5e_bi02DgLeOojJh_v2WIyuvaGu3fm3hU",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "176537271",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "google-sheets-1",
+      "name": "Obtener Inventario Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [460, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credential",
+          "name": "Google Sheets Credencial"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst processed = [];\n\nfor (const item of items) {\n  let driveUrl = item.json.imagen || item.json.IMAGE || item.json.Imagen || \"\";\n  let fileId = \"\";\n\n  // Extraer ID de la fórmula =HYPERLINK(..., IMAGE(\"...\")) o URL directa de Drive\n  const match = driveUrl.match(/\\/d\\/([a-zA-Z0-9_-]+)/) || driveUrl.match(/id=([a-zA-Z0-9_-]+)/);\n  if (match && match[1]) {\n    fileId = match[1];\n    // Construir URL de descarga directa / miniatura de alta resolución de Google Drive\n    item.json.clean_image_url = `https://drive.google.com/uc?export=view&id=${fileId}`;\n  } else {\n    item.json.clean_image_url = driveUrl;\n  }\n\n  processed.push(item);\n}\n\nreturn processed;"
+      },
+      "id": "code-clean-images-1",
+      "name": "Limpiar y Formatear Enlaces de Drive",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "resource": "product",
+        "name": "={{ $json.nombre || $json.NOMBRE || $json.Title }}",
+        "regularPrice": "={{ $json.precio || $json.PRECIO || $json.Price }}",
+        "description": "={{ $json.descripcion || $json.DESCRIPCION || \"\" }}",
+        "categoriesUi": {
+          "categoriesValues": [
+            {
+              "name": "={{ $json.categoria || $json.CATEGORIA || \"Accesorios\" }}"
+            }
+          ]
+        },
+        "imagesUi": {
+          "imagesValues": [
+            {
+              "src": "={{ $json.clean_image_url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "woocommerce-1",
+      "name": "Crear Producto en WooCommerce",
+      "type": "n8n-nodes-base.wooCommerce",
+      "typeVersion": 1,
+      "position": [900, 300],
+      "credentials": {
+        "wooCommerceApi": {
+          "id": "woocommerce-credential",
+          "name": "WooCommerce API Credencial"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cuando hagas clic en Ejecutar": {
+      "main": [
+        [
+          {
+            "node": "Obtener Inventario Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Inventario Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Limpiar y Formatear Enlaces de Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar y Formatear Enlaces de Drive": {
+      "main": [
+        [
+          {
+            "node": "Crear Producto en WooCommerce",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": []
+}

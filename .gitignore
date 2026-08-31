@@ -1,0 +1,16 @@
+# Dependencias del entorno
+node_modules/
+.astro/
+dist/
+
+# Credenciales y configuración local (NUNCA subir)
+.env
+.env.local
+.env.*.local
+
+# Caché de la API de WooCommerce (generada en build)
+.wc-cache/
+
+# Logs
+npm-debug.log*
+*.log

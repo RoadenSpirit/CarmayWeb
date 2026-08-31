@@ -1,18 +1,11 @@
 ---
 import ProductCard from './ProductCard.astro';
+import type { ProductCardData } from '../api/models/Product.js';
 
 interface Props {
   title: string;
   subtitle: string;
-  products: Array<{
-    title: string;
-    price: string;
-    regularPrice?: string;
-    image: string;
-    category: string;
-    isTrending?: boolean;
-    permalink: string;
-  }>;
+  products: ProductCardData[];
 }
 
 const { title, subtitle, products } = Astro.props;
@@ -32,7 +25,7 @@ const { title, subtitle, products } = Astro.props;
     </a>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
     {products.map(product => (
       <ProductCard {...product} />
     ))}

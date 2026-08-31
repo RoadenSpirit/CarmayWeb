@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { woo } from '../../api';
+
+// Categorías de la tienda
+const storeCategories = [
+  { name: "Calzado", slug: "zapatos", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80" },
+  { name: "Ropa", slug: "ropa", image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80" },
+  { name: "Bolsos y Mochilas", slug: "jackets", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80" },
+  { name: "Tecnología", slug: "tecnologia", image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=600&q=80" },
+  { name: "Accesorios", slug: "accesorios", image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=600&q=80" }
+];
+
+// Mapeo de IDs de categoría (WooCommerce real)
+const categoryIdMap: any = { zapatos: 36, ropa: 37, jackets: 35, tecnologia: 54, accesorios: 34 };
+
+// Generar paths estáticos para cada categoría
+export async function getStaticPaths() {
+  return [
+    { params: { category: 'zapatos' } },
+    { params: { category: 'ropa' } },
+    { params: { category: 'jackets' } },
+    { params: { category: 'tecnologia' } },
+    { params: { category: 'accesorios' } }
+  ];
+}
+
+// Obtener categoría actual
+const { category } = Astro.params;
+const catId = categoryIdMap[category] || 0;
+
+// Obtener productos filtrados
+const products = catId > 0 ? await woo.products.getByCategory(catId, 50) : [];
+const filteredProducts = products.filter(p => p.hasRealImage && p.isInStock);
+
+// Nombre de la categoría actual
+const currentCategory = storeCategories.find(c => c.slug === category);
+const categoryName = currentCategory ? currentCategory.name : category;
+---
+<Layout title={`${categoryName} - Carmay Outfit`}>
+  <Header />
+
+  <!-- ============= NAVBAR CATEGORÍAS (siempre visible) ============= -->
+  <nav class="fixed left-0 right-0 z-40 backdrop-blur-xl" style="top: 64px; background: linear-gradient(to bottom, #13111c 0%, rgba(19,17,28,0.95) 100%);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-center gap-0 py-3">
+        {storeCategories.map((cat, i) => (
+          <div class="flex items-center">
+            {i > 0 && <div class="h-5 mx-3" style="width: 1px; background: linear-gradient(to bottom, transparent, rgba(168,85,247,0.6), transparent);"></div>}
+            <a
+              href={`/store/${cat.slug}/`}
+              class={`text-sm sm:text-base font-medium transition-colors whitespace-nowrap px-3 py-1 ${cat.slug === category ? 'text-amber-400' : 'text-white hover:text-amber-400'}`}
+            >
+              {cat.name}
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="h-px w-full" style="background: linear-gradient(to right, transparent, rgba(168,85,247,0.5) 30%, rgba(217,119,6,0.4) 70%, transparent);"></div>
+  </nav>
+
+  <!-- ============= SECTION: PRODUCTOS FILTRADOS ============= -->
+  <section id="productos-section" class="bg-[#13111c] pt-28 pb-16 min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-8 sm:mb-12">
+      <h1 class="text-3xl sm:text-5xl font-black tracking-widest mb-4"
+        style="background: linear-gradient(to right, #D4AF37, #F5D76B);
+               -webkit-background-clip: text;
+               -webkit-text-fill-color: transparent;
+               text-fill-color: transparent;">
+        {categoryName}
+      </h1>
+      <p class="text-sm sm:text-lg text-gray-400">
+        {filteredProducts.length} productos disponibles
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {filteredProducts.map((product) => (
+        <ProductCard
+          title={product.name}
+          price={product.priceFormatted}
+          regularPrice={product.regularPriceFormatted}
+          priceUSD={product.price}
+          priceCUP={product.priceCUP}
+          cupRate={product.cupRate}
+          regularPriceUSD={product.regularPrice}
+          regularPriceCUP={product.regularPriceCUP}
+          image={product.primaryImage}
+          category={product.categoryName || "Sin categoría"}
+          isTrending={product.isTrending}
+          permalink={product.permalink}
+        />
+      ))}
+
+      {filteredProducts.length === 0 && (
+        <p class="col-span-2 sm:col-span-4 text-center text-gray-400 py-12">
+          No hay productos disponibles en esta categoría.
+        </p>
+      )}
+    </div>
+  </section>
+</Layout>

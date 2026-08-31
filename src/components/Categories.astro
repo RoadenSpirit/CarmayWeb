@@ -20,9 +20,9 @@ const categories = [
   },
   {
     name: "Tecnología",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
-    count: "Suscripciones IA",
-    link: "https://ia.carmayn8n.cloud"
+    image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=600&q=80",
+    count: "Innovación & Poder",
+    link: "/products?category=tecnologia"
   },
   {
     name: "Accesorios",
@@ -45,15 +45,15 @@ const categories = [
     {categories.map((cat, idx) => (
       <a 
         href={cat.link}
-        class="group relative overflow-hidden rounded-2xl aspect-[4/5] glass-card flex flex-col justify-end p-6 border border-white/10 hover:border-amber-500/50 transition-all duration-500 shadow-xl"
+        class="group relative overflow-hidden rounded-3xl aspect-[3/4] glass-card flex flex-col justify-end p-7 border border-white/10 hover:border-amber-500/50 transition-all duration-500 shadow-2xl"
       >
         <!-- Imagen de fondo -->
         <img 
           src={cat.image} 
           alt={cat.name}
-          width="400"
-          height="500"
-          class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 opacity-60 group-hover:opacity-80"
+          width="450"
+          height="600"
+          class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 opacity-60 group-hover:opacity-85"
           loading="lazy"
         />
 
@@ -62,8 +62,8 @@ const categories = [
 
         <!-- Contenido -->
         <div class="relative z-10">
-          <span class="text-xs font-bold text-amber-400 tracking-wider uppercase block mb-1">{cat.count}</span>
-          <h3 class="text-xl font-black text-white group-hover:text-amber-300 transition-colors">
+          <span class="text-xs font-black text-amber-400 tracking-wider uppercase block mb-1.5">{cat.count}</span>
+          <h3 class="text-2xl font-black text-white group-hover:text-amber-300 transition-colors">
             {cat.name}
           </h3>
         </div>
