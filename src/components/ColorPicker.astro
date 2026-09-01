@@ -1,0 +1,129 @@
+---
+// Color picker flotante - 50 opciones alternativas con variedad cromática
+const colorOptions = [
+  // === MORADOS / VIOLETAS (1-8) ===
+  { name: "Morado Base", bg: "#6d1e68" },
+  { name: "Lavanda Oscura", bg: "#4a3060" },
+  { name: "Violeta Noche", bg: "#3d2b50" },
+  { name: "Lila Profundo", bg: "#5c4070" },
+  { name: "Uva", bg: "#4e3558" },
+  { name: "Hortensia", bg: "#5a3d6a" },
+  { name: "Ciruela", bg: "#4a3248" },
+  { name: "Amatista", bg: "#583d6e" },
+
+  // === AZULES (9-16) ===
+  { name: "Azul Profundo", bg: "#1e3a5f" },
+  { name: "Marino", bg: "#1a3550" },
+  { name: "Zafiro", bg: "#1e3d6a" },
+  { name: "Azul Petrolio", bg: "#1a3a4a" },
+  { name: "Índigo", bg: "#2a3560" },
+  { name: "Medianoche", bg: "#1c2e4a" },
+  { name: "Azul Acero", bg: "#2a3f5a" },
+  { name: "Navy Suave", bg: "#1e3558" },
+
+  // === VERDES (17-24) ===
+  { name: "Verde Bosque", bg: "#1e3a2a" },
+  { name: "Esmeralda Oscuro", bg: "#1a3a30" },
+  { name: "Pino", bg: "#1e3528" },
+  { name: "Verde Oliva", bg: "#2a3520" },
+  { name: "Salvia", bg: "#2a3a28" },
+  { name: "Verde Musgo", bg: "#253520" },
+  { name: "Jade", bg: "#1a3a32" },
+  { name: "Verde Tierra", bg: "#2a3828" },
+
+  // === TURQUESAS / TEAL (25-32) ===
+  { name: "Turquesa Noche", bg: "#1a3a40" },
+  { name: "Teal", bg: "#1a3a3a" },
+  { name: "Agua Marina", bg: "#1a3a42" },
+  { name: "Cian Oscuro", bg: "#1a3540" },
+  { name: "Verde Azulado", bg: "#1a3a38" },
+  { name: "Aqua Noche", bg: "#1a3a3e" },
+  { name: "Turquesa Piedra", bg: "#1a3535" },
+  { name: "Mar Profundo", bg: "#1a3542" },
+
+  // === ROJOS / BORGOGNA (33-38) ===
+  { name: "Borgoña", bg: "#4a1a20" },
+  { name: "Vino Tinto", bg: "#3a1a1e" },
+  { name: "Granate", bg: "#4a1a28" },
+  { name: "Rojo Tierra", bg: "#4a2020" },
+  { name: "Carmesí", bg: "#4a1a22" },
+  { name: "Rojo Otoño", bg: "#4a221e" },
+
+  // === MARRONES / TERROSIOS (39-44) ===
+  { name: "Chocolate", bg: "#3a2a1a" },
+  { name: "Canela", bg: "#3a2818" },
+  { name: "Siena", bg: "#3a2a1c" },
+  { name: "Arcilla", bg: "#3a281a" },
+  { name: "Marrón Moca", bg: "#3a2a1e" },
+  { name: "Nogal", bg: "#3a2a20" },
+
+  // === DORADOS / AMBER (45-50) ===
+  { name: "Ámbar Oscuro", bg: "#3a2a10" },
+  { name: "Mostaza", bg: "#3a3010" },
+  { name: "Caramelo", bg: "#3a2812" },
+  { name: "Ocre", bg: "#3a3018" },
+  { name: "Dorado Noche", bg: "#3a2a14" },
+  { name: "Whiskey", bg: "#3a2816" },
+];
+---
+<div id="color-picker" class="fixed bottom-4 right-4 z-[9999]">
+  <div id="picker-panel" class="bg-white/10 backdrop-blur-xl rounded-2xl p-4 shadow-2xl border border-white/10 hidden max-h-[80vh] overflow-y-auto" style="width: 320px;">
+    <p class="text-xs text-gray-300 mb-3 text-center font-medium">Fondos alternativos ({colorOptions.length} opciones)</p>
+    <div class="grid grid-cols-5 gap-2">
+      {colorOptions.map((color) => (
+        <button
+          data-color={color.bg}
+          data-name={color.name}
+          class="color-swatch w-8 h-8 rounded-lg border-2 border-white/20 hover:border-amber-400 hover:scale-110 transition-all duration-200 cursor-pointer"
+          style={`background-color: ${color.bg};`}
+          title={color.name}
+        />
+      ))}
+    </div>
+    <p id="color-name" class="text-xs text-gray-400 mt-3 text-center">Selecciona un color</p>
+    <button id="copy-color" class="mt-2 w-full text-xs bg-white/10 hover:bg-white/20 text-gray-300 py-1.5 rounded-lg transition-colors">
+      Copiar código
+    </button>
+  </div>
+  <button id="picker-toggle" class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-amber-500 shadow-lg hover:scale-110 transition-transform flex items-center justify-center text-white text-lg">
+    🎨
+  </button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggle = document.getElementById('picker-toggle');
+  const panel = document.getElementById('picker-panel');
+  const swatches = document.querySelectorAll('.color-swatch');
+  const colorName = document.getElementById('color-name');
+  const copyBtn = document.getElementById('copy-color');
+
+  toggle.addEventListener('click', function() {
+    panel.classList.toggle('hidden');
+  });
+
+  swatches.forEach(swatch => {
+    swatch.addEventListener('click', function() {
+      const color = this.getAttribute('data-color');
+      const name = this.getAttribute('data-name');
+      document.documentElement.style.backgroundColor = color;
+      document.body.style.backgroundColor = color;
+      colorName.textContent = name + ' - ' + color;
+      
+      swatches.forEach(s => s.style.borderColor = 'rgba(255,255,255,0.2)');
+      this.style.borderColor = '#f59e0b';
+    });
+  });
+
+  copyBtn.addEventListener('click', function() {
+    const text = colorName.textContent;
+    if (text && text.includes('#')) {
+      const hex = text.split(' - ')[1];
+      navigator.clipboard.writeText(hex).then(() => {
+        copyBtn.textContent = '¡Copiado!';
+        setTimeout(() => { copyBtn.textContent = 'Copiar código'; }, 1500);
+      });
+    }
+  });
+});
+</script>

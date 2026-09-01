@@ -12,7 +12,7 @@ const { title, description = "Carmay Outfit - Moda, Calzado y Tecnología en Cub
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -23,7 +23,9 @@ const { title, description = "Carmay Outfit - Moda, Calzado y Tecnología en Cub
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#0f0e17] text-gray-100 antialiased selection:bg-purple-600 selection:text-white min-h-screen flex flex-col">
+  <body class="bg-[#090b11] text-gray-100 antialiased selection:bg-purple-600 selection:text-white min-h-screen flex flex-col">
+    <!-- Grid overlay sutil -->
+    <div class="fixed inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none opacity-40"></div>
     <slot />
   </body>
 </html>
@@ -34,19 +36,88 @@ const { title, description = "Carmay Outfit - Moda, Calzado y Tecnología en Cub
   }
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #090b11;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     text-wrap: balance;
   }
-  .glass-card {
-    background: rgba(26, 22, 37, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* Neo-style glass cards */
+  .neo-card {
+    background: rgba(15, 17, 28, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
-  .glass-card-hover:hover {
-    background: rgba(35, 28, 50, 0.85);
-    border-color: rgba(168, 85, 247, 0.3);
+  .neo-card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Neo glow line horizontal */
+  .neo-line {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(168, 85, 247, 0.4) 20%, rgba(109, 30, 104, 0.6) 50%, rgba(217, 119, 6, 0.4) 80%, transparent);
+  }
+
+  /* Neo glow section border */
+  .neo-section {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+  }
+  .neo-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(168, 85, 247, 0.5), transparent);
+  }
+
+  /* Glow pulse for featured elements */
+  .glow-purple {
+    box-shadow: 0 0 60px rgba(168, 85, 247, 0.08), 0 0 120px rgba(168, 85, 247, 0.04);
+  }
+
+  /* Mirror card shine effect */
+  .mirror-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .mirror-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      transparent 40%,
+      rgba(255, 255, 255, 0.02) 45%,
+      rgba(255, 255, 255, 0.04) 50%,
+      rgba(255, 255, 255, 0.02) 55%,
+      transparent 60%
+    );
+    transform: rotate(30deg);
+    transition: transform 0.8s ease;
+    pointer-events: none;
+  }
+  .mirror-card:hover::after {
+    transform: rotate(30deg) translateY(-30%);
+  }
+
+  /* Scroll progress bar */
+  #scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2.5px;
+    background: linear-gradient(to right, #a855f7, #6d1e68, #34d399);
+    z-index: 100;
+    transition: width 75ms;
   }
 </style>

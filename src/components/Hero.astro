@@ -1,62 +1,98 @@
 ---
 ---
 
-<section class="relative overflow-hidden bg-[#0f0e17] text-white pt-12 pb-20 sm:py-32">
+<section class="relative overflow-hidden bg-[#0f0e17] text-white" style="height: calc(100vh - 96px - 20px); margin-bottom: 20px;">
   <!-- Gradientes difuminados modernos -->
   <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-purple-700/20 rounded-full blur-[120px] pointer-events-none"></div>
   <div class="absolute bottom-0 right-0 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-amber-500/15 rounded-full blur-[100px] pointer-events-none"></div>
 
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+  <div class="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch w-full">
       
-      <!-- Contenido Izquierda: Textos exactos de la web principal -->
-      <div class="lg:col-span-7 text-center lg:text-left space-y-6">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-purple-900/40 text-amber-300 border border-purple-700/50 shadow-inner">
-          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-          <span>La tienda más completa de Camagüey</span>
+      <!-- Contenido Izquierda: Logo + Textos -->
+      <div class="text-center lg:text-left space-y-3 sm:space-y-4 flex flex-col justify-center">
+        <!-- Logo centrado verticalmente -->
+        <div class="flex justify-center w-full">
+          <div class="relative">
+            <div class="absolute inset-0 bg-yellow-500/25 blur-3xl rounded-full pointer-events-none animate-pulse"></div>
+            <img 
+              src="/logo.png" 
+              alt="Carmay Outfit Logo" 
+              class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 object-contain relative z-10 animate-[logoPulse_3.5s_ease-in-out_infinite]" 
+            />
+          </div>
         </div>
 
-        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.1]">
+        <style>
+          @keyframes logoPulse {
+            0%, 100% {
+              transform: scale(1);
+              filter: drop-shadow(0 0 35px rgba(234, 179, 8, 0.4));
+            }
+            50% {
+              transform: scale(1.06);
+              filter: drop-shadow(0 0 55px rgba(234, 179, 8, 0.7));
+            }
+          }
+        </style>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1]"
+          style="background: linear-gradient(to right, #D4AF37, #F5D76B);
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+                 text-fill-color: transparent;
+                 filter: drop-shadow(0_4px_20px_rgba(234,179,8,0.2));">
+          CARMAY OUTFIT
+        </h1>
+
+        <h2 class="text-lg sm:text-2xl lg:text-3xl font-black tracking-tight text-white leading-[1.2]">
           Ropa con estilo, calzado de calidad y <br />
           <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent">
             la tecnología que necesitas
           </span>
-        </h1>
+        </h2>
 
-        <p class="text-gray-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+        <p class="text-gray-300 text-xs sm:text-sm lg:text-base max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
           Todo lo que buscas para tu día a día, disponible hoy mismo. <br class="hidden sm:inline" />
-          <em class="text-purple-300 not-italic font-semibold">“Todos tienen derecho a disfrutar de la belleza de la moda”</em>
+          <em class="text-purple-300 not-italic font-semibold">"Todos tienen derecho a disfrutar de la belleza de la moda"</em>
         </p>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-          <a href="#catalogo" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold px-8 py-4 rounded-2xl shadow-xl shadow-orange-600/30 hover:-translate-y-0.5 transition-all text-center">
+        <!-- Badge entre texto y botones -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-purple-900/40 text-amber-300 border border-purple-700/50 shadow-inner self-center lg:self-start">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+          <span>La tienda más completa de Camagüey</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
+          <a href="#catalogo" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold px-6 py-3 sm:px-8 sm:py-4 rounded-2xl shadow-xl shadow-orange-600/30 hover:-translate-y-0.5 transition-all text-sm sm:text-base text-center">
             🛍️ Ver Catálogo Activo
           </a>
-          <a href="https://wa.me/53REDACTED_PHONE_1" target="_blank" class="w-full sm:w-auto glass-card glass-card-hover text-white font-bold px-8 py-4 rounded-2xl transition-all text-center border border-white/10">
+          <a href="https://wa.me/53REDACTED_PHONE_1" target="_blank" class="w-full sm:w-auto glass-card glass-card-hover text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-2xl transition-all text-center text-sm sm:text-base border border-white/10">
             💬 Consultar por WhatsApp
           </a>
         </div>
       </div>
 
-      <!-- Imagen Destacada Derecha -->
-      <div class="lg:col-span-5 relative">
-        <div class="relative mx-auto max-w-md lg:max-w-none">
+      <!-- Imagen Destacada Derecha - misma altura que columna izquierda -->
+      <div class="relative flex flex-col min-h-0">
+        <div class="relative flex-1 flex flex-col min-h-0">
           <div class="absolute -inset-1.5 bg-gradient-to-r from-purple-600 to-amber-500 rounded-3xl blur-xl opacity-40 animate-pulse"></div>
-          <div class="relative glass-card p-3 sm:p-4 rounded-3xl shadow-2xl">
+          <div class="relative glass-card p-3 sm:p-4 rounded-3xl shadow-2xl flex flex-col flex-1 min-h-0">
             <img 
-              src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80" 
+              src="/hero-banner.jpg" 
               alt="Carmay Outfit Tienda Principal" 
-              width="600"
-              height="600"
-              class="w-full aspect-[4/5] object-cover rounded-2xl shadow-inner"
+              width="800"
+              height="800"
+              class="w-full flex-1 object-cover rounded-2xl shadow-inner min-h-0"
             />
-            <div class="absolute bottom-6 left-6 right-6 p-4 glass-card rounded-2xl border border-white/15 flex items-center gap-4">
-              <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-lg">
+            <!-- Badge debajo de la imagen -->
+            <div class="mt-2 sm:mt-3 p-2.5 sm:p-3 glass-card rounded-xl border border-white/15 flex items-center gap-3 shrink-0">
+              <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-xs sm:text-sm shrink-0">
                 ✨
               </div>
               <div>
-                <h4 class="font-bold text-white text-sm">Tienda Física en Camagüey</h4>
-                <p class="text-xs text-purple-200">Avellaneda No. 260</p>
+                <h4 class="font-bold text-white text-[11px] sm:text-xs">Tienda Física en Camagüey</h4>
+                <p class="text-[9px] sm:text-[10px] text-purple-200">Avellaneda No. 260</p>
               </div>
             </div>
           </div>

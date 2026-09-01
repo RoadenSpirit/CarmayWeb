@@ -135,7 +135,7 @@ export class Product {
   }
 
   get priceFormatted(): string {
-    return `$${this.price.toFixed(2)} USD / ${this.priceCUPFormatted}`;
+    return `$${this.price % 1 === 0 ? this.price.toFixed(0) : this.price.toFixed(2)} USD / ${this.priceCUPFormatted}`;
   }
 
   get regularPrice(): number {
