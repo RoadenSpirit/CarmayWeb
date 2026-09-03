@@ -11,8 +11,8 @@ const { allProducts, recommendedProducts = [] } = Astro.props;
 const sampleRecommended = recommendedProducts.slice(0, 3);
 ---
 
-<!-- Buscador Extendido integrado debajo del Navbar Header -->
-<div class="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-6">
+<!-- Buscador Extendido (Ajustado al 50% de ancho en escritorio) -->
+<div class="relative z-30 w-full lg:w-1/2 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-6">
   <div class="relative bg-[#0e1019]/90 backdrop-blur-2xl rounded-2xl p-2 sm:p-3 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] group hover:border-amber-400/40 transition-all duration-300">
     
     <!-- Input de Búsqueda -->
@@ -26,8 +26,9 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
       <input 
         type="text" 
         id="extended-search-input"
+        data-products={JSON.stringify(allProducts)}
         placeholder="¿Qué estás buscando hoy? Escribe aquí tenis, vestidos, accesorios..."
-        class="w-full bg-transparent text-white placeholder-slate-400 text-xs sm:text-base font-semibold focus:outline-none py-2"
+        class="w-full bg-transparent text-white placeholder-slate-400 text-xs sm:text-sm font-semibold focus:outline-none py-2"
         autocomplete="off"
       />
 
@@ -40,7 +41,7 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
         ✕
       </button>
 
-      <!-- Badge Atajo o Contador -->
+      <!-- Badge Contador -->
       <div class="hidden sm:flex items-center gap-1.5 shrink-0 bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-[11px] font-bold text-slate-400">
         <span id="search-results-badge">🔍 Buscar</span>
       </div>
@@ -53,17 +54,17 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
     >
       <!-- Cabecera de Estado -->
       <div id="search-status-header" class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-        <h4 id="search-status-title" class="text-sm font-extrabold text-white">
-          Resultados encontrdos
+        <h4 id="search-status-title" class="text-xs sm:text-sm font-extrabold text-white">
+          Resultados encontrados
         </h4>
-        <span id="search-status-count" class="text-xs font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
+        <span id="search-status-count" class="text-[11px] font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
           0 coincidencias
         </span>
       </div>
 
-      <!-- Resultados Coincidentes (Grid) -->
-      <div id="search-matches-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- Renderizado dinámico vía JavaScript -->
+      <!-- Resultados Coincidentes (Grid 2 col) -->
+      <div id="search-matches-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Renderizado dinámico -->
       </div>
 
       <!-- VISTA SIN RESULTADOS (Fallback cuando no encuentra nada) -->
@@ -72,16 +73,16 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
           <div class="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center text-2xl mx-auto text-amber-400 mb-2">
             🔎
           </div>
-          <h4 class="text-lg font-extrabold text-white">No encontramos coincidencias exactas</h4>
+          <h4 class="text-base sm:text-lg font-extrabold text-white">No encontramos coincidencias exactas</h4>
           <p class="text-xs text-slate-400 leading-relaxed">
-            Lo que buscas no está disponible en este momento en el catálogo, pero te sugerimos estos productos populares o puedes solicitarnos un encargo especial.
+            Lo que buscas no está disponible en este momento en el catálogo activo, pero te sugerimos estas opciones o puedes solicitarnos un encargo especial.
           </p>
 
           <!-- Botón Encargar por WhatsApp lo que buscaba -->
           <div class="pt-2">
             <button 
               id="search-custom-order-btn"
-              class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-purple-900/40 hover:shadow-orange-500/30 border border-purple-500/40 hover:border-amber-400 transition-all cursor-pointer"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-purple-900/40 hover:shadow-orange-500/30 border border-purple-500/40 hover:border-amber-400 transition-all cursor-pointer"
             >
               <span>💬 Encargar por WhatsApp lo que buscas</span>
             </button>
@@ -91,10 +92,10 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
         <!-- 3 Productos Recomendados -->
         {sampleRecommended.length > 0 && (
           <div class="pt-4 border-t border-white/[0.06] text-left">
-            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-4 text-center sm:text-left">
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-4 text-center">
               ⭐ Productos recomendados para ti
             </span>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {sampleRecommended.map((p) => (
                 <ProductCard {...p} />
               ))}
@@ -108,7 +109,15 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
   </div>
 </div>
 
-<script is:inline data-products={JSON.stringify(allProducts)}>
+<!-- Bundled Script con Vite (Exporta SearchEngine a window) -->
+<script>
+  import { SearchEngine } from '../utils/searchEngine';
+  if (typeof window !== 'undefined') {
+    (window as any).SearchEngine = SearchEngine;
+  }
+</script>
+
+<script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('extended-search-input');
     const clearBtn = document.getElementById('search-clear-btn');
@@ -119,21 +128,22 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
     const statusCount = document.getElementById('search-status-count');
     const resultsBadge = document.getElementById('search-results-badge');
     const customOrderBtn = document.getElementById('search-custom-order-btn');
-    const scriptTag = document.currentScript;
 
-    let searchEngine = null;
+    let engineInstance = null;
     let searchDebounce = null;
     let currentQuery = '';
 
-    if (scriptTag) {
-      try {
-        const productsData = JSON.parse(scriptTag.getAttribute('data-products') || '[]');
-        import('/src/utils/searchEngine.ts').then(({ SearchEngine }) => {
-          searchEngine = new SearchEngine(productsData);
-        });
-      } catch (err) {
-        console.error('Error cargando motor de búsqueda:', err);
+    function getEngine() {
+      if (engineInstance) return engineInstance;
+      if (input && window.SearchEngine) {
+        try {
+          const rawData = JSON.parse(input.getAttribute('data-products') || '[]');
+          engineInstance = new window.SearchEngine(rawData);
+        } catch (e) {
+          console.error('Error parseando productos para SearchEngine:', e);
+        }
       }
+      return engineInstance;
     }
 
     function hidePanel() {
@@ -158,9 +168,10 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
 
       if (clearBtn) clearBtn.classList.remove('hidden');
 
-      if (!searchEngine) return;
+      const engine = getEngine();
+      if (!engine) return;
 
-      const results = searchEngine.search(query);
+      const results = engine.search(query);
 
       showPanel();
 
@@ -180,19 +191,19 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
         if (statusCount) statusCount.textContent = `${results.length} ${results.length === 1 ? 'coincidencia' : 'coincidencias'}`;
 
         if (matchesGrid) {
-          matchesGrid.innerHTML = results.slice(0, 12).map(item => `
-            <a href="/producto/${item.slug}/" class="group relative rounded-2xl overflow-hidden flex flex-col justify-between bg-[#0f1120] border border-white/10 hover:border-amber-400/40 p-3 transition-all">
-              <div class="aspect-square rounded-xl overflow-hidden bg-black mb-2 relative">
-                <img src="${item.primaryImage}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                <span class="absolute top-2 right-2 bg-black/80 backdrop-blur-md text-yellow-300 text-[10px] px-2 py-0.5 rounded-full border border-yellow-500/20 font-bold">
+          matchesGrid.innerHTML = results.slice(0, 10).map(item => `
+            <a href="/producto/${item.slug}/" class="group relative rounded-2xl overflow-hidden flex items-center gap-3 bg-[#0f1120] border border-white/10 hover:border-amber-400/40 p-2.5 transition-all">
+              <img src="${item.primaryImage}" alt="${item.name}" class="w-14 h-14 object-cover rounded-xl bg-black shrink-0 border border-white/10 group-hover:scale-105 transition-transform" />
+              <div class="flex-1 min-w-0">
+                <span class="text-[9px] font-bold text-yellow-300 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20 uppercase tracking-wider inline-block mb-1">
                   ${item.category}
                 </span>
-              </div>
-              <h5 class="font-bold text-white text-xs line-clamp-2 leading-snug group-hover:text-yellow-300 transition-colors">
-                ${item.name}
-              </h5>
-              <div class="text-[11px] font-black text-orange-400 mt-2">
-                ${item.priceCUP.toLocaleString('en-US')} CUP / $${item.priceUSD % 1 === 0 ? item.priceUSD.toFixed(0) : item.priceUSD.toFixed(2)} USD
+                <h5 class="font-bold text-white text-xs truncate group-hover:text-yellow-300 transition-colors">
+                  ${item.name}
+                </h5>
+                <div class="text-[11px] font-black text-orange-400 mt-0.5">
+                  ${item.priceCUP.toLocaleString('en-US')} CUP / $${item.priceUSD % 1 === 0 ? item.priceUSD.toFixed(0) : item.priceUSD.toFixed(2)} USD
+                </div>
               </div>
             </a>
           `).join('');
