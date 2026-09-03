@@ -1,11 +1,11 @@
 ---
 ---
 
-<!-- Backdrop overlay -->
-<div id="cart-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[80] hidden opacity-0 transition-opacity duration-300"></div>
+<!-- Backdrop overlay: oscuro y sin blur para enfoque claro -->
+<div id="cart-overlay" class="fixed inset-0 bg-black/70 z-[80] hidden opacity-0 transition-opacity duration-300"></div>
 
-<!-- Panel Lateral Deslizante del Carrito (Slide-Over Right Drawer) -->
-<aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-[#0e1019]/95 backdrop-blur-2xl border-l border-white/10 z-[90] transform translate-x-full transition-transform duration-300 ease-out flex flex-col shadow-[-10px_0_40px_rgba(0,0,0,0.8)]">
+<!-- Panel Lateral estilo glass oscuro con duración intermedia para mayor suavidad -->
+<aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[380px] bg-[#0e1019] border-l border-white/10 z-[90] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-[-4px_0_25px_rgba(0,0,0,0.5)]">
   
   <!-- Encabezado del Panel -->
   <div class="p-5 sm:p-6 border-b border-white/10 flex items-center justify-between bg-black/20">
@@ -60,10 +60,10 @@
       </div>
     </div>
 
-    <!-- Botón Principal: WhatsApp -->
-    <button id="cart-checkout-btn" class="w-full py-4 px-5 rounded-2xl bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-500 hover:to-yellow-500 text-white font-extrabold text-sm uppercase tracking-wider shadow-[0_4px_20px_rgba(234,179,8,0.3)] hover:shadow-[0_6px_25px_rgba(234,179,8,0.4)] transition-all flex items-center justify-center gap-2 border border-yellow-500/20 cursor-pointer">
-      <span>💬 Confirmar Pedido por WhatsApp</span>
-    </button>
+    <!-- Botón Principal: Finalizar Pedido -->
+    <a href="/finalizar-pedido/" id="cart-checkout-btn" class="w-full py-4 px-5 rounded-2xl bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-500 hover:to-yellow-500 text-white font-extrabold text-sm uppercase tracking-wider shadow-[0_4px_20px_rgba(234,179,8,0.3)] hover:shadow-[0_6px_25px_rgba(234,179,8,0.4)] transition-all flex items-center justify-center gap-2 border border-yellow-500/20 cursor-pointer">
+      <span>🚀 Finalizar Pedido</span>
+    </a>
 
     <!-- Vaciar Carrito -->
     <div class="text-center">
@@ -88,10 +88,15 @@
     const drawer = document.getElementById('cart-drawer');
     if (overlay && drawer) {
       overlay.classList.remove('hidden');
-      setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+      overlay.style.opacity = '0';
       drawer.classList.remove('translate-x-full');
-      drawer.classList.add('translate-x-0');
+      drawer.style.transform = 'translateX(100%)';
       document.body.style.overflow = 'hidden';
+
+      requestAnimationFrame(() => {
+        overlay.style.opacity = '1';
+        drawer.style.transform = 'translateX(0)';
+      });
     }
   }
 
@@ -99,9 +104,8 @@
     const overlay = document.getElementById('cart-overlay');
     const drawer = document.getElementById('cart-drawer');
     if (overlay && drawer) {
-      overlay.classList.add('opacity-0');
-      drawer.classList.remove('translate-x-0');
-      drawer.classList.add('translate-x-full');
+      overlay.style.opacity = '0';
+      drawer.style.transform = 'translateX(100%)';
       setTimeout(() => {
         overlay.classList.add('hidden');
         document.body.style.overflow = '';
@@ -187,28 +191,6 @@
       if (confirm('¿Estás seguro de que deseas vaciar el carrito?')) {
         CartCRUD.clear();
       }
-    });
-
-    checkoutBtn?.addEventListener('click', () => {
-      const items = CartCRUD.read();
-      if (items.length === 0) return;
-
-      const { totalCUP, totalUSD } = CartCRUD.getTotals();
-      let text = `🛒 *NUEVO PEDIDO - CARMAY OUTFIT*\n\n`;
-      items.forEach((i, idx) => {
-        text += `${idx + 1}. *${i.name}*\n`;
-        if (i.color) text += `   • Color: ${i.color}\n`;
-        if (i.size) text += `   • Talla: ${i.size}\n`;
-        text += `   • Cantidad: ${i.quantity}\n`;
-        text += `   • Subtotal: ${(i.priceCUP * i.quantity).toLocaleString('en-US')} CUP / $${(i.priceUSD * i.quantity).toFixed(2)} USD\n\n`;
-      });
-
-      text += `━━━━━━━━━━━━━━━━━━━━━\n`;
-      text += `💰 *TOTAL FINAL:* ${totalCUP.toLocaleString('en-US')} CUP / $${totalUSD.toFixed(2)} USD\n\n`;
-      text += `📍 *Lugar de Entrega / Recogida:* Avellaneda No. 260, Camagüey`;
-
-      const whatsappUrl = `https://wa.me/53REDACTED_PHONE_1?text=${encodeURIComponent(text)}`;
-      window.open(whatsappUrl, '_blank');
     });
 
     // EVENT DELEGATION GLOBAL para todo el documento
