@@ -250,6 +250,14 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
         <button
           id="add-to-cart"
           disabled={!product.isInStock}
+          data-product={JSON.stringify({
+            productId: product.id,
+            slug: product.slug,
+            name: product.name,
+            image: product.primaryImage,
+            priceUSD: product.price,
+            priceCUP: product.priceCUP,
+          })}
           class={`w-full py-4 px-6 rounded-2xl font-extrabold text-lg uppercase tracking-wider transition-all duration-300 border border-white/[0.06]
             ${product.isInStock
               ? 'bg-gradient-to-r from-purple-700 to-purple-900 hover:from-yellow-600 hover:to-yellow-800 text-white shadow-[0_4px_20px_rgba(168,85,247,0.3)] hover:shadow-[0_6px_30px_rgba(234,179,8,0.3)] cursor-pointer'
@@ -328,14 +336,7 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 
-  <script is:inline data-product={JSON.stringify({
-    productId: product.id,
-    slug: product.slug,
-    name: product.name,
-    image: product.primaryImage,
-    priceUSD: product.price,
-    priceCUP: product.priceCUP,
-  })}>
+  <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       // Galería de imágenes
       const mainImage = document.getElementById('main-image');
@@ -406,12 +407,11 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
 
       // Agregar al Carrito
       const addToCart = document.getElementById('add-to-cart');
-      const scriptTag = document.currentScript;
 
-      if (addToCart && scriptTag) {
+      if (addToCart) {
         addToCart.addEventListener('click', () => {
           try {
-            const rawProduct = JSON.parse(scriptTag.getAttribute('data-product') || '{}');
+            const rawProduct = JSON.parse(addToCart.getAttribute('data-product') || '{}');
             const selectedColor = document.querySelector('.color-btn[class*="border-amber-400"]')?.getAttribute('data-color');
             const selectedSize = document.querySelector('.size-btn[class*="border-amber-400"]')?.getAttribute('data-size');
 
