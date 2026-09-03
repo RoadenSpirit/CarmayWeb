@@ -9,18 +9,36 @@ import CompanyVision from '../components/CompanyVision.astro';
 import Testimonials from '../components/Testimonials.astro';
 import FAQ from '../components/FAQ.astro';
 import Footer from '../components/Footer.astro';
-
-// Datos reales de WooCommerce (build time, vía src/api).
-// Los fetch van con fallback a [] para que un corte de la API no rompa el build.
+import ExtendedSearchBar from '../components/ExtendedSearchBar.astro';
 import { woo } from '../api';
 
 const withFallback = <T,>(promise: Promise<T[]>, fallback: T[] = []): Promise<T[]> =>
   promise.catch(() => fallback);
 
-const [bestSellersRaw, offersRaw] = await Promise.all([
+const [allRawProducts, bestSellersRaw, offersRaw] = await Promise.all([
+  withFallback(woo.products.getAll(100)),
   withFallback(woo.products.getBestSellers(8)),
   withFallback(woo.products.getOnSale(8)),
 ]);
+
+const validProducts = allRawProducts.filter(p => p.hasRealImage);
+const searchableData = validProducts.map(p => ({
+  id: p.id,
+  name: p.name,
+  slug: p.slug,
+  category: p.categoryName || "General",
+  categorySlug: p.categorySlug,
+  primaryImage: p.primaryImage,
+  priceUSD: p.price,
+  priceCUP: p.priceCUP,
+  regularPriceUSD: p.regularPrice,
+  regularPriceCUP: p.regularPriceCUP,
+  isOnSale: p.isOnSale,
+  stockQuantity: p.stockQuantity,
+  isInStock: p.isInStock,
+  isTrending: p.isTrending,
+  tags: p.tags.map(t => t.name),
+}));
 
 // Se muestran solo productos con imagen real; los "más vendidos" deben tener ventas.
 const bestSellers = bestSellersRaw
@@ -34,6 +52,12 @@ const specialOffers = offersRaw
 
 <Layout title="Carmay Outfit • La tienda más completa de Camagüey">
   <Header />
+
+  <!-- Buscador Extendido integrado debajo del Header -->
+  <ExtendedSearchBar 
+    allProducts={searchableData} 
+    recommendedProducts={bestSellers} 
+  />
 
   <!-- 1. Hero Principal con textos exactos de la web principal -->
   <Hero />

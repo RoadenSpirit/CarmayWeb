@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import ExtendedSearchBar from '../../components/ExtendedSearchBar.astro';
 import { woo } from '../../api';
 
 // Categorías de la tienda
@@ -32,8 +33,38 @@ const { category } = Astro.params;
 const catId = categoryIdMap[category] || 0;
 
 // Obtener productos filtrados
-const products = catId > 0 ? await woo.products.getByCategory(catId, 50) : [];
-const filteredProducts = products.filter(p => p.hasRealImage && p.isInStock);
+const allCatProducts = catId > 0 ? await woo.products.getByCategory(catId, 100) : [];
+const validCatProducts = allCatProducts.filter(p => p.hasRealImage);
+
+// Ordenamiento estricto: productos en stock PRIMERO, agotados AL FINAL
+const sortedProducts = [...validCatProducts].sort((a, b) => {
+  if (a.isInStock !== b.isInStock) {
+    return a.isInStock ? -1 : 1;
+  }
+  return 0;
+});
+
+// JSON plano para buscador
+const searchableData = validCatProducts.map(p => ({
+  id: p.id,
+  name: p.name,
+  slug: p.slug,
+  category: p.categoryName || "General",
+  categorySlug: p.categorySlug,
+  primaryImage: p.primaryImage,
+  priceUSD: p.price,
+  priceCUP: p.priceCUP,
+  regularPriceUSD: p.regularPrice,
+  regularPriceCUP: p.regularPriceCUP,
+  isOnSale: p.isOnSale,
+  stockQuantity: p.stockQuantity,
+  isInStock: p.isInStock,
+  isTrending: p.isTrending,
+  tags: p.tags.map(t => t.name),
+}));
+
+// Recomendados
+const recommendedCards = validCatProducts.filter(p => p.isInStock).slice(0, 3).map(p => p.toCard());
 
 // Nombre de la categoría actual
 const currentCategory = storeCategories.find(c => c.slug === category);
@@ -41,6 +72,12 @@ const categoryName = currentCategory ? currentCategory.name : category;
 ---
 <Layout title={`${categoryName} - Carmay Outfit`}>
   <Header />
+
+  <!-- Buscador Extendido -->
+  <ExtendedSearchBar 
+    allProducts={searchableData} 
+    recommendedProducts={recommendedCards} 
+  />
 
   <!-- ============= NAVBAR CATEGORÍAS (siempre visible) ============= -->
   <nav class="fixed left-0 right-0 z-40 backdrop-blur-2xl bg-[#090b11]/75 border-b border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" style="top: 80px;">
@@ -64,7 +101,7 @@ const categoryName = currentCategory ? currentCategory.name : category;
   </nav>
 
   <!-- ============= SECTION: PRODUCTOS FILTRADOS ============= -->
-  <section id="productos-section" class="pt-32 pb-16 min-h-screen">
+  <section id="productos-section" class="pt-24 pb-16 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header de sección -->
       <div class="text-center mb-10 sm:mb-14 pb-8 border-b border-white/[0.06]">
@@ -77,13 +114,13 @@ const categoryName = currentCategory ? currentCategory.name : category;
           {categoryName}
         </h1>
         <p class="text-sm sm:text-lg text-slate-400 drop-shadow-[0_2px_8px_rgba(255,255,255,0.03)]">
-          Encuentra lo que buscas
+          Productos disponibles en la categoría {categoryName}
         </p>
       </div>
 
       <!-- Grid de productos -->
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {filteredProducts.map((product) => (
+        {sortedProducts.map((product) => (
           <ProductCard
             title={product.name}
             price={product.priceFormatted}
@@ -98,11 +135,13 @@ const categoryName = currentCategory ? currentCategory.name : category;
             categorySlug={product.categorySlug}
             slug={product.slug}
             isTrending={product.isTrending}
+            stockQuantity={product.stockQuantity}
+            isInStock={product.isInStock}
             permalink={`/producto/${product.slug}/`}
           />
         ))}
 
-        {filteredProducts.length === 0 && (
+        {sortedProducts.length === 0 && (
           <p class="col-span-2 sm:col-span-4 text-center text-slate-400 py-12">
             No hay productos disponibles en esta categoría.
           </p>

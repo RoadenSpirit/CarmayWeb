@@ -1,0 +1,229 @@
+---
+import type { ProductCardData } from '../api/models/Product.js';
+import ProductCard from './ProductCard.astro';
+
+interface Props {
+  allProducts: any[];
+  recommendedProducts?: ProductCardData[];
+}
+
+const { allProducts, recommendedProducts = [] } = Astro.props;
+const sampleRecommended = recommendedProducts.slice(0, 3);
+---
+
+<!-- Buscador Extendido integrado debajo del Navbar Header -->
+<div class="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-6">
+  <div class="relative bg-[#0e1019]/90 backdrop-blur-2xl rounded-2xl p-2 sm:p-3 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] group hover:border-amber-400/40 transition-all duration-300">
+    
+    <!-- Input de Búsqueda -->
+    <div class="flex items-center gap-3 px-3">
+      <div class="text-amber-400 flex items-center justify-center shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+
+      <input 
+        type="text" 
+        id="extended-search-input"
+        placeholder="¿Qué estás buscando hoy? Escribe aquí tenis, vestidos, accesorios..."
+        class="w-full bg-transparent text-white placeholder-slate-400 text-xs sm:text-base font-semibold focus:outline-none py-2"
+        autocomplete="off"
+      />
+
+      <!-- Botón Limpiar -->
+      <button 
+        id="search-clear-btn"
+        class="hidden text-slate-400 hover:text-white p-1 rounded-lg transition-colors text-sm font-bold shrink-0 cursor-pointer"
+        title="Limpiar búsqueda"
+      >
+        ✕
+      </button>
+
+      <!-- Badge Atajo o Contador -->
+      <div class="hidden sm:flex items-center gap-1.5 shrink-0 bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-[11px] font-bold text-slate-400">
+        <span id="search-results-badge">🔍 Buscar</span>
+      </div>
+    </div>
+
+    <!-- Panel de Resultados / Sin Resultados (Desplegable) -->
+    <div 
+      id="search-results-panel" 
+      class="hidden absolute left-0 right-0 top-full mt-3 bg-[#0e1019]/98 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-5 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-6"
+    >
+      <!-- Cabecera de Estado -->
+      <div id="search-status-header" class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+        <h4 id="search-status-title" class="text-sm font-extrabold text-white">
+          Resultados encontrdos
+        </h4>
+        <span id="search-status-count" class="text-xs font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
+          0 coincidencias
+        </span>
+      </div>
+
+      <!-- Resultados Coincidentes (Grid) -->
+      <div id="search-matches-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Renderizado dinámico vía JavaScript -->
+      </div>
+
+      <!-- VISTA SIN RESULTADOS (Fallback cuando no encuentra nada) -->
+      <div id="search-no-results-view" class="hidden space-y-6 text-center py-4">
+        <div class="max-w-md mx-auto space-y-2">
+          <div class="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center text-2xl mx-auto text-amber-400 mb-2">
+            🔎
+          </div>
+          <h4 class="text-lg font-extrabold text-white">No encontramos coincidencias exactas</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Lo que buscas no está disponible en este momento en el catálogo, pero te sugerimos estos productos populares o puedes solicitarnos un encargo especial.
+          </p>
+
+          <!-- Botón Encargar por WhatsApp lo que buscaba -->
+          <div class="pt-2">
+            <button 
+              id="search-custom-order-btn"
+              class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-purple-900/40 hover:shadow-orange-500/30 border border-purple-500/40 hover:border-amber-400 transition-all cursor-pointer"
+            >
+              <span>💬 Encargar por WhatsApp lo que buscas</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 Productos Recomendados -->
+        {sampleRecommended.length > 0 && (
+          <div class="pt-4 border-t border-white/[0.06] text-left">
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-4 text-center sm:text-left">
+              ⭐ Productos recomendados para ti
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {sampleRecommended.map((p) => (
+                <ProductCard {...p} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script is:inline data-products={JSON.stringify(allProducts)}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('extended-search-input');
+    const clearBtn = document.getElementById('search-clear-btn');
+    const panel = document.getElementById('search-results-panel');
+    const matchesGrid = document.getElementById('search-matches-grid');
+    const noResultsView = document.getElementById('search-no-results-view');
+    const statusTitle = document.getElementById('search-status-title');
+    const statusCount = document.getElementById('search-status-count');
+    const resultsBadge = document.getElementById('search-results-badge');
+    const customOrderBtn = document.getElementById('search-custom-order-btn');
+    const scriptTag = document.currentScript;
+
+    let searchEngine = null;
+    let searchDebounce = null;
+    let currentQuery = '';
+
+    if (scriptTag) {
+      try {
+        const productsData = JSON.parse(scriptTag.getAttribute('data-products') || '[]');
+        import('/src/utils/searchEngine.ts').then(({ SearchEngine }) => {
+          searchEngine = new SearchEngine(productsData);
+        });
+      } catch (err) {
+        console.error('Error cargando motor de búsqueda:', err);
+      }
+    }
+
+    function hidePanel() {
+      if (panel) panel.classList.add('hidden');
+    }
+
+    function showPanel() {
+      if (panel) panel.classList.remove('hidden');
+    }
+
+    function handleSearch() {
+      if (!input) return;
+      const query = input.value.trim();
+      currentQuery = query;
+
+      if (query.length === 0) {
+        if (clearBtn) clearBtn.classList.add('hidden');
+        if (resultsBadge) resultsBadge.textContent = '🔍 Buscar';
+        hidePanel();
+        return;
+      }
+
+      if (clearBtn) clearBtn.classList.remove('hidden');
+
+      if (!searchEngine) return;
+
+      const results = searchEngine.search(query);
+
+      showPanel();
+
+      if (resultsBadge) {
+        resultsBadge.textContent = `${results.length} res.`;
+      }
+
+      if (results.length === 0) {
+        if (matchesGrid) matchesGrid.classList.add('hidden');
+        if (noResultsView) noResultsView.classList.remove('hidden');
+        if (statusTitle) statusTitle.textContent = `Sin resultados para "${query}"`;
+        if (statusCount) statusCount.textContent = '0 coincidencias';
+      } else {
+        if (noResultsView) noResultsView.classList.add('hidden');
+        if (matchesGrid) matchesGrid.classList.remove('hidden');
+        if (statusTitle) statusTitle.textContent = `Resultados para "${query}"`;
+        if (statusCount) statusCount.textContent = `${results.length} ${results.length === 1 ? 'coincidencia' : 'coincidencias'}`;
+
+        if (matchesGrid) {
+          matchesGrid.innerHTML = results.slice(0, 12).map(item => `
+            <a href="/producto/${item.slug}/" class="group relative rounded-2xl overflow-hidden flex flex-col justify-between bg-[#0f1120] border border-white/10 hover:border-amber-400/40 p-3 transition-all">
+              <div class="aspect-square rounded-xl overflow-hidden bg-black mb-2 relative">
+                <img src="${item.primaryImage}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                <span class="absolute top-2 right-2 bg-black/80 backdrop-blur-md text-yellow-300 text-[10px] px-2 py-0.5 rounded-full border border-yellow-500/20 font-bold">
+                  ${item.category}
+                </span>
+              </div>
+              <h5 class="font-bold text-white text-xs line-clamp-2 leading-snug group-hover:text-yellow-300 transition-colors">
+                ${item.name}
+              </h5>
+              <div class="text-[11px] font-black text-orange-400 mt-2">
+                ${item.priceCUP.toLocaleString('en-US')} CUP / $${item.priceUSD % 1 === 0 ? item.priceUSD.toFixed(0) : item.priceUSD.toFixed(2)} USD
+              </div>
+            </a>
+          `).join('');
+        }
+      }
+    }
+
+    input?.addEventListener('input', () => {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(handleSearch, 150);
+    });
+
+    clearBtn?.addEventListener('click', () => {
+      if (input) input.value = '';
+      if (clearBtn) clearBtn.classList.add('hidden');
+      hidePanel();
+    });
+
+    // Encargar por WhatsApp lo que buscaba y no encontró
+    customOrderBtn?.addEventListener('click', () => {
+      const text = `Hola Carmay Outfit 👋, me interesa encargar el producto *"${currentQuery}"* que estuve buscando en su sitio web pero no encontré en el catálogo activo. ¿Tienen disponibilidad o fecha de llegada?`;
+      const whatsappUrl = `https://wa.me/REDACTED_PHONE_1?text=${encodeURIComponent(text)}`;
+      window.open(whatsappUrl, '_blank');
+    });
+
+    // Cerrar si hace clic fuera
+    document.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!input?.contains(target) && !panel?.contains(target)) {
+        hidePanel();
+      }
+    });
+  });
+</script>
