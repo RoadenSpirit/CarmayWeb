@@ -78,6 +78,11 @@
 <script>
   import { CartStore, type CartItem } from '../utils/cartStore';
 
+  // Exponer CartStore globalmente en window
+  if (typeof window !== 'undefined') {
+    (window as any).CartStore = CartStore;
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('cart-overlay');
     const drawer = document.getElementById('cart-drawer');

@@ -415,9 +415,8 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
             const selectedColor = document.querySelector('.color-btn[class*="border-amber-400"]')?.getAttribute('data-color');
             const selectedSize = document.querySelector('.size-btn[class*="border-amber-400"]')?.getAttribute('data-size');
 
-            // Importar dinámicamente CartStore
-            import('/src/utils/cartStore.ts').then(({ CartStore }) => {
-              CartStore.addItem({
+            if (window.CartStore) {
+              window.CartStore.addItem({
                 productId: rawProduct.productId,
                 slug: rawProduct.slug,
                 name: rawProduct.name,
@@ -431,7 +430,7 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
 
               // Abrir panel del carrito
               window.dispatchEvent(new CustomEvent('open-carmay-cart'));
-            });
+            }
           } catch (err) {
             console.error('Error al agregar al carrito:', err);
           }
