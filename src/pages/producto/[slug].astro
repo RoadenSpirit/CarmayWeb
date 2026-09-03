@@ -415,8 +415,8 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
             const selectedColor = document.querySelector('.color-btn[class*="border-amber-400"]')?.getAttribute('data-color');
             const selectedSize = document.querySelector('.size-btn[class*="border-amber-400"]')?.getAttribute('data-size');
 
-            if (window.CartStore) {
-              window.CartStore.addItem({
+            if (window.CarmayCart) {
+              window.CarmayCart.create({
                 productId: rawProduct.productId,
                 slug: rawProduct.slug,
                 name: rawProduct.name,

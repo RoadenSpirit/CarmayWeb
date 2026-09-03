@@ -173,8 +173,8 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
         e.stopPropagation();
         try {
           const raw = JSON.parse(btn.getAttribute('data-quick-add') || '{}');
-          if ((window as any).CartStore) {
-            (window as any).CartStore.addItem({
+          if ((window as any).CarmayCart) {
+            (window as any).CarmayCart.create({
               productId: raw.productId || 0,
               slug: raw.slug,
               name: raw.name,

@@ -114,19 +114,15 @@ import CartDrawer from './CartDrawer.astro';
 <CartDrawer />
 
 <script>
-  import { CartStore } from '../utils/cartStore';
+  import { CartCRUD } from '../utils/cartStore';
 
   function updateBadge() {
-    const totalUnits = CartStore.getTotalUnits();
+    const { totalUnits } = CartCRUD.getTotals();
     const countEl = document.getElementById('header-cart-count');
     const mobileCountEl = document.getElementById('mobile-cart-badge');
 
     if (countEl) {
       countEl.textContent = String(totalUnits);
-      if (totalUnits > 0) {
-        countEl.classList.remove('scale-0');
-        countEl.classList.add('scale-100');
-      }
     }
     if (mobileCountEl) {
       mobileCountEl.textContent = String(totalUnits);
@@ -142,14 +138,13 @@ import CartDrawer from './CartDrawer.astro';
     });
 
     mobileCartBtn?.addEventListener('click', () => {
-      // cerrar menú móvil primero
       document.getElementById('mobile-menu-close')?.click();
       setTimeout(() => {
         window.dispatchEvent(new CustomEvent('open-carmay-cart'));
       }, 350);
     });
 
-    window.addEventListener('carmay-cart-updated', updateBadge);
+    window.addEventListener('carmay-cart-changed', updateBadge);
     updateBadge();
   });
 </script>
