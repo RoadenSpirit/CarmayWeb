@@ -328,7 +328,14 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 
-  <script is:inline>
+  <script is:inline data-product={JSON.stringify({
+    productId: product.id,
+    slug: product.slug,
+    name: product.name,
+    image: product.primaryImage,
+    priceUSD: product.price,
+    priceCUP: product.priceCUP,
+  })}>
     document.addEventListener('DOMContentLoaded', () => {
       // Galería de imágenes
       const mainImage = document.getElementById('main-image');
@@ -397,19 +404,37 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
         });
       }
 
-      // Agregar al Carrito (Demo)
+      // Agregar al Carrito
       const addToCart = document.getElementById('add-to-cart');
-      if (addToCart) {
+      const scriptTag = document.currentScript;
+
+      if (addToCart && scriptTag) {
         addToCart.addEventListener('click', () => {
-          const selectedColor = document.querySelector('.color-btn[class*="border-amber-400"]');
-          const selectedSize = document.querySelector('.size-btn[class*="border-amber-400"]');
-          const message = [
-            '🛒 ¡Agregado al carrito! (Demo)',
-            selectedColor ? `Color: ${selectedColor.getAttribute('data-color')}` : '',
-            selectedSize ? `Talla: ${selectedSize.getAttribute('data-size')}` : '',
-            `Cantidad: ${qty}`
-          ].filter(Boolean).join('\n');
-          alert(message);
+          try {
+            const rawProduct = JSON.parse(scriptTag.getAttribute('data-product') || '{}');
+            const selectedColor = document.querySelector('.color-btn[class*="border-amber-400"]')?.getAttribute('data-color');
+            const selectedSize = document.querySelector('.size-btn[class*="border-amber-400"]')?.getAttribute('data-size');
+
+            // Importar dinámicamente CartStore
+            import('/src/utils/cartStore.ts').then(({ CartStore }) => {
+              CartStore.addItem({
+                productId: rawProduct.productId,
+                slug: rawProduct.slug,
+                name: rawProduct.name,
+                image: rawProduct.image,
+                priceUSD: rawProduct.priceUSD,
+                priceCUP: rawProduct.priceCUP,
+                color: selectedColor || undefined,
+                size: selectedSize || undefined,
+                quantity: qty,
+              });
+
+              // Abrir panel del carrito
+              window.dispatchEvent(new CustomEvent('open-carmay-cart'));
+            });
+          } catch (err) {
+            console.error('Error al agregar al carrito:', err);
+          }
         });
       }
     });
