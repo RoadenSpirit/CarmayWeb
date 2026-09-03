@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import ProductCard from '../components/ProductCard.astro';
-import ExtendedSearchBar from '../components/ExtendedSearchBar.astro';
 import { woo } from '../api';
 
 // Categorías de la tienda
@@ -45,31 +44,6 @@ const sortedCatalogProducts = [...validProducts].sort((a, b) => {
   }
   return 0;
 });
-
-// JSON plano para el motor de búsqueda
-const searchableData = validProducts.map(p => ({
-  id: p.id,
-  name: p.name,
-  slug: p.slug,
-  category: p.categoryName || "General",
-  categorySlug: p.categorySlug,
-  primaryImage: p.primaryImage,
-  priceUSD: p.price,
-  priceCUP: p.priceCUP,
-  regularPriceUSD: p.regularPrice,
-  regularPriceCUP: p.regularPriceCUP,
-  isOnSale: p.isOnSale,
-  stockQuantity: p.stockQuantity,
-  isInStock: p.isInStock,
-  isTrending: p.isTrending,
-  tags: p.tags.map(t => t.name),
-}));
-
-// Productos destacados para fallback recomendados
-const bestSellersCards = validProducts
-  .filter(p => p.isInStock)
-  .slice(0, 4)
-  .map(p => p.toCard());
 ---
 <Layout title="Carmay Outfit - Tienda Online">
   <Fragment slot="head">
@@ -81,12 +55,6 @@ const bestSellersCards = validProducts
   </Fragment>
 
   <Header />
-
-  <!-- Buscador Extendido integrado debajo del Navbar -->
-  <ExtendedSearchBar 
-    allProducts={searchableData} 
-    recommendedProducts={bestSellersCards} 
-  />
 
   <!-- ============= SECTION: HERO CATEGORÍAS ============= -->
   <section id="categorias-section" class="relative py-12 sm:py-16 overflow-hidden">
@@ -146,7 +114,7 @@ const bestSellersCards = validProducts
   </div>
 
   <!-- ============= NAVBAR CATEGORÍAS ============= -->
-  <nav id="categorias-navbar" class="fixed left-0 right-0 z-40 backdrop-blur-2xl bg-[#090b11]/75 border-b border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" style="top: 80px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;">
+  <nav id="categorias-navbar" class="fixed left-0 right-0 z-40 backdrop-blur-2xl bg-[#090b11]/75 border-b border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" style="top: var(--headerh, 0px); opacity: 0; pointer-events: none; transition: opacity 0.4s ease;">
     <!-- Línea inferior de acento amarillo -->
     <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

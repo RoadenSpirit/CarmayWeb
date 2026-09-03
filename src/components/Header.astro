@@ -1,5 +1,6 @@
 ---
 import CartDrawer from './CartDrawer.astro';
+import SubNavbar from './SubNavbar.astro';
 ---
 
 <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#0e1019]/85 border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-all duration-300">
@@ -51,6 +52,9 @@ import CartDrawer from './CartDrawer.astro';
     </div>
 
   </div>
+
+  <!-- Sub-Navbar: Buscador + Carrusel de Mensajes (siempre visible al hacer scroll) -->
+  <SubNavbar />
 </header>
 
 <!-- Drawer Móvil -->
@@ -115,6 +119,18 @@ import CartDrawer from './CartDrawer.astro';
 
 <script>
   import { CartCRUD } from '../utils/cartStore';
+
+  // Expone la altura real del header (fila principal + SubNavbar) como var CSS
+  // para que los navbars fijos y paddings de las páginas queden siempre debajo.
+  function syncHeaderHeight() {
+    const header = document.querySelector('header');
+    if (header) {
+      document.documentElement.style.setProperty('--headerh', header.offsetHeight + 'px');
+    }
+  }
+  window.addEventListener('load', syncHeaderHeight);
+  window.addEventListener('resize', syncHeaderHeight);
+  document.addEventListener('DOMContentLoaded', syncHeaderHeight);
 
   function updateBadge() {
     const { totalUnits } = CartCRUD.getTotals();
