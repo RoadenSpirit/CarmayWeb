@@ -11,14 +11,14 @@ const { allProducts, recommendedProducts = [] } = Astro.props;
 const sampleRecommended = recommendedProducts.slice(0, 3);
 ---
 
-<!-- Buscador Extendido (Ajustado al 50% de ancho en escritorio) -->
+<!-- Buscador Extendido (50% ancho en desktop, sólido oscuro) -->
 <div class="relative z-30 w-full lg:w-1/2 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-6">
-  <div class="relative bg-[#0e1019]/90 backdrop-blur-2xl rounded-2xl p-2 sm:p-3 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.06)] group hover:border-amber-400/40 transition-all duration-300">
+  <div class="relative bg-[#0a0d14] rounded-2xl p-2 sm:p-3 border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.6)] group hover:border-amber-500/30 transition-all duration-300">
     
     <!-- Input de Búsqueda -->
     <div class="flex items-center gap-3 px-3">
-      <div class="text-amber-400 flex items-center justify-center shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <div class="text-white/60 flex items-center justify-center shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
       </div>
@@ -27,22 +27,22 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
         type="text" 
         id="extended-search-input"
         data-products={JSON.stringify(allProducts)}
-        placeholder="¿Qué estás buscando hoy? Escribe aquí tenis, vestidos, accesorios..."
-        class="w-full bg-transparent text-white placeholder-slate-400 text-xs sm:text-sm font-semibold focus:outline-none py-2"
+        placeholder="Buscar tenis, vestidos, accesorios..."
+        class="w-full bg-transparent text-white placeholder-white/40 text-sm font-medium focus:outline-none py-2.5"
         autocomplete="off"
       />
 
       <!-- Botón Limpiar -->
       <button 
         id="search-clear-btn"
-        class="hidden text-slate-400 hover:text-white p-1 rounded-lg transition-colors text-sm font-bold shrink-0 cursor-pointer"
+        class="hidden text-white/40 hover:text-white p-1 rounded-lg transition-colors text-sm font-bold shrink-0 cursor-pointer"
         title="Limpiar búsqueda"
       >
         ✕
       </button>
 
       <!-- Badge Contador -->
-      <div class="hidden sm:flex items-center gap-1.5 shrink-0 bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-[11px] font-bold text-slate-400">
+      <div class="hidden sm:flex items-center gap-1.5 shrink-0 bg-white/[0.06] border border-white/[0.06] px-3 py-1.5 rounded-lg text-[11px] font-bold text-white/50">
         <span id="search-results-badge">🔍 Buscar</span>
       </div>
     </div>
@@ -50,41 +50,41 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
     <!-- Panel de Resultados / Sin Resultados (Desplegable) -->
     <div 
       id="search-results-panel" 
-      class="hidden absolute left-0 right-0 top-full mt-3 bg-[#0e1019]/98 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-5 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-6"
+      class="hidden absolute left-0 right-0 top-full mt-3 bg-[#0a0d14] rounded-2xl border border-white/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-5"
     >
       <!-- Cabecera de Estado -->
-      <div id="search-status-header" class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-        <h4 id="search-status-title" class="text-xs sm:text-sm font-extrabold text-white">
+      <div id="search-status-header" class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
+        <h4 id="search-status-title" class="text-sm font-bold text-white">
           Resultados encontrados
         </h4>
-        <span id="search-status-count" class="text-[11px] font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
+        <span id="search-status-count" class="text-[11px] font-bold text-white/50 bg-white/[0.06] px-3 py-1 rounded-full border border-white/[0.06]">
           0 coincidencias
         </span>
       </div>
 
-      <!-- Resultados Coincidentes (Grid 2 col) -->
+      <!-- Resultados Coincidentes -->
       <div id="search-matches-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <!-- Renderizado dinámico -->
       </div>
 
-      <!-- VISTA SIN RESULTADOS (Fallback cuando no encuentra nada) -->
+      <!-- VISTA SIN RESULTADOS (Fallback) -->
       <div id="search-no-results-view" class="hidden space-y-6 text-center py-4">
-        <div class="max-w-md mx-auto space-y-2">
-          <div class="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center text-2xl mx-auto text-amber-400 mb-2">
+        <div class="max-w-md mx-auto space-y-3">
+          <div class="w-14 h-14 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-2xl mx-auto mb-2">
             🔎
           </div>
-          <h4 class="text-base sm:text-lg font-extrabold text-white">No encontramos coincidencias exactas</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Lo que buscas no está disponible en este momento en el catálogo activo, pero te sugerimos estas opciones o puedes solicitarnos un encargo especial.
+          <h4 class="text-base font-bold text-white">No encontramos coincidencias exactas</h4>
+          <p class="text-sm text-white/50 leading-relaxed">
+            Lo que buscas no está disponible en este momento, pero puedes solicitarnos un encargo especial.
           </p>
 
-          <!-- Botón Encargar por WhatsApp lo que buscaba -->
+          <!-- Botón Encargar por WhatsApp -->
           <div class="pt-2">
             <button 
               id="search-custom-order-btn"
-              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-purple-900/40 hover:shadow-orange-500/30 border border-purple-500/40 hover:border-amber-400 transition-all cursor-pointer"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-bold text-sm transition-all cursor-pointer border border-purple-500/30 hover:border-amber-400 shadow-[0_4px_15px_rgba(109,30,104,0.3)] hover:shadow-[0_6px_25px_rgba(234,179,8,0.2)]"
             >
-              <span>💬 Encargar por WhatsApp lo que buscas</span>
+              <span>💬 Encargar por WhatsApp</span>
             </button>
           </div>
         </div>
@@ -92,7 +92,7 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
         <!-- 3 Productos Recomendados -->
         {sampleRecommended.length > 0 && (
           <div class="pt-4 border-t border-white/[0.06] text-left">
-            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-4 text-center">
+            <span class="text-[11px] font-bold text-white/40 uppercase tracking-widest block mb-4 text-center">
               ⭐ Productos recomendados para ti
             </span>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -109,7 +109,7 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
   </div>
 </div>
 
-<!-- Bundled Script con Vite (Exporta SearchEngine a window) -->
+<!-- Bundled Script con Vite -->
 <script>
   import { SearchEngine } from '../utils/searchEngine';
   if (typeof window !== 'undefined') {
@@ -192,16 +192,16 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
 
         if (matchesGrid) {
           matchesGrid.innerHTML = results.slice(0, 10).map(item => `
-            <a href="/producto/${item.slug}/" class="group relative rounded-2xl overflow-hidden flex items-center gap-3 bg-[#0f1120] border border-white/10 hover:border-amber-400/40 p-2.5 transition-all">
-              <img src="${item.primaryImage}" alt="${item.name}" class="w-14 h-14 object-cover rounded-xl bg-black shrink-0 border border-white/10 group-hover:scale-105 transition-transform" />
+            <a href="/producto/${item.slug}/" class="group relative rounded-xl overflow-hidden flex items-center gap-3 bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.15] p-3 transition-all">
+              <img src="${item.primaryImage}" alt="${item.name}" class="w-14 h-14 object-cover rounded-lg bg-white/[0.04] shrink-0 border border-white/[0.06] group-hover:scale-105 transition-transform" />
               <div class="flex-1 min-w-0">
-                <span class="text-[9px] font-bold text-yellow-300 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20 uppercase tracking-wider inline-block mb-1">
+                <span class="text-[10px] font-bold text-white/40 uppercase tracking-wider inline-block mb-1">
                   ${item.category}
                 </span>
-                <h5 class="font-bold text-white text-xs truncate group-hover:text-yellow-300 transition-colors">
+                <h5 class="font-bold text-white text-sm truncate group-hover:text-amber-300 transition-colors leading-tight">
                   ${item.name}
                 </h5>
-                <div class="text-[11px] font-black text-orange-400 mt-0.5">
+                <div class="text-xs font-bold text-white/60 mt-1">
                   ${item.priceCUP.toLocaleString('en-US')} CUP / $${item.priceUSD % 1 === 0 ? item.priceUSD.toFixed(0) : item.priceUSD.toFixed(2)} USD
                 </div>
               </div>
@@ -222,14 +222,12 @@ const sampleRecommended = recommendedProducts.slice(0, 3);
       hidePanel();
     });
 
-    // Encargar por WhatsApp lo que buscaba y no encontró
     customOrderBtn?.addEventListener('click', () => {
       const text = `Hola Carmay Outfit 👋, me interesa encargar el producto *"${currentQuery}"* que estuve buscando en su sitio web pero no encontré en el catálogo activo. ¿Tienen disponibilidad o fecha de llegada?`;
       const whatsappUrl = `https://wa.me/REDACTED_PHONE_1?text=${encodeURIComponent(text)}`;
       window.open(whatsappUrl, '_blank');
     });
 
-    // Cerrar si hace clic fuera
     document.addEventListener('click', (e) => {
       const target = e.target;
       if (!input?.contains(target) && !panel?.contains(target)) {
