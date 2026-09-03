@@ -481,8 +481,8 @@ import Footer from '../components/Footer.astro';
       if (checkoutError) checkoutError.classList.add('hidden');
 
       // Formatear teléfono cliente (+53)
-      const rawPhone = phoneInput!.value.trim();
-      const fullClientPhone = rawPhone.startsWith('53') ? rawPhone : `53${rawPhone}`;
+      const cleanPhone = phoneInput!.value.trim().replace(/\D/g, '');
+      const fullClientPhone = cleanPhone.startsWith('53') ? cleanPhone : `53${cleanPhone}`;
 
       const clientName = nameInput!.value.trim();
       const paymentMethod = selectedPaymentRadio?.value || 'Efectivo';
@@ -569,7 +569,7 @@ import Footer from '../components/Footer.astro';
           }),
         });
 
-        // 3. Notificar también a la tienda (+53 REDACTED_PHONE_1)
+        // 3. Notificar también a la tienda (+REDACTED_PHONE_1)
         await fetch(API_URL, {
           method: 'POST',
           headers: {
@@ -577,7 +577,7 @@ import Footer from '../components/Footer.astro';
             'x-api-key': API_KEY,
           },
           body: JSON.stringify({
-            chatId: '53REDACTED_PHONE_1',
+            chatId: 'REDACTED_PHONE_1',
             message: `🔔 *NUEVA ORDEN DE VENTA RECIBIDA*\n\n` + ticketMsg,
           }),
         });
