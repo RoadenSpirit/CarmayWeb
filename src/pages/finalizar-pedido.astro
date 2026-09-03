@@ -491,47 +491,44 @@ import Footer from '../components/Footer.astro';
       const items = CartCRUD.read();
       const { totalCUP, totalUSD } = CartCRUD.getTotals();
 
-      // Construcción del Mensaje 1: Ticket del Pedido
-      let ticketMsg = `🛒 *NUEVO PEDIDO REGISTRADO - CARMAY OUTFIT*\n`;
-      ticketMsg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-      ticketMsg += `👤 *DATOS DEL CLIENTE:*\n`;
-      ticketMsg += `• Nombre: ${clientName}\n`;
-      ticketMsg += `• WhatsApp: +${fullClientPhone}\n\n`;
+      // Construcción del Mensaje Único para el Cliente (Saludo + Confirmación + Ticket)
+      let customerMsg = `👋 *¡Hola ${clientName}! Gracias por comprar en Carmay Outfit*\n\n`;
+      customerMsg += `✅ Tu orden ha sido *registrada con éxito*. En breve un miembro de nuestro equipo se pondrá en contacto contigo a través de este número para definir los últimos detalles y coordinar la entrega.\n\n`;
+      customerMsg += `📋 *RESUMEN DE TU COMPRA:*\n`;
+      customerMsg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+      customerMsg += `👤 *DATOS DEL CLIENTE:*\n`;
+      customerMsg += `• Nombre: ${clientName}\n`;
+      customerMsg += `• WhatsApp: +${fullClientPhone}\n\n`;
 
-      ticketMsg += `📍 *FORMA DE ENTREGA:*\n`;
+      customerMsg += `📍 *FORMA DE ENTREGA:*\n`;
       if (isDelivery) {
-        ticketMsg += `• Tipo: Entrega a Domicilio 🚚\n`;
-        ticketMsg += `• Dirección: ${addressInput!.value.trim()}\n`;
-        ticketMsg += `• Receptor: ${recipientNameInput!.value.trim()} (+53${recipientPhoneInput!.value.trim()})\n\n`;
+        customerMsg += `• Tipo: Entrega a Domicilio 🚚\n`;
+        customerMsg += `• Dirección: ${addressInput!.value.trim()}\n`;
+        customerMsg += `• Receptor: ${recipientNameInput!.value.trim()} (+53${recipientPhoneInput!.value.trim()})\n\n`;
       } else {
-        ticketMsg += `• Tipo: Recogida en Tienda (Avellaneda #260) 🏪\n\n`;
+        customerMsg += `• Tipo: Recogida en Tienda (Avellaneda #260) 🏪\n\n`;
       }
 
-      ticketMsg += `💵 *FORMA DE PAGO:*\n`;
-      ticketMsg += `• Moneda: ${selectedCurrency}\n`;
-      ticketMsg += `• Método: ${paymentMethod}\n\n`;
+      customerMsg += `💵 *FORMA DE PAGO:*\n`;
+      customerMsg += `• Moneda: ${selectedCurrency}\n`;
+      customerMsg += `• Método: ${paymentMethod}\n\n`;
 
       if (notes) {
-        ticketMsg += `📝 *NOTAS DEL PEDIDO:*\n${notes}\n\n`;
+        customerMsg += `📝 *NOTAS DEL PEDIDO:*\n${notes}\n\n`;
       }
 
-      ticketMsg += `🛍️ *PRODUCTOS SELECCIONADOS:*\n`;
+      customerMsg += `🛍️ *PRODUCTOS SELECCIONADOS:*\n`;
       items.forEach((i, idx) => {
-        ticketMsg += `${idx + 1}. *${i.name}*\n`;
-        if (i.color) ticketMsg += `   • Color: ${i.color}\n`;
-        if (i.size) ticketMsg += `   • Talla: ${i.size}\n`;
-        ticketMsg += `   • Cantidad: ${i.quantity}\n`;
-        ticketMsg += `   • Subtotal: ${ (i.priceCUP * i.quantity).toLocaleString('en-US') } CUP / $${ (i.priceUSD * i.quantity).toFixed(2) } USD\n\n`;
+        customerMsg += `${idx + 1}. *${i.name}*\n`;
+        if (i.color) customerMsg += `   • Color: ${i.color}\n`;
+        if (i.size) customerMsg += `   • Talla: ${i.size}\n`;
+        customerMsg += `   • Cantidad: ${i.quantity}\n`;
+        customerMsg += `   • Subtotal: ${ (i.priceCUP * i.quantity).toLocaleString('en-US') } CUP / $${ (i.priceUSD * i.quantity).toFixed(2) } USD\n\n`;
       });
 
-      ticketMsg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-      ticketMsg += `💰 *TOTAL FINAL:* ${totalCUP.toLocaleString('en-US')} CUP / $${totalUSD.toFixed(2)} USD\n`;
-
-      // Mensaje 2: Confirmación para el cliente
-      const confirmationMsg = `✅ *¡Tu orden ha sido registrada con éxito en Carmay Outfit!*\n\n` +
-        `Hola *${clientName}*, hemos recibido tu pedido correctamente.\n` +
-        `En breve un miembro de nuestro equipo se pondrá en contacto contigo a través de este número para definir los últimos detalles y coordinar la entrega.\n\n` +
-        `📍 *Carmay Outfit* — Avellaneda No. 260, Camagüey.`;
+      customerMsg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+      customerMsg += `💰 *TOTAL A PAGAR:* ${totalCUP.toLocaleString('en-US')} CUP / $${totalUSD.toFixed(2)} USD\n\n`;
+      customerMsg += `📍 *Carmay Outfit* — Avellaneda No. 260, Camagüey.`;
 
       // Deshabilitar botón durante el proceso
       if (submitBtn) {
@@ -543,7 +540,7 @@ import Footer from '../components/Footer.astro';
         const API_URL = 'https://ia.carmayn8n.cloud/api/wa/send';
         const API_KEY = 'REDACTED_BAILEYS_API_KEY';
 
-        // 1. Enviar Ticket de Compra al cliente por WhatsApp (vía VPS Baileys API)
+        // 1. Enviar Mensaje Único al cliente por WhatsApp (vía VPS Baileys API)
         await fetch(API_URL, {
           method: 'POST',
           headers: {
@@ -552,24 +549,11 @@ import Footer from '../components/Footer.astro';
           },
           body: JSON.stringify({
             chatId: fullClientPhone,
-            message: ticketMsg,
+            message: customerMsg,
           }),
         });
 
-        // 2. Enviar Confirmación al cliente por WhatsApp
-        await fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': API_KEY,
-          },
-          body: JSON.stringify({
-            chatId: fullClientPhone,
-            message: confirmationMsg,
-          }),
-        });
-
-        // 3. Notificar también a la tienda (+REDACTED_PHONE_1)
+        // 2. Notificar también a la tienda (+REDACTED_PHONE_1)
         await fetch(API_URL, {
           method: 'POST',
           headers: {
@@ -578,7 +562,7 @@ import Footer from '../components/Footer.astro';
           },
           body: JSON.stringify({
             chatId: 'REDACTED_PHONE_1',
-            message: `🔔 *NUEVA ORDEN DE VENTA RECIBIDA*\n\n` + ticketMsg,
+            message: `🔔 *NUEVA ORDEN RECIBIDA DESDE LA WEB*\n\n` + customerMsg,
           }),
         });
 
