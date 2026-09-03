@@ -9,16 +9,16 @@
   <div class="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch w-full">
       
-      <!-- Contenido Izquierda: Logo + Textos -->
-      <div class="text-center lg:text-left space-y-3 sm:space-y-4 flex flex-col justify-center">
-        <!-- Logo centrado verticalmente -->
+      <!-- Contenido Izquierda: Logo + Textos (centrados vertical y horizontalmente) -->
+      <div class="text-center space-y-3 sm:space-y-4 flex flex-col justify-center items-center my-auto w-full">
+        <!-- Logo centrado (al doble de tamaño) -->
         <div class="flex justify-center w-full">
           <div class="relative">
             <div class="absolute inset-0 bg-yellow-500/25 blur-3xl rounded-full pointer-events-none animate-pulse"></div>
             <img 
               src="/logo.png" 
               alt="Carmay Outfit Logo" 
-              class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 object-contain relative z-10 animate-[logoPulse_3.5s_ease-in-out_infinite]" 
+              class="w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 object-contain relative z-10 animate-[logoPulse_3.5s_ease-in-out_infinite]" 
             />
           </div>
         </div>
@@ -36,7 +36,7 @@
           }
         </style>
 
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1]"
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-center"
           style="background: linear-gradient(to right, #D4AF37, #F5D76B);
                  -webkit-background-clip: text;
                  -webkit-text-fill-color: transparent;
@@ -45,26 +45,26 @@
           CARMAY OUTFIT
         </h1>
 
-        <h2 class="text-lg sm:text-2xl lg:text-3xl font-black tracking-tight text-white leading-[1.2]">
+        <h2 class="text-lg sm:text-2xl lg:text-3xl font-black tracking-tight text-white leading-[1.2] text-center">
           Ropa con estilo, calzado de calidad y <br />
           <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent">
             la tecnología que necesitas
           </span>
         </h2>
 
-        <p class="text-gray-300 text-xs sm:text-sm lg:text-base max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+        <p class="text-gray-300 text-xs sm:text-sm lg:text-base max-w-xl mx-auto font-normal leading-relaxed text-center">
           Todo lo que buscas para tu día a día, disponible hoy mismo. <br class="hidden sm:inline" />
           <em class="text-purple-300 not-italic font-semibold">"Todos tienen derecho a disfrutar de la belleza de la moda"</em>
         </p>
 
         <!-- Badge entre texto y botones -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-purple-900/40 text-amber-300 border border-purple-700/50 shadow-inner self-center lg:self-start">
-          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-purple-900/40 text-amber-300 border border-purple-700/50 shadow-inner self-center">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
           <span>La tienda más completa de Camagüey</span>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
-          <a href="#catalogo" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold px-6 py-3 sm:px-8 sm:py-4 rounded-2xl shadow-xl shadow-orange-600/30 hover:-translate-y-0.5 transition-all text-sm sm:text-base text-center">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full">
+          <a href="/tienda/" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold px-6 py-3 sm:px-8 sm:py-4 rounded-2xl shadow-xl shadow-orange-600/30 hover:-translate-y-0.5 transition-all text-sm sm:text-base text-center">
             🛍️ Ver Catálogo Activo
           </a>
           <a href="https://wa.me/53REDACTED_PHONE_1" target="_blank" class="w-full sm:w-auto glass-card glass-card-hover text-white font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-2xl transition-all text-center text-sm sm:text-base border border-white/10">

@@ -20,19 +20,76 @@
     <!-- Navegación Escritorio -->
     <nav class="hidden md:flex items-center gap-8 text-base sm:text-lg font-bold">
       <a href="/" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Inicio</a>
-      <a href="/store/" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Tienda</a>
+      <a href="/tienda/" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Tienda</a>
       <a href="/contact" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Contacto</a>
     </nav>
 
-    <!-- Botón WhatsApp -->
+    <!-- Botón WhatsApp + Hamburguesa Móvil -->
     <div class="flex items-center gap-3">
       <a href="https://wa.me/53REDACTED_PHONE_1" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-500 hover:to-yellow-500 text-white px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold shadow-[0_4px_15px_rgba(234,179,8,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] hover:shadow-[0_6px_25px_rgba(234,179,8,0.35)] hover:-translate-y-0.5 transition-all border border-yellow-500/20">
         <span>💬 WhatsApp</span>
       </a>
+
+      <!-- Botón Hamburguesa (solo móvil) -->
+      <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors" aria-label="Abrir menú">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
     </div>
 
   </div>
 </header>
+
+<!-- Drawer Móvil -->
+<div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300"></div>
+<div id="mobile-menu-drawer" class="fixed top-0 right-0 h-full w-72 bg-[#0e1019]/95 backdrop-blur-2xl border-l border-white/10 z-[70] transform translate-x-full transition-transform duration-300 ease-out">
+  <!-- Botón Cerrar -->
+  <div class="flex items-center justify-end p-5">
+    <button id="mobile-menu-close" class="flex items-center justify-center w-10 h-10 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors" aria-label="Cerrar menú">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Logo en drawer -->
+  <div class="px-6 pb-6 border-b border-white/10">
+    <a href="/" class="flex items-center gap-3">
+      <img src="/logo.png" alt="Carmay Outfit" class="w-12 h-12 object-contain" />
+      <span class="text-lg font-extrabold text-white">CARMAY OUTFIT</span>
+    </a>
+  </div>
+
+  <!-- Enlaces de navegación -->
+  <nav class="flex flex-col p-6 gap-2">
+    <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+      Inicio
+    </a>
+    <a href="/tienda/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+      Tienda
+    </a>
+    <a href="/contact" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      Contacto
+    </a>
+  </nav>
+
+  <!-- Botón WhatsApp en drawer -->
+  <div class="px-6 pb-6">
+    <a href="https://wa.me/53REDACTED_PHONE_1" target="_blank" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-500 hover:to-yellow-500 text-white px-5 py-3 rounded-xl font-bold shadow-[0_4px_15px_rgba(234,179,8,0.25)] transition-all border border-yellow-500/20">
+      💬 WhatsApp
+    </a>
+  </div>
+</div>
 
 <script>
   // Scroll progress bar
@@ -42,5 +99,38 @@
     const progress = (scrollTop / scrollHeight) * 100;
     const progressBar = document.getElementById('scroll-progress');
     if (progressBar) progressBar.style.width = progress + '%';
+  });
+
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const menuClose = document.getElementById('mobile-menu-close');
+  const drawer = document.getElementById('mobile-menu-drawer');
+  const overlay = document.getElementById('mobile-menu-overlay');
+
+  function openMenu() {
+    drawer?.classList.remove('translate-x-full');
+    drawer?.classList.add('translate-x-0');
+    overlay?.classList.remove('hidden');
+    setTimeout(() => overlay?.classList.remove('opacity-0'), 10);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    drawer?.classList.remove('translate-x-0');
+    drawer?.classList.add('translate-x-full');
+    overlay?.classList.add('opacity-0');
+    setTimeout(() => {
+      overlay?.classList.add('hidden');
+      document.body.style.overflow = '';
+    }, 300);
+  }
+
+  menuBtn?.addEventListener('click', openMenu);
+  menuClose?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
+
+  // Cerrar al hacer clic en un enlace del drawer
+  drawer?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
   });
 </script>

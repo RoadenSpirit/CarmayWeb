@@ -52,7 +52,7 @@ const categoryName = currentCategory ? currentCategory.name : category;
           <div class="flex items-center">
             {i > 0 && <div class="h-6 mx-4" style="width: 1px; background: linear-gradient(to bottom, transparent, rgba(234,179,8,0.4), transparent);"></div>}
             <a
-              href={`/store/${cat.slug}/`}
+              href={`/tienda/${cat.slug}/`}
               class={`text-base sm:text-lg font-semibold transition-colors whitespace-nowrap px-4 py-2 ${cat.slug === category ? 'text-yellow-400 drop-shadow-[0_2px_8px_rgba(234,179,8,0.3)]' : 'text-slate-300 hover:text-yellow-400'}`}
             >
               {cat.name}
@@ -95,8 +95,10 @@ const categoryName = currentCategory ? currentCategory.name : category;
             regularPriceCUP={product.regularPriceCUP}
             image={product.primaryImage}
             category={product.categoryName || "Sin categoría"}
+            categorySlug={product.categorySlug}
+            slug={product.slug}
             isTrending={product.isTrending}
-            permalink={product.permalink}
+            permalink={`/producto/${product.slug}/`}
           />
         ))}
 

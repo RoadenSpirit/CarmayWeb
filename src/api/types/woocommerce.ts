@@ -40,6 +40,15 @@ export interface WooTag {
   slug: string;
 }
 
+export interface WooProductAttribute {
+  id: number;
+  name: string;
+  position: number;
+  visible: boolean;
+  variation: boolean;
+  options: string[];
+}
+
 // ------------------------------------------------------------
 // Producto (respuesta completa de /products)
 // ------------------------------------------------------------
@@ -78,6 +87,7 @@ export interface WooProduct {
   categories: WooCategory[];
   tags: WooTag[];
   images: WooImage[];
+  attributes?: WooProductAttribute[];
 }
 
 // ------------------------------------------------------------

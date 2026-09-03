@@ -10,8 +10,10 @@ interface Props {
   regularPriceCUP?: number;
   image: string;
   category: string;
+  categorySlug: string;
   isTrending?: boolean;
   permalink: string;
+  slug: string;
 }
 
 const {
@@ -25,8 +27,10 @@ const {
   regularPriceCUP,
   image,
   category,
+  categorySlug,
   isTrending = false,
   permalink,
+  slug,
 } = Astro.props;
 
 const onSale = regularPriceUSD !== undefined && regularPriceUSD > priceUSD;
@@ -37,20 +41,22 @@ const formatCUP = (n: number) => `${n.toLocaleString('en-US')} CUP`;
 const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.toFixed(2)} USD`;
 ---
 
-<div class="group relative rounded-2xl overflow-hidden flex flex-col justify-between
-  bg-[#0f1120]/80 backdrop-blur-sm
-  border border-white/[0.08]
-  shadow-[0_8px_32px_rgba(255,255,255,0.06),0_2px_60px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]
-  hover:shadow-[0_12px_48px_rgba(234,179,8,0.12),0_2px_60px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)]
-  hover:-translate-y-1
-  transition-[transform,box-shadow] duration-300 ease-out">
+<a 
+  href={permalink}
+  class="group relative rounded-2xl overflow-hidden flex flex-col justify-between block
+    bg-[#0f1120]/90 backdrop-blur-sm
+    border border-white/[0.08]
+    shadow-[0_4px_20px_rgba(0,0,0,0.25)]
+    hover:shadow-[0_6px_25px_rgba(234,179,8,0.15)]
+    hover:-translate-y-1
+    transition-[transform,box-shadow] duration-300 ease-out">
   
   <!-- Línea superior de acento (solo en oferta) -->
   {onSale && (
     <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-60"></div>
   )}
 
-  <!-- Halo dorado en hover (sutil, sin parpadeo) -->
+  <!-- Halo dorado en hover (sutil) -->
   <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
     style="box-shadow: inset 0 0 0 1px rgba(234,179,8,0.15);"></div>
 
@@ -62,7 +68,7 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
         alt={title} 
         width="600"
         height="600"
-        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out opacity-90 group-hover:opacity-100"
+        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out opacity-100"
         loading="lazy"
       />
       
@@ -81,9 +87,6 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
           </span>
         </div>
       )}
-
-      <!-- Gradiente inferior sobre imagen -->
-      <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#0f1120] to-transparent"></div>
     </div>
 
     <!-- Contenido -->
@@ -138,11 +141,10 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
 
   <!-- Botón de Acción -->
   <div class="px-5 pb-5 pt-2">
-    <a 
-      href={permalink}
-      class="block w-full text-center bg-gradient-to-r from-purple-700 to-purple-900 hover:from-yellow-600 hover:to-yellow-800 text-white font-extrabold py-3 px-5 rounded-xl shadow-[0_4px_15px_rgba(168,85,247,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_6px_25px_rgba(234,179,8,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300 text-sm border border-white/[0.06]"
+    <span 
+      class="block w-full text-center bg-gradient-to-r from-purple-700 to-purple-900 group-hover:from-yellow-600 group-hover:to-yellow-800 text-white font-extrabold py-3 px-5 rounded-xl shadow-[0_4px_15px_rgba(168,85,247,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] group-hover:shadow-[0_6px_25px_rgba(234,179,8,0.25),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300 text-sm border border-white/[0.06]"
     >
       Ver Detalles
-    </a>
+    </span>
   </div>
-</div>
+</a>

@@ -1,4 +1,4 @@
-import type { WooCategory, WooImage, WooProduct, WooStockStatus, WooTag } from '../types/woocommerce.js';
+import type { WooCategory, WooImage, WooProduct, WooProductAttribute, WooStockStatus, WooTag } from '../types/woocommerce.js';
 
 /** Umbral de stock para considerar un producto como "bajo stock". */
 export const LOW_STOCK_THRESHOLD = 5;
@@ -29,8 +29,10 @@ export interface ProductCardData {
   regularPriceCUP?: number;
   image: string;
   category: string;
+  categorySlug: string;
   isTrending?: boolean;
   permalink: string;
+  slug: string;
 }
 
 /** Representación plana y tipada de un producto para la web. */
@@ -66,6 +68,16 @@ export interface ProductData {
   images: string[];
   categories: WooCategory[];
   tags: WooTag[];
+  attributes: WooProductAttribute[];
+  colorOptions: string[];
+  sizeOptions: string[];
+  hasMultipleImages: boolean;
+  hasDescription: boolean;
+  hasShortDescription: boolean;
+  cleanDescription: string;
+  cleanShortDescription: string;
+  categoryName: string;
+  categorySlug: string;
 }
 
 /**
@@ -257,6 +269,76 @@ export class Product {
     return this.categories[0]?.name ?? '';
   }
 
+  get categorySlug(): string {
+    return this.categories[0]?.slug ?? '';
+  }
+
+  // ----------------------------------------------------------
+  // Atributos dinámicos (Color, Talla)
+  // ----------------------------------------------------------
+
+  get attributes(): WooProductAttribute[] {
+    return this.raw.attributes ?? [];
+  }
+
+  /** Opciones de color extraídas del atributo "Color" / "Colores". */
+  get colorOptions(): string[] {
+    const attr = this.attributes.find(
+      (a) => a.name.toLowerCase() === 'color' || a.name.toLowerCase() === 'colores'
+    );
+    return attr?.options ?? [];
+  }
+
+  /** Opciones de talla extraídas del atributo "Talla" / "Tallas" / "Size". */
+  get sizeOptions(): string[] {
+    const attr = this.attributes.find(
+      (a) =>
+        a.name.toLowerCase() === 'talla' ||
+        a.name.toLowerCase() === 'tallas' ||
+        a.name.toLowerCase() === 'size' ||
+        a.name.toLowerCase() === 'sizes'
+    );
+    return attr?.options ?? [];
+  }
+
+  get hasMultipleImages(): boolean {
+    return this.images.length > 1;
+  }
+
+  /** Limpia la descripción cruda eliminando códigos internos (Código: XXX), precios CUP y secuencias de barras. */
+  get cleanDescription(): string {
+    const raw = this.description ?? '';
+    let text = raw
+      .replace(/<p[^>]*>/gi, '')
+      .replace(/<\/p>/gi, '\n')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/(?:código|codigo|cód|cod)\s*:\s*[^\n<]*/gi, '')
+      .replace(/precio\s*(?:cup|usd)?\s*:\s*[^\n<]*/gi, '')
+      .replace(/\/\s*\d[\d\/\s]*/g, '')
+      .replace(/<[^>]*>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (/^[\d\/\s\-\.\,\:\;]*$/.test(text) || text.length < 5) {
+      return '';
+    }
+
+    return text;
+  }
+
+  get hasDescription(): boolean {
+    return this.cleanDescription.length > 0;
+  }
+
+  get hasShortDescription(): boolean {
+    const desc = this.shortDescription?.replace(/<[^>]*>/g, '').trim();
+    return desc.length > 0;
+  }
+
+  get cleanShortDescription(): string {
+    return this.shortDescription ?? '';
+  }
+
   // ----------------------------------------------------------
   // Conversiones
   // ----------------------------------------------------------
@@ -274,8 +356,10 @@ export class Product {
       regularPriceCUP: this.isOnSale ? this.regularPriceCUP : undefined,
       image: this.primaryImage,
       category: this.categoryName,
+      categorySlug: this.categorySlug,
       isTrending: this.isTrending,
-      permalink: this.permalink,
+      permalink: `/producto/${this.slug}/`,
+      slug: this.slug,
     };
   }
 
@@ -312,6 +396,16 @@ export class Product {
       images: this.images,
       categories: this.categories,
       tags: this.tags,
+      attributes: this.attributes,
+      colorOptions: this.colorOptions,
+      sizeOptions: this.sizeOptions,
+      hasMultipleImages: this.hasMultipleImages,
+      hasDescription: this.hasDescription,
+      hasShortDescription: this.hasShortDescription,
+      cleanDescription: this.cleanDescription,
+      cleanShortDescription: this.cleanShortDescription,
+      categoryName: this.categoryName,
+      categorySlug: this.categorySlug,
     };
   }
 
