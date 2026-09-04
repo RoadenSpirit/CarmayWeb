@@ -12,22 +12,22 @@
       <!-- ===== COLUMNA IZQUIERDA: BUSCADOR (55%) ===== -->
       <div class="flex-1 sm:flex-[3] min-w-0">
         <div class="relative">
-          <form id="subnav-search-form" class="flex items-center gap-2 w-full rounded-full border border-white/[0.12] bg-white/[0.04] px-3.5 py-2 focus-within:border-white/30 focus-within:bg-white/[0.06] focus-within:shadow-[0_0_18px_rgba(255,255,255,0.06)] transition-all">
-            <svg class="w-4 h-4 shrink-0 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <form id="subnav-search-form" class="flex items-center gap-2 w-full rounded-full border-2 border-white/30 bg-white/[0.08] px-3.5 py-2 focus-within:border-amber-400/60 focus-within:bg-white/[0.12] focus-within:shadow-[0_0_20px_rgba(245,158,11,0.15)] transition-all">
+            <svg class="w-4 h-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="text"
               id="subnav-search-input"
               placeholder="Busca tenis, vestidos, relojes..."
-              class="flex-1 min-w-0 bg-transparent text-white placeholder-white/35 text-sm font-semibold focus:outline-none truncate"
+              class="flex-1 min-w-0 bg-transparent text-white placeholder-amber-300/70 text-sm font-semibold focus:outline-none truncate"
               autocomplete="off"
               aria-label="Buscar productos"
             />
             <button
               type="button"
               id="subnav-search-clear"
-              class="hidden shrink-0 text-white/30 hover:text-white text-sm font-bold p-1 cursor-pointer transition-colors"
+              class="hidden shrink-0 text-amber-400 hover:text-amber-300 text-sm font-bold p-1 cursor-pointer transition-colors"
               title="Limpiar"
               aria-label="Limpiar búsqueda"
             >
@@ -46,66 +46,66 @@
           </form>
 
           <!-- Panel desplegable de resultados -->
-          <div id="subnav-search-panel" class="hidden absolute left-0 right-0 top-full mt-3 bg-[#0a0d14] rounded-2xl border border-white/[0.10] shadow-[0_20px_60px_rgba(0,0,0,0.9)] p-3 max-h-[70vh] overflow-y-auto z-50 scrollbar-hide"></div>
+          <div id="subnav-search-panel" class="hidden absolute left-0 right-0 top-full mt-3 bg-[#12141c] rounded-2xl border-2 border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.9)] p-3 max-h-[70vh] overflow-y-auto z-50 scrollbar-hide"></div>
         </div>
       </div>
 
       <!-- ===== COLUMNA DERECHA: CARRUSEL DE VALOR (45%) ===== -->
       <div class="flex-shrink-0 sm:flex-[2] lg:w-[45%]">
-        <div class="relative overflow-hidden h-11 flex items-center rounded-xl border border-white/[0.06] bg-white/[0.03]">
+        <div class="relative overflow-hidden h-11 flex items-center rounded-xl border-2 border-white/25 bg-white/[0.06]">
 
           <!-- 1. Envío a Domicilio -->
           <div class="carousel-item absolute inset-0 flex items-center gap-2.5 px-3.5 opacity-0 translate-y-2">
-            <span class="w-8 h-8 rounded-full bg-sky-500/12 border border-sky-400/25 flex items-center justify-center text-sky-400 shrink-0">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1h4.5M5 20a2 2 0 100-4 2 2 0 000 4zm10 0a2 2 0 100-4 2 2 0 000 4zm4-6V9.5a1 1 0 00-.3-.7l-3-3a1 1 0 00-.7-.3h-2.5"/></svg>
+            <span class="w-8 h-8 rounded-full bg-sky-400/20 border-2 border-sky-400/50 flex items-center justify-center text-sky-300 shrink-0">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1h4.5M5 20a2 2 0 100-4 2 2 0 000 4zm10 0a2 2 0 100-4 2 2 0 000 4zm4-6V9.5a1 1 0 00-.3-.7l-3-3a1 1 0 00-.7-.3h-2.5"/></svg>
             </span>
             <div class="min-w-0">
               <p class="text-white font-bold text-[13px] leading-tight truncate">Envío a Domicilio</p>
-              <p class="text-white/40 text-[11px] leading-tight truncate">Rápido en toda Camagüey</p>
+              <p class="text-sky-300 text-[11px] leading-tight truncate">Rápido en toda Camagüey</p>
             </div>
           </div>
 
           <!-- 2. WhatsApp 24/7 -->
           <div class="carousel-item absolute inset-0 flex items-center gap-2.5 px-3.5 opacity-0 translate-y-2">
-            <span class="w-8 h-8 rounded-full bg-emerald-500/12 border border-emerald-400/25 flex items-center justify-center text-emerald-400 shrink-0">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            <span class="w-8 h-8 rounded-full bg-emerald-400/20 border-2 border-emerald-400/50 flex items-center justify-center text-emerald-300 shrink-0">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
             </span>
             <div class="min-w-0">
               <p class="text-white font-bold text-[13px] leading-tight truncate">Atención por WhatsApp</p>
-              <p class="text-white/40 text-[11px] leading-tight truncate">Te respondemos al instante</p>
+              <p class="text-emerald-300 text-[11px] leading-tight truncate">Te respondemos al instante</p>
             </div>
           </div>
 
           <!-- 3. Precios Imbatibles -->
           <div class="carousel-item absolute inset-0 flex items-center gap-2.5 px-3.5 opacity-0 translate-y-2">
-            <span class="w-8 h-8 rounded-full bg-purple-500/12 border border-purple-400/25 flex items-center justify-center text-purple-400 shrink-0">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v10m0 0c1.11 0 2.08-.402 2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span class="w-8 h-8 rounded-full bg-purple-400/20 border-2 border-purple-400/50 flex items-center justify-center text-purple-300 shrink-0">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v10m0 0c1.11 0 2.08-.402 2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </span>
             <div class="min-w-0">
               <p class="text-white font-bold text-[13px] leading-tight truncate">Precios Imbatibles</p>
-              <p class="text-white/40 text-[11px] leading-tight truncate">Paga en CUP y USD</p>
+              <p class="text-purple-300 text-[11px] leading-tight truncate">Paga en CUP y USD</p>
             </div>
           </div>
 
           <!-- 4. Catálogo Nuevo -->
           <div class="carousel-item absolute inset-0 flex items-center gap-2.5 px-3.5 opacity-0 translate-y-2">
-            <span class="w-8 h-8 rounded-full bg-amber-500/12 border border-amber-400/25 flex items-center justify-center text-amber-400 shrink-0">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+            <span class="w-8 h-8 rounded-full bg-amber-400/20 border-2 border-amber-400/50 flex items-center justify-center text-amber-300 shrink-0">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
             </span>
             <div class="min-w-0">
               <p class="text-white font-bold text-[13px] leading-tight truncate">Catálogo Actualizado</p>
-              <p class="text-white/40 text-[11px] leading-tight truncate">Novedades cada semana</p>
+              <p class="text-amber-300 text-[11px] leading-tight truncate">Novedades cada semana</p>
             </div>
           </div>
 
           <!-- 5. Ofertas y Rifas -->
           <div class="carousel-item absolute inset-0 flex items-center gap-2.5 px-3.5 opacity-0 translate-y-2">
-            <span class="w-8 h-8 rounded-full bg-rose-500/12 border border-rose-400/25 flex items-center justify-center text-rose-400 shrink-0">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 16v-2m6-6h2M4 12h2m9.95-5.95l1.41-1.41m-11.31 11.31l1.41-1.41M7.05 6.05L5.64 4.64m11.31 11.31l1.41 1.41M5 21a7 7 0 0014 0M6.6 16.5h10.8"/></svg>
+            <span class="w-8 h-8 rounded-full bg-rose-400/20 border-2 border-rose-400/50 flex items-center justify-center text-rose-300 shrink-0">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 16v-2m6-6h2M4 12h2m9.95-5.95l1.41-1.41m-11.31 11.31l1.41-1.41M7.05 6.05L5.64 4.64m11.31 11.31l1.41 1.41M5 21a7 7 0 0014 0M6.6 16.5h10.8"/></svg>
             </span>
             <div class="min-w-0">
               <p class="text-white font-bold text-[13px] leading-tight truncate">Ofertas y Rifas</p>
-              <p class="text-white/40 text-[11px] leading-tight truncate">Descuentos sorpresa</p>
+              <p class="text-rose-300 text-[11px] leading-tight truncate">Descuentos sorpresa</p>
             </div>
           </div>
         </div>
@@ -164,9 +164,9 @@
       if (results.length === 0) {
         panel.innerHTML = `
           <div class="text-center py-6 space-y-3">
-            <div class="w-12 h-12 rounded-full bg-white/[0.05] flex items-center justify-center text-2xl mx-auto">🔎</div>
+            <div class="w-12 h-12 rounded-full bg-amber-400/15 flex items-center justify-center text-2xl mx-auto">🔎</div>
             <p class="text-white font-bold text-sm">No encontramos "${query}"</p>
-            <p class="text-white/40 text-xs">Pero podemos encargártelo, escríbenos.</p>
+            <p class="text-amber-300/80 text-xs">Pero podemos encargártelo, escríbenos.</p>
             <a href="https://wa.me/REDACTED_PHONE_1?text=${encodeURIComponent('Hola Carmay Outfit, me interesa encargar el producto *"' + query + '"* que busqué y no encontré.')}" target="_blank"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-bold text-xs transition-colors">
               💬 Encargar por WhatsApp
@@ -174,18 +174,18 @@
           </div>`;
       } else {
         panel.innerHTML = `
-          <div class="flex items-center justify-between pb-2 mb-2 border-b border-white/[0.06]">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b-2 border-white/20">
             <span class="text-white font-bold text-sm">Resultados</span>
-            <span class="text-white/40 text-xs">${results.length} ${results.length === 1 ? 'producto' : 'productos'}</span>
+            <span class="text-amber-300/80 text-xs">${results.length} ${results.length === 1 ? 'producto' : 'productos'}</span>
           </div>
           <div class="flex flex-col gap-1">${results.slice(0, 8).map(item => `
-            <a href="/producto/${item.slug}/" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.05] transition-colors">
-              <img src="${item.primaryImage}" class="w-11 h-11 rounded-lg object-cover shrink-0 border border-white/[0.06]" alt="${item.name}" />
+            <a href="/producto/${item.slug}/" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.08] transition-colors">
+              <img src="${item.primaryImage}" class="w-11 h-11 rounded-lg object-cover shrink-0 border-2 border-white/20" alt="${item.name}" />
               <div class="min-w-0 flex-1">
                 <p class="text-white text-sm font-semibold truncate">${item.name}</p>
-                <p class="text-white/40 text-xs">${item.priceCUP.toLocaleString('en-US')} CUP · $${item.priceUSD % 1 === 0 ? item.priceUSD.toFixed(0) : item.priceUSD.toFixed(2)} USD</p>
+                <p class="text-amber-300/80 text-xs">${item.priceCUP.toLocaleString('en-US')} CUP · $${item.priceUSD % 1 === 0 ? item.priceUSD.toFixed(0) : item.priceUSD.toFixed(2)} USD</p>
               </div>
-              <span class="text-white/20">→</span>
+              <span class="text-amber-400">→</span>
             </a>`).join('')}
           </div>`;
       }
