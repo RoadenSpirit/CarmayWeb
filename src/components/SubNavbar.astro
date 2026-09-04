@@ -5,8 +5,9 @@
 // Carrusel migrado del PHP original (5 mensajes) con diseño neo-dark premium.
 ---
 
-<div class="border-t border-white/[0.06] bg-[#0a0d14]/95 backdrop-blur-md">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
+<div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md">
+  <div class="subnav-inner border-t border-white/[0.06]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5">
 
       <!-- ===== COLUMNA IZQUIERDA: BUSCADOR (55%) ===== -->
@@ -126,6 +127,48 @@
     const panel = document.getElementById('subnav-search-panel');
     const engine = window.SearchEngine;
     const items = Array.from(document.querySelectorAll('.carousel-item'));
+    const subnav = document.getElementById('subnav');
+
+    // ====== COLAPSO AL SCROLL (se oculta bajando, reaparece subiendo) ======
+    const COLLAPSE_THRESHOLD = 100;
+    let lastScrollY = window.scrollY || 0;
+    let refreshHeaderTimer = null;
+    let collapsing = false;
+
+    function refreshHeaderHeight() {
+      if (refreshHeaderTimer) clearTimeout(refreshHeaderTimer);
+      refreshHeaderTimer = setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('subnav-collapse-change'));
+      }, 480);
+    }
+
+    function onScroll() {
+      const y = window.scrollY || 0;
+      const dy = y - lastScrollY;
+      const hidden = subnav?.classList.contains('subnav-collapsed');
+      if (!hidden && dy > 6 && y > COLLAPSE_THRESHOLD) {
+        collapsing = true;
+        subnav?.classList.add('subnav-collapsed');
+        refreshHeaderHeight();
+      } else if (hidden && dy < -6) {
+        collapsing = false;
+        subnav?.classList.remove('subnav-collapsed');
+        refreshHeaderHeight();
+      }
+      lastScrollY = y;
+    }
+
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(onScroll);
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      if (subnav?.classList.contains('subnav-collapsed')) {
+        subnav.classList.remove('subnav-collapsed');
+        collapsing = false;
+        refreshHeaderHeight();
+      }
+    });
 
     let engineInstance = null;
     let currentQuery = '';
@@ -260,4 +303,19 @@
 <style>
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  #subnav {
+    display: grid;
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, translate 0.5s ease;
+  }
+  #subnav .subnav-inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+  #subnav.subnav-collapsed {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
 </style>

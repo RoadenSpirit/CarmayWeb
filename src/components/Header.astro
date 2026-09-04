@@ -131,6 +131,7 @@ import SubNavbar from './SubNavbar.astro';
   window.addEventListener('load', syncHeaderHeight);
   window.addEventListener('resize', syncHeaderHeight);
   document.addEventListener('DOMContentLoaded', syncHeaderHeight);
+  window.addEventListener('subnav-collapse-change', syncHeaderHeight);
 
   function updateBadge() {
     const { totalUnits } = CartCRUD.getTotals();
