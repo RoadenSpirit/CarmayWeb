@@ -129,8 +129,7 @@
     const items = Array.from(document.querySelectorAll('.carousel-item'));
     const subnav = document.getElementById('subnav');
 
-    // ====== COLAPSO AL SCROLL (fade elements + collapse height) ======
-    const MIN_SCROLL_Y = 24;
+    // ====== COLAPSO AL SCROLL (cualquier scroll down oculta, scroll up muestra) ======
     let lastScrollY = window.scrollY || 0;
     let scrollFramePending = false;
     let openHeight = 0;
@@ -148,7 +147,6 @@
       subnav.classList.toggle('subnav-collapsed', collapsed);
       subnav.style.height = collapsed ? '0px' : (openHeight || measure()) + 'px';
       if (accentLine) accentLine.style.opacity = collapsed ? '0' : '1';
-      syncH();
     }
 
     function syncH() {
@@ -171,10 +169,9 @@
       syncH();
       const y = window.scrollY || 0;
       const dy = y - lastScrollY;
-      const hidden = subnav?.classList.contains('subnav-collapsed');
-      if (!hidden && dy > 3 && y > MIN_SCROLL_Y) {
+      if (dy > 2) {
         setCollapsed(true);
-      } else if (hidden && dy < -3) {
+      } else if (dy < -2) {
         setCollapsed(false);
       }
       lastScrollY = y;
