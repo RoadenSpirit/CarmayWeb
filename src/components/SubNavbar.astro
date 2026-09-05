@@ -129,65 +129,27 @@
     const items = Array.from(document.querySelectorAll('.carousel-item'));
     const subnav = document.getElementById('subnav');
 
-    // ====== COLAPSO AL SCROLL (se oculta bajando, reaparece subiendo) ======
-    const COLLAPSE_THRESHOLD = 100;
+    // ====== COLAPSO AL SCROLL (fade + slide, EASE-OUT 0.3s, inmediato) ======
+    const MIN_SCROLL_Y = 24;
     let lastScrollY = window.scrollY || 0;
-    let collapsing = false;
     let scrollFramePending = false;
-    let openHeight = 0;
+    const accentLine = document.getElementById('header-accent-line');
 
-    function measure() {
-      const inner = subnav?.querySelector('.subnav-inner');
-      if (inner) openHeight = inner.offsetHeight;
-      return openHeight;
-    }
-
-    function setSubnav(open) {
+    function setCollapsed(collapsed) {
       if (!subnav) return;
-      if (open) {
-        subnav.classList.remove('subnav-collapsed');
-        subnav.style.height = (openHeight || measure()) + 'px';
-      } else {
-        subnav.classList.add('subnav-collapsed');
-        subnav.style.height = '0px';
-      }
+      subnav.classList.toggle('subnav-collapsed', collapsed);
+      if (accentLine) accentLine.style.opacity = collapsed ? '0' : '1';
     }
-
-    function initHeight() {
-      if (!subnav) return;
-      subnav.style.transition = 'none';
-      measure();
-      subnav.style.height = openHeight + 'px';
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        subnav.style.transition = '';
-      }));
-    }
-
-    subnav?.addEventListener('transitionend', (e) => {
-      if (e.propertyName === 'height') {
-        window.dispatchEvent(new CustomEvent('subnav-collapse-change'));
-      }
-    });
-
-    window.addEventListener('load', initHeight);
-    window.addEventListener('resize', () => {
-      measure();
-      if (subnav && !subnav.classList.contains('subnav-collapsed')) {
-        subnav.style.height = openHeight + 'px';
-      }
-    });
 
     function onScroll() {
       scrollFramePending = false;
       const y = window.scrollY || 0;
       const dy = y - lastScrollY;
       const hidden = subnav?.classList.contains('subnav-collapsed');
-      if (!hidden && dy > 6 && y > COLLAPSE_THRESHOLD) {
-        collapsing = true;
-        setSubnav(false);
-      } else if (hidden && dy < -6) {
-        collapsing = false;
-        setSubnav(true);
+      if (!hidden && dy > 3 && y > MIN_SCROLL_Y) {
+        setCollapsed(true);
+      } else if (hidden && dy < -3) {
+        setCollapsed(false);
       }
       lastScrollY = y;
     }
@@ -334,18 +296,14 @@
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
   #subnav {
-    height: auto;
-    overflow: hidden;
-    background: rgba(10, 13, 20, 0.95);
-    backdrop-filter: blur(8px);
     opacity: 1;
     transform: translateY(0);
-    will-change: height, opacity, transform;
-    transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.45s ease, transform 0.45s ease;
+    will-change: opacity, transform;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
   #subnav.subnav-collapsed {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-100%);
     pointer-events: none;
   }
 </style>

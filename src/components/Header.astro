@@ -8,9 +8,9 @@ import SubNavbar from './SubNavbar.astro';
   <div id="scroll-progress" class="absolute top-0 left-0 h-[2px] bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 w-0 transition-all duration-75 z-50"></div>
 
   <!-- Línea inferior de acento amarillo -->
-  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent"></div>
+  <div id="header-accent-line" class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent" style="transition: opacity 0.3s ease-out"></div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between">
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between">
     
     <!-- Logo -->
     <a href="/" class="flex items-center group">
@@ -131,7 +131,6 @@ import SubNavbar from './SubNavbar.astro';
   window.addEventListener('load', syncHeaderHeight);
   window.addEventListener('resize', syncHeaderHeight);
   document.addEventListener('DOMContentLoaded', syncHeaderHeight);
-  window.addEventListener('subnav-collapse-change', syncHeaderHeight);
 
   function updateBadge() {
     const { totalUnits } = CartCRUD.getTotals();
