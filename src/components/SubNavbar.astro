@@ -132,43 +132,72 @@
     // ====== COLAPSO AL SCROLL (se oculta bajando, reaparece subiendo) ======
     const COLLAPSE_THRESHOLD = 100;
     let lastScrollY = window.scrollY || 0;
-    let refreshHeaderTimer = null;
     let collapsing = false;
+    let scrollFramePending = false;
+    let openHeight = 0;
 
-    function refreshHeaderHeight() {
-      if (refreshHeaderTimer) clearTimeout(refreshHeaderTimer);
-      refreshHeaderTimer = setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('subnav-collapse-change'));
-      }, 480);
+    function measure() {
+      const inner = subnav?.querySelector('.subnav-inner');
+      if (inner) openHeight = inner.offsetHeight;
+      return openHeight;
     }
 
+    function setSubnav(open) {
+      if (!subnav) return;
+      if (open) {
+        subnav.classList.remove('subnav-collapsed');
+        subnav.style.height = (openHeight || measure()) + 'px';
+      } else {
+        subnav.classList.add('subnav-collapsed');
+        subnav.style.height = '0px';
+      }
+    }
+
+    function initHeight() {
+      if (!subnav) return;
+      subnav.style.transition = 'none';
+      measure();
+      subnav.style.height = openHeight + 'px';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        subnav.style.transition = '';
+      }));
+    }
+
+    subnav?.addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'height') {
+        window.dispatchEvent(new CustomEvent('subnav-collapse-change'));
+      }
+    });
+
+    window.addEventListener('load', initHeight);
+    window.addEventListener('resize', () => {
+      measure();
+      if (subnav && !subnav.classList.contains('subnav-collapsed')) {
+        subnav.style.height = openHeight + 'px';
+      }
+    });
+
     function onScroll() {
+      scrollFramePending = false;
       const y = window.scrollY || 0;
       const dy = y - lastScrollY;
       const hidden = subnav?.classList.contains('subnav-collapsed');
       if (!hidden && dy > 6 && y > COLLAPSE_THRESHOLD) {
         collapsing = true;
-        subnav?.classList.add('subnav-collapsed');
-        refreshHeaderHeight();
+        setSubnav(false);
       } else if (hidden && dy < -6) {
         collapsing = false;
-        subnav?.classList.remove('subnav-collapsed');
-        refreshHeaderHeight();
+        setSubnav(true);
       }
       lastScrollY = y;
     }
 
     window.addEventListener('scroll', () => {
-      requestAnimationFrame(onScroll);
-    }, { passive: true });
-
-    window.addEventListener('resize', () => {
-      if (subnav?.classList.contains('subnav-collapsed')) {
-        subnav.classList.remove('subnav-collapsed');
-        collapsing = false;
-        refreshHeaderHeight();
+      if (!scrollFramePending) {
+        scrollFramePending = true;
+        requestAnimationFrame(onScroll);
       }
-    });
+    }, { passive: true });
 
     let engineInstance = null;
     let currentQuery = '';
@@ -305,17 +334,18 @@
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
   #subnav {
-    display: grid;
-    grid-template-rows: 1fr;
-    opacity: 1;
-    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease, translate 0.5s ease;
-  }
-  #subnav .subnav-inner {
+    height: auto;
     overflow: hidden;
-    min-height: 0;
+    background: rgba(10, 13, 20, 0.95);
+    backdrop-filter: blur(8px);
+    opacity: 1;
+    transform: translateY(0);
+    will-change: height, opacity, transform;
+    transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.45s ease, transform 0.45s ease;
   }
   #subnav.subnav-collapsed {
-    grid-template-rows: 0fr;
     opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
   }
 </style>
