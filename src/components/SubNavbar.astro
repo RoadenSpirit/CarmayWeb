@@ -5,10 +5,10 @@
 // Carrusel migrado del PHP original (5 mensajes) con diseño neo-dark premium.
 ---
 
-<div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md">
+<div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md overflow-hidden">
   <div class="subnav-inner border-t border-white/[0.06]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5">
+      <div class="subnav-items flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5" style="transition: opacity 0.3s ease-out, transform 0.3s ease-out;">
 
       <!-- ===== COLUMNA IZQUIERDA: BUSCADOR (55%) ===== -->
       <div class="flex-1 sm:flex-[3] min-w-0">
@@ -129,20 +129,46 @@
     const items = Array.from(document.querySelectorAll('.carousel-item'));
     const subnav = document.getElementById('subnav');
 
-    // ====== COLAPSO AL SCROLL (fade + slide, EASE-OUT 0.3s, inmediato) ======
+    // ====== COLAPSO AL SCROLL (fade elements + collapse height) ======
     const MIN_SCROLL_Y = 24;
     let lastScrollY = window.scrollY || 0;
     let scrollFramePending = false;
+    let openHeight = 0;
     const accentLine = document.getElementById('header-accent-line');
+
+    function measure() {
+      if (!subnav) return 0;
+      subnav.style.height = 'auto';
+      openHeight = subnav.scrollHeight;
+      return openHeight;
+    }
 
     function setCollapsed(collapsed) {
       if (!subnav) return;
       subnav.classList.toggle('subnav-collapsed', collapsed);
+      subnav.style.height = collapsed ? '0px' : (openHeight || measure()) + 'px';
       if (accentLine) accentLine.style.opacity = collapsed ? '0' : '1';
+      syncH();
+    }
+
+    function syncH() {
+      const h = document.querySelector('header');
+      if (h) document.documentElement.style.setProperty('--headerh', h.offsetHeight + 'px');
+    }
+
+    function initHeight() {
+      if (!subnav) return;
+      subnav.style.transition = 'none';
+      measure();
+      subnav.style.height = openHeight + 'px';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        subnav.style.transition = '';
+      }));
     }
 
     function onScroll() {
       scrollFramePending = false;
+      syncH();
       const y = window.scrollY || 0;
       const dy = y - lastScrollY;
       const hidden = subnav?.classList.contains('subnav-collapsed');
@@ -154,6 +180,13 @@
       lastScrollY = y;
     }
 
+    window.addEventListener('load', initHeight);
+    window.addEventListener('resize', () => {
+      if (!subnav?.classList.contains('subnav-collapsed')) {
+        measure();
+        subnav.style.height = openHeight + 'px';
+      }
+    });
     window.addEventListener('scroll', () => {
       if (!scrollFramePending) {
         scrollFramePending = true;
@@ -296,14 +329,15 @@
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
   #subnav {
+    will-change: height, opacity;
+    transition: height 0.3s ease-out;
+  }
+  #subnav .subnav-items {
     opacity: 1;
     transform: translateY(0);
-    will-change: opacity, transform;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
-  #subnav.subnav-collapsed {
+  #subnav.subnav-collapsed .subnav-items {
     opacity: 0;
-    transform: translateY(-100%);
-    pointer-events: none;
+    transform: translateY(-12px);
   }
 </style>
