@@ -130,7 +130,6 @@
     const subnav = document.getElementById('subnav');
 
     // ====== COLAPSO AL SCROLL ======
-    let lastY = window.scrollY || 0;
     let ticking = false;
     let openH = 0;
     const accentLine = document.getElementById('header-accent-line');
@@ -148,7 +147,7 @@
     }
 
     function collapse() {
-      if (!subnav) return;
+      if (!subnav || subnav.classList.contains('subnav-collapsed')) return;
       measureH();
       subnav.style.height = openH + 'px';
       void subnav.offsetHeight;
@@ -158,7 +157,7 @@
     }
 
     function expand() {
-      if (!subnav) return;
+      if (!subnav || !subnav.classList.contains('subnav-collapsed')) return;
       subnav.classList.remove('subnav-collapsed');
       subnav.style.height = openH + 'px';
       if (accentLine) accentLine.style.opacity = '1';
@@ -180,17 +179,36 @@
       }
     });
 
-    function onScroll() {
-      ticking = false;
-      const y = window.scrollY;
-      const dy = y - lastY;
-      if (dy > 2) collapse();
-      else if (dy < -2) expand();
-      lastY = y;
-    }
+    // Usar wheel (desktop) y touchmove (móvil) para detectar dirección
+    // EN VEZ de scroll, que se dispara con cambios de layout del header
+    window.addEventListener('wheel', (e) => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        if (e.deltaY > 0) collapse();
+        else if (e.deltaY < 0) expand();
+      });
+    }, { passive: true });
 
-    window.addEventListener('scroll', () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0]?.clientY || 0;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (ticking) return;
+      const y = e.touches[0]?.clientY;
+      if (!y) return;
+      const dy = touchStartY - y;
+      if (Math.abs(dy) > 10) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          if (dy > 0) collapse();
+          else expand();
+        });
+      }
     }, { passive: true });
 
     let engineInstance = null;
