@@ -5,10 +5,10 @@
 // Carrusel migrado del PHP original (5 mensajes) con diseño neo-dark premium.
 ---
 
-<div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md overflow-hidden">
+<div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md">
   <div class="subnav-inner border-t border-white/[0.06]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
-      <div class="subnav-items flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5" style="transition: opacity 0.3s ease-out, transform 0.3s ease-out;">
+      <div class="subnav-items flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5">
 
       <!-- ===== COLUMNA IZQUIERDA: BUSCADOR (55%) ===== -->
       <div class="flex-1 sm:flex-[3] min-w-0">
@@ -129,66 +129,68 @@
     const items = Array.from(document.querySelectorAll('.carousel-item'));
     const subnav = document.getElementById('subnav');
 
-    // ====== COLAPSO AL SCROLL (cualquier scroll down oculta, scroll up muestra) ======
-    let lastScrollY = window.scrollY || 0;
-    let scrollFramePending = false;
-    let openHeight = 0;
+    // ====== COLAPSO AL SCROLL ======
+    let lastY = window.scrollY || 0;
+    let ticking = false;
+    let openH = 0;
     const accentLine = document.getElementById('header-accent-line');
+    const header = document.querySelector('header');
 
-    function measure() {
+    function syncHeaderH() {
+      if (header) document.documentElement.style.setProperty('--headerh', header.offsetHeight + 'px');
+    }
+
+    function measureH() {
       if (!subnav) return 0;
       subnav.style.height = 'auto';
-      openHeight = subnav.scrollHeight;
-      return openHeight;
+      openH = subnav.offsetHeight;
+      return openH;
     }
 
-    function setCollapsed(collapsed) {
+    function collapse() {
       if (!subnav) return;
-      subnav.classList.toggle('subnav-collapsed', collapsed);
-      subnav.style.height = collapsed ? '0px' : (openHeight || measure()) + 'px';
-      if (accentLine) accentLine.style.opacity = collapsed ? '0' : '1';
+      measureH();
+      subnav.style.height = openH + 'px';
+      void subnav.offsetHeight;
+      subnav.classList.add('subnav-collapsed');
+      subnav.style.height = '0px';
+      if (accentLine) accentLine.style.opacity = '0';
     }
 
-    function syncH() {
-      const h = document.querySelector('header');
-      if (h) document.documentElement.style.setProperty('--headerh', h.offsetHeight + 'px');
-    }
-
-    function initHeight() {
+    function expand() {
       if (!subnav) return;
-      subnav.style.transition = 'none';
-      measure();
-      subnav.style.height = openHeight + 'px';
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        subnav.style.transition = '';
-      }));
+      subnav.classList.remove('subnav-collapsed');
+      subnav.style.height = openH + 'px';
+      if (accentLine) accentLine.style.opacity = '1';
     }
 
-    function onScroll() {
-      scrollFramePending = false;
-      syncH();
-      const y = window.scrollY || 0;
-      const dy = y - lastScrollY;
-      if (dy > 2) {
-        setCollapsed(true);
-      } else if (dy < -2) {
-        setCollapsed(false);
-      }
-      lastScrollY = y;
-    }
-
-    window.addEventListener('load', initHeight);
-    window.addEventListener('resize', () => {
-      if (!subnav?.classList.contains('subnav-collapsed')) {
-        measure();
-        subnav.style.height = openHeight + 'px';
+    subnav?.addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'height') {
+        syncHeaderH();
+        if (subnav.classList.contains('subnav-collapsed')) {
+          subnav.style.height = '0px';
+        }
       }
     });
-    window.addEventListener('scroll', () => {
-      if (!scrollFramePending) {
-        scrollFramePending = true;
-        requestAnimationFrame(onScroll);
+
+    window.addEventListener('resize', () => {
+      if (!subnav?.classList.contains('subnav-collapsed')) {
+        measureH();
+        subnav.style.height = openH + 'px';
       }
+    });
+
+    function onScroll() {
+      ticking = false;
+      const y = window.scrollY;
+      const dy = y - lastY;
+      if (dy > 2) collapse();
+      else if (dy < -2) expand();
+      lastY = y;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
     }, { passive: true });
 
     let engineInstance = null;
@@ -326,12 +328,13 @@
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
   #subnav {
-    will-change: height, opacity;
+    overflow: hidden;
     transition: height 0.3s ease-out;
   }
   #subnav .subnav-items {
     opacity: 1;
     transform: translateY(0);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
   #subnav.subnav-collapsed .subnav-items {
     opacity: 0;
