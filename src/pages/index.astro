@@ -15,8 +15,8 @@ const withFallback = <T,>(promise: Promise<T[]>, fallback: T[] = []): Promise<T[
   promise.catch(() => fallback);
 
 const [bestSellersRaw, offersRaw] = await Promise.all([
-  withFallback(woo.products.getBestSellers(8)),
-  withFallback(woo.products.getOnSale(8)),
+  withFallback(woo.products.getBestSellers(4)),
+  withFallback(woo.products.getOnSale(4)),
 ]);
 
 // Se muestran solo productos con imagen real; los "más vendidos" deben tener ventas.
