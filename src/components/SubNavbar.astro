@@ -136,13 +136,20 @@
     const header = document.querySelector('header');
 
     function syncHeaderH() {
-      if (header) document.documentElement.style.setProperty('--headerh', header.offsetHeight + 'px');
+      if (header) {
+        document.documentElement.style.setProperty('--headerh', header.getBoundingClientRect().height + 'px');
+      }
     }
 
     function measureH() {
       if (!subnav) return 0;
+      if (openH > 0 && !subnav.classList.contains('subnav-collapsed')) {
+        return openH;
+      }
+      const prevH = subnav.style.height;
       subnav.style.height = 'auto';
-      openH = subnav.offsetHeight;
+      openH = subnav.scrollHeight;
+      subnav.style.height = prevH;
       return openH;
     }
 
@@ -150,16 +157,18 @@
       if (!subnav || subnav.classList.contains('subnav-collapsed')) return;
       measureH();
       subnav.style.height = openH + 'px';
-      void subnav.offsetHeight;
-      subnav.classList.add('subnav-collapsed');
-      subnav.style.height = '0px';
-      if (accentLine) accentLine.style.opacity = '0';
+      // Forzar commit de altura previa sin recálculo forzado brusco
+      requestAnimationFrame(() => {
+        subnav.classList.add('subnav-collapsed');
+        subnav.style.height = '0px';
+        if (accentLine) accentLine.style.opacity = '0';
+      });
     }
 
     function expand() {
       if (!subnav || !subnav.classList.contains('subnav-collapsed')) return;
       subnav.classList.remove('subnav-collapsed');
-      subnav.style.height = openH + 'px';
+      subnav.style.height = (openH || measureH()) + 'px';
       if (accentLine) accentLine.style.opacity = '1';
     }
 
@@ -168,15 +177,24 @@
         syncHeaderH();
         if (subnav.classList.contains('subnav-collapsed')) {
           subnav.style.height = '0px';
+        } else {
+          subnav.style.height = 'auto';
+          openH = subnav.scrollHeight;
         }
       }
     });
 
+    window.addEventListener('load', () => {
+      measureH();
+      syncHeaderH();
+    });
+
     window.addEventListener('resize', () => {
       if (!subnav?.classList.contains('subnav-collapsed')) {
-        measureH();
-        subnav.style.height = openH + 'px';
+        subnav.style.height = 'auto';
+        openH = subnav.scrollHeight;
       }
+      syncHeaderH();
     });
 
     // Usar wheel (desktop) y touchmove (móvil) para detectar dirección
@@ -347,15 +365,15 @@
 
   #subnav {
     overflow: hidden;
-    transition: height 0.3s ease-out;
+    transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
   #subnav .subnav-items {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   #subnav.subnav-collapsed .subnav-items {
     opacity: 0;
-    transform: translateY(-12px);
+    transform: translateY(-8px);
   }
 </style>
