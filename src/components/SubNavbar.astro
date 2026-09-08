@@ -6,7 +6,7 @@
 ---
 
 <div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md">
-  <div class="subnav-inner border-t border-white/[0.06]">
+  <div class="subnav-inner border-t border-white/[0.06] min-h-0">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
       <div class="subnav-items flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5">
 
@@ -131,71 +131,70 @@
 
     // ====== COLAPSO AL SCROLL ======
     let ticking = false;
-    let openH = 0;
     const accentLine = document.getElementById('header-accent-line');
     const header = document.querySelector('header');
+    let isCollapsed = false;
 
     function syncHeaderH() {
       if (header) {
-        document.documentElement.style.setProperty('--headerh', header.getBoundingClientRect().height + 'px');
+        document.documentElement.style.setProperty('--headerh', header.offsetHeight + 'px');
       }
-    }
-
-    function measureH() {
-      if (!subnav) return 0;
-      if (openH > 0 && !subnav.classList.contains('subnav-collapsed')) {
-        return openH;
-      }
-      const prevH = subnav.style.height;
-      subnav.style.height = 'auto';
-      openH = subnav.scrollHeight;
-      subnav.style.height = prevH;
-      return openH;
     }
 
     function collapse() {
-      if (!subnav || subnav.classList.contains('subnav-collapsed')) return;
-      measureH();
-      subnav.style.height = openH + 'px';
-      // Forzar commit de altura previa sin recálculo forzado brusco
-      requestAnimationFrame(() => {
-        subnav.classList.add('subnav-collapsed');
-        subnav.style.height = '0px';
-        if (accentLine) accentLine.style.opacity = '0';
-      });
+      if (!subnav || isCollapsed) return;
+      isCollapsed = true;
+      subnav.classList.add('subnav-collapsed');
+      if (accentLine) accentLine.style.opacity = '0';
     }
 
     function expand() {
-      if (!subnav || !subnav.classList.contains('subnav-collapsed')) return;
+      if (!subnav || !isCollapsed) return;
+      isCollapsed = false;
       subnav.classList.remove('subnav-collapsed');
-      subnav.style.height = (openH || measureH()) + 'px';
       if (accentLine) accentLine.style.opacity = '1';
     }
 
     subnav?.addEventListener('transitionend', (e) => {
-      if (e.propertyName === 'height') {
+      if (e.propertyName === 'grid-template-rows') {
         syncHeaderH();
-        if (subnav.classList.contains('subnav-collapsed')) {
-          subnav.style.height = '0px';
-        } else {
-          subnav.style.height = 'auto';
-          openH = subnav.scrollHeight;
-        }
       }
     });
 
-    window.addEventListener('load', () => {
-      measureH();
-      syncHeaderH();
-    });
+    window.addEventListener('load', syncHeaderH);
+    window.addEventListener('resize', syncHeaderH);
 
-    window.addEventListener('resize', () => {
-      if (!subnav?.classList.contains('subnav-collapsed')) {
-        subnav.style.height = 'auto';
-        openH = subnav.scrollHeight;
+    // Usar wheel (desktop) y touchmove (móvil) para detectar dirección
+    // EN VEZ de scroll, que se dispara con cambios de layout del header
+    window.addEventListener('wheel', (e) => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        if (e.deltaY > 0) collapse();
+        else if (e.deltaY < 0) expand();
+      });
+    }, { passive: true });
+
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0]?.clientY || 0;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (ticking) return;
+      const y = e.touches[0]?.clientY;
+      if (!y) return;
+      const dy = touchStartY - y;
+      if (Math.abs(dy) > 10) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          if (dy > 0) collapse();
+          else expand();
+        });
       }
-      syncHeaderH();
-    });
+    }, { passive: true });
 
     // Usar wheel (desktop) y touchmove (móvil) para detectar dirección
     // EN VEZ de scroll, que se dispara con cambios de layout del header
@@ -364,13 +363,20 @@
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
   #subnav {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #subnav > div {
     overflow: hidden;
-    transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
   #subnav .subnav-items {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #subnav.subnav-collapsed {
+    grid-template-rows: 0fr;
   }
   #subnav.subnav-collapsed .subnav-items {
     opacity: 0;
