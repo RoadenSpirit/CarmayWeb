@@ -129,11 +129,12 @@
     const items = Array.from(document.querySelectorAll('.carousel-item'));
     const subnav = document.getElementById('subnav');
 
-    // ====== COLAPSO AL SCROLL ======
-    let ticking = false;
+    // ====== COLAPSO AL SCROLL ROBUSTO ======
+    let lastScrollY = window.scrollY || 0;
+    let isAnimating = false;
+    let animationTimeout = null;
     const accentLine = document.getElementById('header-accent-line');
     const header = document.querySelector('header');
-    let isCollapsed = false;
 
     function syncHeaderH() {
       if (header) {
@@ -141,91 +142,61 @@
       }
     }
 
+    function lockAnimation() {
+      isAnimating = true;
+      if (animationTimeout) clearTimeout(animationTimeout);
+      animationTimeout = setTimeout(() => {
+        isAnimating = false;
+        lastScrollY = window.scrollY;
+        syncHeaderH();
+      }, 360);
+    }
+
     function collapse() {
-      if (!subnav || isCollapsed) return;
-      isCollapsed = true;
+      if (!subnav || subnav.classList.contains('subnav-collapsed')) return;
       subnav.classList.add('subnav-collapsed');
       if (accentLine) accentLine.style.opacity = '0';
+      lockAnimation();
     }
 
     function expand() {
-      if (!subnav || !isCollapsed) return;
-      isCollapsed = false;
+      if (!subnav || !subnav.classList.contains('subnav-collapsed')) return;
       subnav.classList.remove('subnav-collapsed');
       if (accentLine) accentLine.style.opacity = '1';
+      lockAnimation();
     }
-
-    subnav?.addEventListener('transitionend', (e) => {
-      if (e.propertyName === 'grid-template-rows') {
-        syncHeaderH();
-      }
-    });
 
     window.addEventListener('load', syncHeaderH);
     window.addEventListener('resize', syncHeaderH);
 
-    // Usar wheel (desktop) y touchmove (móvil) para detectar dirección
-    // EN VEZ de scroll, que se dispara con cambios de layout del header
-    window.addEventListener('wheel', (e) => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        if (e.deltaY > 0) collapse();
-        else if (e.deltaY < 0) expand();
-      });
-    }, { passive: true });
+    window.addEventListener('scroll', () => {
+      const currentY = window.scrollY;
+      const dy = currentY - lastScrollY;
 
-    let touchStartY = 0;
-    window.addEventListener('touchstart', (e) => {
-      touchStartY = e.touches[0]?.clientY || 0;
-    }, { passive: true });
-
-    window.addEventListener('touchmove', (e) => {
-      if (ticking) return;
-      const y = e.touches[0]?.clientY;
-      if (!y) return;
-      const dy = touchStartY - y;
-      if (Math.abs(dy) > 10) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          ticking = false;
-          if (dy > 0) collapse();
-          else expand();
-        });
+      // Si estamos en el tope absoluto de la página, siempre visible
+      if (currentY <= 15) {
+        expand();
+        lastScrollY = currentY;
+        return;
       }
-    }, { passive: true });
 
-    // Usar wheel (desktop) y touchmove (móvil) para detectar dirección
-    // EN VEZ de scroll, que se dispara con cambios de layout del header
-    window.addEventListener('wheel', (e) => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        if (e.deltaY > 0) collapse();
-        else if (e.deltaY < 0) expand();
-      });
-    }, { passive: true });
-
-    let touchStartY = 0;
-    window.addEventListener('touchstart', (e) => {
-      touchStartY = e.touches[0]?.clientY || 0;
-    }, { passive: true });
-
-    window.addEventListener('touchmove', (e) => {
-      if (ticking) return;
-      const y = e.touches[0]?.clientY;
-      if (!y) return;
-      const dy = touchStartY - y;
-      if (Math.abs(dy) > 10) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          ticking = false;
-          if (dy > 0) collapse();
-          else expand();
-        });
+      // Si el header está en plena animación de colapso/expansión,
+      // ignoramos el evento de scroll para evitar bucles de vibración por recálculo de layout
+      if (isAnimating) {
+        lastScrollY = currentY;
+        return;
       }
+
+      // Umbral mínimo de scroll intencional (evita disparos por micro-movimientos)
+      if (Math.abs(dy) < 5) return;
+
+      if (dy > 0) {
+        collapse();
+      } else {
+        expand();
+      }
+
+      lastScrollY = currentY;
     }, { passive: true });
 
     let engineInstance = null;
@@ -363,23 +334,29 @@
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
   #subnav {
-    display: grid;
-    grid-template-rows: 1fr;
-    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  #subnav > div {
     overflow: hidden;
-  }
-  #subnav .subnav-items {
+    max-height: 120px;
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease,
+                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: max-height, opacity, transform;
   }
+
   #subnav.subnav-collapsed {
-    grid-template-rows: 0fr;
+    max-height: 0px !important;
+    opacity: 0 !important;
+    transform: translateY(-8px) !important;
+    pointer-events: none !important;
   }
+
+  #subnav .subnav-items {
+    transition: opacity 0.2s ease, transform 0.25s ease;
+  }
+
   #subnav.subnav-collapsed .subnav-items {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 </style>
