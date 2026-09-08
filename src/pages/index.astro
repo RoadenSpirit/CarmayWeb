@@ -36,33 +36,47 @@ const specialOffers = offersRaw
   <Hero />
 
   <!-- 2. Banner de Valor Añadido con SVGs artesanales -->
-  <ValueProps />
+  <div class="reveal-on-scroll">
+    <ValueProps />
+  </div>
 
   <!-- 3. Categorías Principales (5 Cards: Calzado, Ropa, Bolsos y Mochilas, Tecnología, Accesorios) -->
-  <Categories />
+  <div class="reveal-on-scroll">
+    <Categories />
+  </div>
 
   <!-- 4. Muestra Intercalada 1: Productos Más Vendidos -->
-  <ProductShowcase 
-    subtitle="Los favoritos de nuestros clientes" 
-    title="Productos Más Vendidos" 
-    products={bestSellers} 
-  />
+  <div class="reveal-on-scroll">
+    <ProductShowcase 
+      subtitle="Los favoritos de nuestros clientes" 
+      title="Productos Más Vendidos" 
+      products={bestSellers} 
+    />
+  </div>
 
   <!-- 5. Visión y Proyecciones de la Empresa (Card elegante con logo sobre fondo de trazos morados) -->
-  <CompanyVision />
+  <div class="reveal-on-scroll">
+    <CompanyVision />
+  </div>
 
   <!-- 6. Muestra Intercalada 2: Ofertas Especiales -->
-  <ProductShowcase 
-    subtitle="Aprovecha antes que se agoten" 
-    title="Rebajas y Ofertas Activas" 
-    products={specialOffers} 
-  />
+  <div class="reveal-on-scroll">
+    <ProductShowcase 
+      subtitle="Aprovecha antes que se agoten" 
+      title="Rebajas y Ofertas Activas" 
+      products={specialOffers} 
+    />
+  </div>
 
   <!-- 7. Opiniones de Clientes (Social Proof con Facebook) -->
-  <Testimonials />
+  <div class="reveal-on-scroll">
+    <Testimonials />
+  </div>
 
   <!-- 8. Preguntas Frecuentes (FAQ) -->
-  <FAQ />
+  <div class="reveal-on-scroll">
+    <FAQ />
+  </div>
 
   <!-- 9. Footer Rediseñado -->
   <Footer />

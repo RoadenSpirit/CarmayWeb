@@ -33,8 +33,8 @@ const testimonials = [
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    {testimonials.map(t => (
-      <div class="bg-[#121522]/95 backdrop-blur-xl p-7 sm:p-8 rounded-3xl flex flex-col justify-between border border-purple-500/20 hover:border-amber-400/40 relative shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1">
+    {testimonials.map((t, idx) => (
+      <div class={`bg-[#121522]/95 backdrop-blur-xl p-7 sm:p-8 rounded-3xl flex flex-col justify-between border border-purple-500/20 hover:border-amber-400/40 relative shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1.5 reveal-on-scroll reveal-delay-${idx + 1}`}>
         
         <!-- Contenido del comentario -->
         <div class="space-y-4">
