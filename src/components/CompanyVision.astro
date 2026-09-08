@@ -10,9 +10,19 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-14 items-center relative z-10">
       
-      <!-- Imagen Institucional con Logo Superpuesto -->
-      <div class="lg:col-span-5">
-        <div class="relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] sm:aspect-[4/3] border border-white/15 group">
+      <!-- Columna Izquierda: Logo encima + Imagen limpia sin agregados -->
+      <div class="lg:col-span-5 flex flex-col items-center sm:items-start gap-5">
+        <!-- Logo grande y claro en la parte superior de la imagen -->
+        <div class="flex items-center gap-3">
+          <img 
+            src="/logo.png" 
+            alt="Carmay Outfit" 
+            class="w-24 h-24 sm:w-32 sm:h-32 object-contain filter drop-shadow-[0_4px_16px_rgba(234,179,8,0.4)]" 
+          />
+        </div>
+
+        <!-- Imagen Institucional limpia sin nada superpuesto -->
+        <div class="w-full relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] border border-white/15">
           <img 
             src="/tienda-fisica.png" 
             alt="Tienda Física Carmay Outfit en Camagüey" 
@@ -20,21 +30,6 @@
             height="450"
             class="w-full h-full object-cover"
           />
-          <!-- Badge de Dirección (visible en desktop/tablet) -->
-          <div class="hidden sm:flex absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent items-end p-6">
-            <span class="text-xs font-bold text-amber-300 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20">
-              📍 Avellaneda No. 260, Camagüey
-            </span>
-          </div>
-
-          <!-- Logo de la tienda superpuesto sobre la imagen, grande y legible -->
-          <div class="absolute top-4 left-4 sm:top-5 sm:left-5 p-2.5 sm:p-3 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center">
-            <img 
-              src="/logo.png" 
-              alt="Carmay Outfit" 
-              class="w-20 h-20 sm:w-28 sm:h-28 object-contain filter drop-shadow-[0_4px_16px_rgba(234,179,8,0.4)]" 
-            />
-          </div>
         </div>
       </div>
 
