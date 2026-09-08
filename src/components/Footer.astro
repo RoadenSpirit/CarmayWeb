@@ -1,54 +1,69 @@
 ---
 ---
 
-<footer class="bg-gray-900 text-white pt-16 pb-12 border-t border-purple-900/50">
+<footer class="bg-[#0b0d14] text-white pt-16 pb-12 border-t border-purple-900/40">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-gray-800">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
       
-      <!-- Columna 1: Marca -->
+      <!-- Columna 1: Marca & Mensajería Garantizada -->
       <div class="space-y-4 md:col-span-1">
         <div class="flex items-center gap-3">
-          <div class="w-20 h-20 flex items-center justify-center">
-            <img src="/logo.png" alt="Carmay Outfit" class="w-full h-full object-contain filter drop-shadow-[0_2px_12px_rgba(255,255,255,0.2)]" />
+          <div class="w-16 h-16 flex items-center justify-center shrink-0">
+            <img src="/logo.png" alt="Carmay Outfit" class="w-full h-full object-contain filter drop-shadow-[0_2px_12px_rgba(234,179,8,0.3)]" />
           </div>
-          <span class="text-xl font-extrabold tracking-tight text-white">
+          <span class="text-xl font-black tracking-tight text-white">
             CARMAY OUTFIT
           </span>
         </div>
-        <p class="text-sm text-gray-400">
-          Moda, calzado y tecnología de vanguardia (TVs, EcoFlow, bicicletas eléctricas) en Camagüey, Cuba.
+        <p class="text-sm text-gray-300">
+          Moda, calzado y tecnología de vanguardia en Camagüey, Cuba.
         </p>
+
+        <!-- Sello de Mensajería a Domicilio -->
+        <div class="pt-2 flex items-center gap-3 bg-purple-950/40 border border-purple-800/40 rounded-2xl p-3">
+          <img 
+            src="/envio-garantizado.jpg" 
+            alt="Envío Garantizado Carmay Outfit" 
+            width="52" 
+            height="54"
+            class="rounded-lg shrink-0 object-contain"
+            loading="lazy" 
+          />
+          <div class="text-xs">
+            <span class="font-bold text-amber-400 block text-xs uppercase tracking-wider">Envío a Domicilio</span>
+            <p class="text-gray-300 leading-snug">Pide lo que sea hasta la puerta de tu casa en Camagüey.</p>
+          </div>
+        </div>
       </div>
 
-      <!-- Columna 2: Enlaces rápidos -->
+      <!-- Columna 2: Enlaces rápidos (Sin sección tecnología) -->
       <div>
-        <h4 class="text-sm font-bold uppercase tracking-wider text-purple-400 mb-4">Navegación</h4>
+        <h4 class="text-sm font-bold uppercase tracking-wider text-amber-400 mb-4">Navegación</h4>
         <ul class="space-y-2.5 text-sm text-gray-300">
           <li><a href="/" class="hover:text-amber-400 transition-colors">Inicio</a></li>
           <li><a href="/tienda/" class="hover:text-amber-400 transition-colors">Catálogo de Tienda</a></li>
-          <li><a href="/tienda/tecnologia/" class="hover:text-amber-400 transition-colors">Sección Tecnología</a></li>
           <li><a href="/contact" class="hover:text-amber-400 transition-colors">Contáctanos</a></li>
         </ul>
       </div>
 
-      <!-- Columna 3: Contacto Físico -->
+      <!-- Columna 3: Contacto Físico (Solo número de la tienda y correo) -->
       <div>
-        <h4 class="text-sm font-bold uppercase tracking-wider text-purple-400 mb-4">Tienda Física</h4>
-        <p class="text-sm text-gray-300 mb-2">
+        <h4 class="text-sm font-bold uppercase tracking-wider text-amber-400 mb-4">Tienda Física</h4>
+        <p class="text-sm text-gray-300 mb-3 leading-relaxed">
           Avellaneda No. 260 entre San Esteban y San Martín, Camagüey, Cuba.
         </p>
-        <p class="text-sm text-gray-400">
-          Tel: (+53) 32291924<br/>
-          WhatsApp: (+53) 59253999
+        <p class="text-sm text-gray-300 space-y-1.5">
+          <span class="block text-white font-medium">Teléfono: (+53) 63791924</span>
+          <span class="block text-gray-300">Correo: <a href="mailto:carmaytienda@gmail.com" class="hover:text-amber-400 transition-colors">carmaytienda@gmail.com</a></span>
         </p>
       </div>
 
-      <!-- Columna 4: Horario -->
+      <!-- Columna 4: Horario Oficial -->
       <div>
-        <h4 class="text-sm font-bold uppercase tracking-wider text-purple-400 mb-4">Horario Comercial</h4>
-        <p class="text-sm text-gray-300 mb-1">Lun - Vie: 8:30 AM - 4:30 PM</p>
-        <p class="text-sm text-gray-300">Sáb: 8:30 AM - 2:00 PM</p>
-      </div>
+        <h4 class="text-sm font-bold uppercase tracking-wider text-amber-400 mb-4">Horario Comercial</h4>
+        <p class="text-sm text-gray-300 mb-1 leading-relaxed">
+          Nuestra tienda abre sus puertas de lunes a viernes (8:30 AM a 5:00 PM) y los sábados (8:30 AM a 2:00 PM).
+        </p>
       </div>
 
     </div>
