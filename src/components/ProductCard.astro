@@ -187,8 +187,7 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
           <!-- Fila 2: Equivalente en USD (solo si existe precio CUP para no duplicar ni dejar vacío) -->
           {priceCUP > 0 && priceUSD > 0 && (
             <div class="flex items-center gap-1.5 text-xs text-slate-400 font-mono">
-              <span class="text-slate-500 text-xs uppercase tracking-wider font-sans font-bold">USD:</span>
-              <span class="font-bold text-slate-300">
+              <span class="font-medium text-slate-400">
                 {formatUSD(priceUSD)}
               </span>
               {onSale && regularPriceUSD && regularPriceUSD > priceUSD && (
