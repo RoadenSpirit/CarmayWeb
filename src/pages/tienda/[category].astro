@@ -42,8 +42,17 @@ const sortedProducts = sortProductsByCuratedScore(validCatProducts);
 
 // Calcular rango de precios CUP de la categoría para el filtro
 const catPricesCUP = sortedProducts.map(p => p.priceCUP).filter(p => p > 0);
-const minCatPriceCUP = catPricesCUP.length > 0 ? Math.floor(Math.min(...catPricesCUP)) : 0;
-const maxCatPriceCUP = catPricesCUP.length > 0 ? Math.ceil(Math.max(...catPricesCUP)) : 350000;
+const rawCatMaxCUP = catPricesCUP.length > 0 ? Math.max(...catPricesCUP) : 350000;
+
+// Redondear el máximo al millar superior limpio (ej. 49321 -> 50000)
+function roundUpToCleanThousands(val: number): number {
+  if (val <= 10000) return Math.ceil(val / 1000) * 1000;
+  if (val <= 50000) return Math.ceil(val / 5000) * 5000;
+  return Math.ceil(val / 10000) * 10000;
+}
+
+const minCatPriceCUP = 0;
+const maxCatPriceCUP = roundUpToCleanThousands(rawCatMaxCUP);
 
 // Nombre de la categoría actual
 const currentCategory = storeCategories.find(c => c.slug === category);
@@ -120,6 +129,30 @@ const categoryName = currentCategory ? currentCategory.name : category;
             permalink={`/producto/${product.slug}/`}
           />
         ))}
+
+        <!-- Empty State amigable cuando nada coincide con los filtros -->
+        <div id="filter-empty-state" class="hidden col-span-2 sm:col-span-2 lg:col-span-4 py-16 px-4 text-center">
+          <div class="max-w-md mx-auto bg-[#0d0f1a] border border-white/[0.08] rounded-3xl p-8 sm:p-10 shadow-2xl space-y-4">
+            <div class="w-16 h-16 rounded-2xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-center mx-auto text-2xl shadow-inner">
+              🔍
+            </div>
+            <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              No encontramos productos en este rango
+            </h3>
+            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+              No hay artículos en esta categoría que coincidan con tu presupuesto. Prueba ampliando el rango o limpiando los filtros.
+            </p>
+            <div class="pt-2">
+              <button 
+                type="button" 
+                id="empty-state-reset-btn"
+                class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-xs tracking-wider uppercase transition-all shadow-[0_4px_20px_rgba(234,179,8,0.3)] hover:-translate-y-0.5 cursor-pointer"
+              >
+                Ver todos los productos
+              </button>
+            </div>
+          </div>
+        </div>
 
         {sortedProducts.length === 0 && (
           <p class="col-span-2 sm:col-span-4 text-center text-slate-400 py-12">
