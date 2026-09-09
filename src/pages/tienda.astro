@@ -154,9 +154,8 @@ const maxCatalogPriceUSD = pricesUSD.length > 0 ? Math.ceil(Math.max(...pricesUS
         </div>
       </div>
 
-      <!-- Barra Interactiva de Filtros: Categorías, Tags y Presupuesto Min-Max -->
+      <!-- Barra Interactiva de Filtros: Tags (Rebaja/Tendencias) y Selector de Presupuesto con Slider -->
       <CatalogFilterBar 
-        currentCategory="todas"
         minPriceUSD={minCatalogPriceUSD}
         maxPriceUSD={maxCatalogPriceUSD}
         totalProducts={sortedCatalogProducts.length}

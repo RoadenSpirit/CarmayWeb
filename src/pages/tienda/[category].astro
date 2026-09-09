@@ -91,9 +91,8 @@ const categoryName = currentCategory ? currentCategory.name : category;
       </p>
     </div>
 
-    <!-- Barra Interactiva de Filtros: Categorías, Tags (Rebaja/Tendencias) y Presupuesto Min-Max -->
+    <!-- Barra Interactiva de Filtros: Tags (Rebaja/Tendencias) y Selector de Presupuesto con Slider -->
     <CatalogFilterBar 
-      currentCategory={category}
       minPriceUSD={minCatPriceUSD}
       maxPriceUSD={maxCatPriceUSD}
       totalProducts={sortedProducts.length}
