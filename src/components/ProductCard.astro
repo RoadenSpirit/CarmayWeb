@@ -61,7 +61,7 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
 ---
 
 <div 
-  class={`group relative rounded-2xl overflow-hidden flex flex-col justify-between
+  class={`product-card-item group relative rounded-2xl overflow-hidden flex flex-col justify-between
     bg-[#0f1120]/90 backdrop-blur-sm
     border border-white/[0.08]
     shadow-[0_4px_20px_rgba(0,0,0,0.25)]
@@ -69,6 +69,13 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
     hover:-translate-y-1
     transition-[transform,box-shadow,opacity] duration-300 ease-out
     ${stockLevel === 4 ? 'opacity-85 hover:opacity-100' : ''}`}
+  data-product-slug={slug}
+  data-price-usd={priceUSD}
+  data-price-cup={priceCUP}
+  data-category-slug={categorySlug}
+  data-on-sale={onSale ? 'true' : 'false'}
+  data-trending={isTrending ? 'true' : 'false'}
+  data-in-stock={isAvailable ? 'true' : 'false'}
 >
   
   <!-- Línea superior de acento (solo en oferta) -->

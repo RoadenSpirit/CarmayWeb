@@ -2,7 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import CatalogFilterBar from '../../components/CatalogFilterBar.astro';
 import { woo } from '../../api';
+import { sortProductsByCuratedScore } from '../../utils/productRanking';
 
 // Categorías de la tienda
 const storeCategories = [
@@ -35,13 +37,13 @@ const catId = categoryIdMap[category] || 0;
 const allCatProducts = catId > 0 ? await woo.products.getByCategory(catId, 100) : [];
 const validCatProducts = allCatProducts.filter(p => p.hasRealImage);
 
-// Ordenamiento estricto: productos en stock PRIMERO, agotados AL FINAL
-const sortedProducts = [...validCatProducts].sort((a, b) => {
-  if (a.isInStock !== b.isInStock) {
-    return a.isInStock ? -1 : 1;
-  }
-  return 0;
-});
+// Ordenamiento multicriterio precalculado en build para esta categoría:
+const sortedProducts = sortProductsByCuratedScore(validCatProducts);
+
+// Calcular rango de precios de la categoría para el filtro
+const catPricesUSD = sortedProducts.map(p => p.price).filter(p => p > 0);
+const minCatPriceUSD = catPricesUSD.length > 0 ? Math.floor(Math.min(...catPricesUSD)) : 0;
+const maxCatPriceUSD = catPricesUSD.length > 0 ? Math.ceil(Math.max(...catPricesUSD)) : 500;
 
 // Nombre de la categoría actual
 const currentCategory = storeCategories.find(c => c.slug === category);
@@ -74,20 +76,28 @@ const categoryName = currentCategory ? currentCategory.name : category;
   <!-- ============= SECTION: PRODUCTOS FILTRADOS ============= -->
   <section id="productos-section" class="pb-16 min-h-screen" style="padding-top: calc(var(--headerh, 0px) + 40px);">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Header de sección -->
-      <div class="text-center mb-10 sm:mb-14 pb-8 border-b border-white/[0.06]">
-        <span class="text-xs font-black text-yellow-500/80 uppercase tracking-widest block mb-3 drop-shadow-[0_2px_8px_rgba(234,179,8,0.2)]">{categoryName}</span>
-        <h1 class="text-3xl sm:text-5xl font-black tracking-widest mb-4 drop-shadow-[0_4px_20px_rgba(234,179,8,0.15)]"
-          style="background: linear-gradient(to right, #D4AF37, #F5D76B);
-                 -webkit-background-clip: text;
-                 -webkit-text-fill-color: transparent;
-                 text-fill-color: transparent;">
-          {categoryName}
-        </h1>
-        <p class="text-sm sm:text-lg text-slate-400 drop-shadow-[0_2px_8px_rgba(255,255,255,0.03)]">
-          Productos disponibles en la categoría {categoryName}
-        </p>
-      </div>
+    <!-- Header de sección -->
+    <div class="text-center mb-8 sm:mb-12 pb-8 border-b border-white/[0.06]">
+      <span class="text-xs font-black text-amber-400 uppercase tracking-widest block mb-3 drop-shadow-[0_2px_8px_rgba(234,179,8,0.2)]">{categoryName}</span>
+      <h1 class="text-3xl sm:text-5xl font-black tracking-widest mb-4 drop-shadow-[0_4px_20px_rgba(234,179,8,0.15)]"
+        style="background: linear-gradient(to right, #D4AF37, #F5D76B);
+               -webkit-background-clip: text;
+               -webkit-text-fill-color: transparent;
+               text-fill-color: transparent;">
+        {categoryName.toUpperCase()}
+      </h1>
+      <p class="text-sm sm:text-base text-slate-300 max-w-xl mx-auto leading-relaxed">
+        Descubre nuestra colección curada de {categoryName.toLowerCase()} con stock en Camagüey.
+      </p>
+    </div>
+
+    <!-- Barra Interactiva de Filtros: Categorías, Tags (Rebaja/Tendencias) y Presupuesto Min-Max -->
+    <CatalogFilterBar 
+      currentCategory={category}
+      minPriceUSD={minCatPriceUSD}
+      maxPriceUSD={maxCatPriceUSD}
+      totalProducts={sortedProducts.length}
+    />
 
       <!-- Grid de productos -->
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

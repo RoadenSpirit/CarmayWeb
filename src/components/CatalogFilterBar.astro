@@ -1,0 +1,355 @@
+---
+interface Props {
+  currentCategory?: string; // slug de categoría activa o 'todas'
+  minPriceUSD?: number;
+  maxPriceUSD?: number;
+  totalProducts?: number;
+}
+
+const {
+  currentCategory = 'todas',
+  minPriceUSD = 0,
+  maxPriceUSD = 500,
+  totalProducts = 0
+} = Astro.props;
+
+const categories = [
+  { slug: 'todas', name: 'Todas' },
+  { slug: 'zapatos', name: 'Calzado' },
+  { slug: 'ropa', name: 'Ropa' },
+  { slug: 'jackets', name: 'Bolsos y Mochilas' },
+  { slug: 'tecnologia', name: 'Tecnología' },
+  { slug: 'accesorios', name: 'Accesorios' },
+];
+---
+
+<div id="catalog-filter-bar" class="w-full bg-[#0e101b]/95 backdrop-blur-xl border border-white/10 rounded-3xl p-5 sm:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.5)] mb-10">
+  <div class="flex flex-col gap-6">
+
+    <!-- FILA 1: Píldoras de Categoría + Contador Dinámico -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div class="flex items-center gap-2 overflow-x-auto pb-1.5 sm:pb-0 scrollbar-hide">
+        <span class="text-xs font-black uppercase tracking-wider text-slate-400 mr-2 shrink-0">Categoría:</span>
+        <div class="flex items-center gap-2 shrink-0">
+          {categories.map((cat) => (
+            <button
+              type="button"
+              class={`filter-category-btn px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border ${
+                cat.slug === currentCategory
+                  ? 'bg-amber-400 text-black border-amber-400 shadow-[0_2px_12px_rgba(234,179,8,0.35)]'
+                  : 'bg-white/[0.04] text-slate-300 border-white/10 hover:border-amber-400/40 hover:text-white hover:bg-white/[0.08]'
+              }`}
+              data-category-target={cat.slug}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Contador Dinámico de Productos -->
+      <div class="flex items-center justify-between sm:justify-end gap-3 text-xs text-slate-300 shrink-0">
+        <span id="filter-results-count" class="bg-purple-950/60 border border-purple-800/40 px-3.5 py-1.5 rounded-full font-bold text-amber-300">
+          Mostrando {totalProducts} productos
+        </span>
+        <button
+          type="button"
+          id="filter-reset-btn"
+          class="hidden text-xs text-rose-400 hover:text-rose-300 underline font-semibold cursor-pointer transition-colors"
+        >
+          Limpiar filtros
+        </button>
+      </div>
+    </div>
+
+    <!-- LÍNEA SEPARADORA SUTIL -->
+    <div class="h-px bg-white/[0.06] w-full"></div>
+
+    <!-- FILA 2: Píldoras de Tags (Rebajas / Tendencias) + Barra de Rango de Precio (Min - Max) -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      
+      <!-- Etiquetas / Tags Clickeables -->
+      <div class="md:col-span-5 flex items-center flex-wrap gap-2.5">
+        <span class="text-xs font-black uppercase tracking-wider text-slate-400 mr-1 shrink-0">Filtrar por:</span>
+        
+        <!-- Píldora En Rebaja -->
+        <button
+          type="button"
+          id="filter-tag-sale"
+          class="filter-tag-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border bg-white/[0.04] text-slate-300 border-white/10 hover:bg-white/[0.08]"
+          data-active="false"
+        >
+          <span>🔥</span>
+          <span>En Rebaja</span>
+        </button>
+
+        <!-- Píldora Tendencias -->
+        <button
+          type="button"
+          id="filter-tag-trending"
+          class="filter-tag-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border bg-white/[0.04] text-slate-300 border-white/10 hover:bg-white/[0.08]"
+          data-active="false"
+        >
+          <span>⭐</span>
+          <span>Tendencias</span>
+        </button>
+      </div>
+
+      <!-- Barra de Presupuesto Rango de Precio Min - Max -->
+      <div class="md:col-span-7 flex flex-col sm:flex-row sm:items-center justify-end gap-4 bg-white/[0.02] border border-white/[0.05] p-3.5 rounded-2xl">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-amber-400">💵 Presupuesto USD:</span>
+        </div>
+
+        <div class="flex items-center gap-3 flex-1 max-w-xs">
+          <!-- Input Min -->
+          <div class="relative flex-1">
+            <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">$</span>
+            <input
+              type="number"
+              id="price-min-input"
+              min={minPriceUSD}
+              max={maxPriceUSD}
+              value={minPriceUSD}
+              class="w-full bg-black/40 border border-white/15 rounded-xl pl-6 pr-2 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-amber-400 text-center"
+              placeholder="Min"
+            />
+          </div>
+
+          <span class="text-slate-500 font-bold text-xs">-</span>
+
+          <!-- Input Max -->
+          <div class="relative flex-1">
+            <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-bold">$</span>
+            <input
+              type="number"
+              id="price-max-input"
+              min={minPriceUSD}
+              max={maxPriceUSD}
+              value={maxPriceUSD}
+              class="w-full bg-black/40 border border-white/15 rounded-xl pl-6 pr-2 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-amber-400 text-center"
+              placeholder="Max"
+            />
+          </div>
+
+          <!-- Slider de apoyo visual -->
+          <button
+            type="button"
+            id="price-apply-btn"
+            class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold cursor-pointer transition-colors shrink-0"
+          >
+            Filtrar
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Script interactivo de filtrado instantáneo en el cliente -->
+<script is:inline>
+  (function () {
+    const categoryBtns = Array.from(document.querySelectorAll('.filter-category-btn'));
+    const tagSaleBtn = document.getElementById('filter-tag-sale');
+    const tagTrendingBtn = document.getElementById('filter-tag-trending');
+    const minInput = document.getElementById('price-min-input');
+    const maxInput = document.getElementById('price-max-input');
+    const applyPriceBtn = document.getElementById('price-apply-btn');
+    const resetBtn = document.getElementById('filter-reset-btn');
+    const countEl = document.getElementById('filter-results-count');
+
+    // Estado activo
+    let activeCategory = 'todas';
+    let filterSale = false;
+    let filterTrending = false;
+    let minPrice = 0;
+    let maxPrice = 999999;
+
+    // Detectar si estamos en una página de categoría dedicada (/tienda/[category]/)
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const isCategoryPage = pathParts.length >= 2 && pathParts[0] === 'tienda' && pathParts[1] !== '';
+    const pageCategorySlug = isCategoryPage ? pathParts[1] : 'todas';
+
+    // Leer estado inicial de URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('categoria')) {
+      activeCategory = urlParams.get('categoria');
+    } else if (isCategoryPage) {
+      activeCategory = pageCategorySlug;
+    }
+
+    if (urlParams.get('rebaja') === 'true') filterSale = true;
+    if (urlParams.get('tendencia') === 'true') filterTrending = true;
+    if (urlParams.get('min')) minPrice = parseFloat(urlParams.get('min')) || 0;
+    if (urlParams.get('max')) maxPrice = parseFloat(urlParams.get('max')) || 999999;
+
+    if (minInput && minPrice > 0) minInput.value = minPrice;
+    if (maxInput && maxPrice < 999999) maxInput.value = maxPrice;
+
+    function updatePillsUI() {
+      // Categorías
+      categoryBtns.forEach(btn => {
+        const target = btn.getAttribute('data-category-target');
+        const isActive = target === activeCategory;
+        if (isActive) {
+          btn.className = 'filter-category-btn px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border bg-amber-400 text-black border-amber-400 shadow-[0_2px_12px_rgba(234,179,8,0.35)]';
+        } else {
+          btn.className = 'filter-category-btn px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border bg-white/[0.04] text-slate-300 border-white/10 hover:border-amber-400/40 hover:text-white hover:bg-white/[0.08]';
+        }
+      });
+
+      // Tag Rebajas
+      if (tagSaleBtn) {
+        if (filterSale) {
+          tagSaleBtn.className = 'filter-tag-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border bg-rose-500 text-white border-rose-500 shadow-[0_2px_12px_rgba(244,63,94,0.35)]';
+          tagSaleBtn.setAttribute('data-active', 'true');
+        } else {
+          tagSaleBtn.className = 'filter-tag-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border bg-white/[0.04] text-slate-300 border-white/10 hover:bg-white/[0.08]';
+          tagSaleBtn.setAttribute('data-active', 'false');
+        }
+      }
+
+      // Tag Tendencias
+      if (tagTrendingBtn) {
+        if (filterTrending) {
+          tagTrendingBtn.className = 'filter-tag-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border bg-purple-600 text-white border-purple-500 shadow-[0_2px_12px_rgba(168,85,247,0.35)]';
+          tagTrendingBtn.setAttribute('data-active', 'true');
+        } else {
+          tagTrendingBtn.className = 'filter-tag-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer border bg-white/[0.04] text-slate-300 border-white/10 hover:bg-white/[0.08]';
+          tagTrendingBtn.setAttribute('data-active', 'false');
+        }
+      }
+
+      // Reset button
+      const hasActiveFilters = activeCategory !== (isCategoryPage ? pageCategorySlug : 'todas') || filterSale || filterTrending || minPrice > 0 || maxPrice < 999999;
+      if (resetBtn) {
+        resetBtn.classList.toggle('hidden', !hasActiveFilters);
+      }
+    }
+
+    function applyFilters() {
+      const cards = Array.from(document.querySelectorAll('.product-card-item'));
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-category-slug');
+        const cardPrice = parseFloat(card.getAttribute('data-price-usd') || '0');
+        const cardSale = card.getAttribute('data-on-sale') === 'true';
+        const cardTrending = card.getAttribute('data-trending') === 'true';
+
+        let matches = true;
+
+        // Categoría (en tienda principal filtra cards; si estamos en categoría dedicada y se hace clic en otra, se navega)
+        if (activeCategory !== 'todas' && !isCategoryPage) {
+          if (cardCat !== activeCategory) matches = false;
+        }
+
+        // Filtro Rebajas
+        if (filterSale && !cardSale) {
+          matches = false;
+        }
+
+        // Filtro Tendencias
+        if (filterTrending && !cardTrending) {
+          matches = false;
+        }
+
+        // Filtro Rango de Precio
+        if (cardPrice < minPrice || cardPrice > maxPrice) {
+          matches = false;
+        }
+
+        if (matches) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Actualizar contador
+      if (countEl) {
+        countEl.textContent = `Mostrando ${visibleCount} producto${visibleCount === 1 ? '' : 's'}`;
+      }
+
+      // Sincronizar URL
+      const params = new URLSearchParams();
+      if (activeCategory !== 'todas' && !isCategoryPage) params.set('categoria', activeCategory);
+      if (filterSale) params.set('rebaja', 'true');
+      if (filterTrending) params.set('tendencia', 'true');
+      if (minPrice > 0) params.set('min', minPrice.toString());
+      if (maxPrice < 999999) params.set('max', maxPrice.toString());
+
+      const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+
+      updatePillsUI();
+    }
+
+    // Eventos de Categoría
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-category-target');
+        
+        // Si estamos en una página de categoría dedicada (ej /tienda/ropa/) y tocan otra categoría
+        if (isCategoryPage && target !== pageCategorySlug) {
+          if (target === 'todas') {
+            window.location.href = '/tienda/';
+          } else {
+            window.location.href = `/tienda/${target}/`;
+          }
+          return;
+        }
+
+        activeCategory = target;
+        applyFilters();
+      });
+    });
+
+    // Eventos de Tags
+    tagSaleBtn?.addEventListener('click', () => {
+      filterSale = !filterSale;
+      applyFilters();
+    });
+
+    tagTrendingBtn?.addEventListener('click', () => {
+      filterTrending = !filterTrending;
+      applyFilters();
+    });
+
+    // Eventos de Precio
+    applyPriceBtn?.addEventListener('click', () => {
+      const minVal = parseFloat(minInput?.value || '0');
+      const maxVal = parseFloat(maxInput?.value || '999999');
+      minPrice = isNaN(minVal) ? 0 : minVal;
+      maxPrice = isNaN(maxVal) ? 999999 : maxVal;
+      applyFilters();
+    });
+
+    minInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') applyPriceBtn?.click();
+    });
+
+    maxInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') applyPriceBtn?.click();
+    });
+
+    // Resetear filtros
+    resetBtn?.addEventListener('click', () => {
+      activeCategory = isCategoryPage ? pageCategorySlug : 'todas';
+      filterSale = false;
+      filterTrending = false;
+      minPrice = 0;
+      maxPrice = 999999;
+      if (minInput) minInput.value = '';
+      if (maxInput) maxInput.value = '';
+      applyFilters();
+    });
+
+    // Ejecutar al cargar para respetar parámetros URL
+    updatePillsUI();
+    applyFilters();
+  })();
+</script>

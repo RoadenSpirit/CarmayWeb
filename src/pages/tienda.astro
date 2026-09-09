@@ -2,7 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import ProductCard from '../components/ProductCard.astro';
+import CatalogFilterBar from '../components/CatalogFilterBar.astro';
 import { woo } from '../api';
+import { sortProductsByCuratedScore } from '../utils/productRanking';
 
 // Categorías de la tienda
 const storeCategories = [
@@ -37,13 +39,15 @@ const storeCategories = [
 const allRawProducts = await woo.products.getAll();
 const validProducts = allRawProducts.filter(p => p.hasRealImage);
 
-// Ordenamiento estricto: productos en stock PRIMERO, agotados AL FINAL
-const sortedCatalogProducts = [...validProducts].sort((a, b) => {
-  if (a.isInStock !== b.isInStock) {
-    return a.isInStock ? -1 : 1;
-  }
-  return 0;
-});
+// Ordenamiento multicriterio precalculado en build:
+// Combina alta demanda (ventas) + ofertas activas + escasez (bajo stock) + tendencias.
+// Los productos en stock y de mayor impacto comercial van arriba; los agotados al final.
+const sortedCatalogProducts = sortProductsByCuratedScore(validProducts);
+
+// Calcular rango de precios USD para el filtro
+const pricesUSD = sortedCatalogProducts.map(p => p.price).filter(p => p > 0);
+const minCatalogPriceUSD = pricesUSD.length > 0 ? Math.floor(Math.min(...pricesUSD)) : 0;
+const maxCatalogPriceUSD = pricesUSD.length > 0 ? Math.ceil(Math.max(...pricesUSD)) : 500;
 ---
 <Layout title="Carmay Outfit - Tienda Online">
   <Fragment slot="head">
@@ -138,17 +142,25 @@ const sortedCatalogProducts = [...validProducts].sort((a, b) => {
   <section id="productos-section" class="py-12 sm:py-20 border-t border-white/[0.04]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header de sección -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-white/[0.06]">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-white/[0.06]">
         <div>
-          <span class="text-xs font-black text-yellow-500/80 uppercase tracking-widest block mb-2 drop-shadow-[0_2px_8px_rgba(234,179,8,0.2)]">CATÁLOGO ACTIVO</span>
+          <span class="text-xs font-black text-amber-400 uppercase tracking-widest block mb-2 drop-shadow-[0_2px_8px_rgba(234,179,8,0.2)]">CATÁLOGO CURADO</span>
           <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-[0_4px_15px_rgba(255,255,255,0.05)]">
             Todos Nuestros Productos
           </h2>
           <p class="text-slate-400 text-xs sm:text-sm mt-2 drop-shadow-[0_2px_8px_rgba(255,255,255,0.03)]">
-            Productos disponibles para entrega inmediata en Camagüey (Agotados ordenados al final)
+            Nuestros mejores productos destacados por alta demanda, ofertas activas y disponibilidad inmediata en Camagüey.
           </p>
         </div>
       </div>
+
+      <!-- Barra Interactiva de Filtros: Categorías, Tags y Presupuesto Min-Max -->
+      <CatalogFilterBar 
+        currentCategory="todas"
+        minPriceUSD={minCatalogPriceUSD}
+        maxPriceUSD={maxCatalogPriceUSD}
+        totalProducts={sortedCatalogProducts.length}
+      />
 
       <!-- Grid de productos -->
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
