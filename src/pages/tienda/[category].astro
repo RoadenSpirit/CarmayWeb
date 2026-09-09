@@ -40,10 +40,10 @@ const validCatProducts = allCatProducts.filter(p => p.hasRealImage);
 // Ordenamiento multicriterio precalculado en build para esta categoría:
 const sortedProducts = sortProductsByCuratedScore(validCatProducts);
 
-// Calcular rango de precios de la categoría para el filtro
-const catPricesUSD = sortedProducts.map(p => p.price).filter(p => p > 0);
-const minCatPriceUSD = catPricesUSD.length > 0 ? Math.floor(Math.min(...catPricesUSD)) : 0;
-const maxCatPriceUSD = catPricesUSD.length > 0 ? Math.ceil(Math.max(...catPricesUSD)) : 500;
+// Calcular rango de precios CUP de la categoría para el filtro
+const catPricesCUP = sortedProducts.map(p => p.priceCUP).filter(p => p > 0);
+const minCatPriceCUP = catPricesCUP.length > 0 ? Math.floor(Math.min(...catPricesCUP)) : 0;
+const maxCatPriceCUP = catPricesCUP.length > 0 ? Math.ceil(Math.max(...catPricesCUP)) : 350000;
 
 // Nombre de la categoría actual
 const currentCategory = storeCategories.find(c => c.slug === category);
@@ -91,10 +91,10 @@ const categoryName = currentCategory ? currentCategory.name : category;
       </p>
     </div>
 
-    <!-- Barra Interactiva de Filtros: Tags (Rebaja/Tendencias) y Selector de Presupuesto con Slider -->
+    <!-- Barra Interactiva de Filtros: Tags (Rebaja/Tendencias) y Selector de Presupuesto con Slider Dual CUP -->
     <CatalogFilterBar 
-      minPriceUSD={minCatPriceUSD}
-      maxPriceUSD={maxCatPriceUSD}
+      minPriceCUP={minCatPriceCUP}
+      maxPriceCUP={maxCatPriceCUP}
       totalProducts={sortedProducts.length}
     />
 

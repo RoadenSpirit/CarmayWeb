@@ -1,18 +1,18 @@
 ---
 interface Props {
-  minPriceUSD?: number;
-  maxPriceUSD?: number;
+  minPriceCUP?: number;
+  maxPriceCUP?: number;
   totalProducts?: number;
 }
 
 const {
-  minPriceUSD = 0,
-  maxPriceUSD = 500,
+  minPriceCUP = 0,
+  maxPriceCUP = 350000,
   totalProducts = 0
 } = Astro.props;
 ---
 
-<!-- Barra de Filtros Refinada: Sin categorías duplicadas, con Slider de Rango Nativo y Tags de Alta Jerarquía -->
+<!-- Barra de Filtros Refinada: Filtrado por CUP con Slider Dual (Min y Max) y Tags de Alta Jerarquía -->
 <div id="catalog-filter-bar" class="w-full bg-[#0d0f1a] border border-white/[0.08] rounded-2xl p-4 sm:p-6 shadow-[0_8px_32px_rgba(0,0,0,0.4)] mb-10">
   <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
 
@@ -44,7 +44,7 @@ const {
         <span class="text-xs text-slate-400 font-mono tag-badge hidden">★</span>
       </button>
 
-      <!-- Botón Limpiar filtros (discreto, alineado) -->
+      <!-- Botón Limpiar filtros -->
       <button
         type="button"
         id="filter-reset-btn"
@@ -54,81 +54,98 @@ const {
       </button>
     </div>
 
-    <!-- SECCIÓN DERECHA: Widget de Presupuesto con Inputs Numéricos y Range Slider Sincronizado -->
-    <div class="wpc-filters-section flex flex-col sm:flex-row sm:items-center gap-4 bg-white/[0.02] border border-white/[0.06] rounded-xl p-3 sm:p-3.5">
-      <div class="flex items-center justify-between sm:justify-start gap-2">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Presupuesto</span>
-        <span id="price-range-label" class="text-xs font-mono font-bold text-amber-400 sm:hidden">
-          ${minPriceUSD} - ${maxPriceUSD} USD
+    <!-- SECCIÓN DERECHA: Selector de Presupuesto en CUP con Slider Dual (Min - Slider - Max) -->
+    <div class="wpc-filters-section flex flex-col gap-3 bg-white/[0.02] border border-white/[0.06] rounded-xl p-3.5 sm:p-4">
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Presupuesto (CUP)</span>
+        <span id="price-range-label" class="text-xs font-mono font-bold text-amber-400">
+          {minPriceCUP.toLocaleString('en-US')} – {maxPriceCUP.toLocaleString('en-US')} CUP
         </span>
       </div>
 
-      <!-- Controles de rango numérico -->
-      <div class="flex items-center gap-2.5">
-        <!-- Input Min -->
-        <div class="relative w-20 sm:w-24">
+      <!-- Contenedor Integrado: Input Min -> Barra Slider Dual -> Input Max -->
+      <div class="flex items-center gap-3 w-full">
+        <!-- Input Min CUP -->
+        <div class="relative w-24 sm:w-28 shrink-0">
           <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-mono font-medium">$</span>
           <input
             type="number"
             id="price-min-input"
-            min={minPriceUSD}
-            max={maxPriceUSD}
-            value={minPriceUSD}
-            step="1"
+            min={minPriceCUP}
+            max={maxPriceCUP}
+            value={minPriceCUP}
+            step="100"
             class="w-full bg-[#0a0c14] border border-white/15 rounded-lg pl-6 pr-2 py-1.5 text-xs text-slate-100 font-mono font-bold focus:outline-none focus:border-amber-400 transition-colors text-right"
-            aria-label="Precio mínimo en USD"
+            aria-label="Precio mínimo en CUP"
           />
         </div>
 
-        <span class="text-slate-500 font-bold text-xs">–</span>
+        <!-- Slider de Rango Dual con 2 Manillas (Thumbs) -->
+        <div class="relative flex items-center flex-1 h-6 px-1">
+          <!-- Pista base -->
+          <div class="absolute left-0 right-0 h-1.5 bg-white/10 rounded-full"></div>
+          <!-- Pista activa resaltada en degradado morado a dorado -->
+          <div 
+            id="slider-track-highlight" 
+            class="absolute h-1.5 bg-gradient-to-r from-[#6d1e68] to-amber-400 rounded-full pointer-events-none" 
+            style="left: 0%; right: 0%;"
+          ></div>
 
-        <!-- Input Max -->
-        <div class="relative w-20 sm:w-24">
+          <!-- Slider 1: Controlador Mínimo -->
+          <input 
+            type="range" 
+            id="price-slider-min" 
+            min={minPriceCUP} 
+            max={maxPriceCUP} 
+            value={minPriceCUP} 
+            step="100"
+            class="dual-range-input absolute inset-0 w-full h-full cursor-pointer z-20"
+            aria-label="Ajustar precio mínimo en CUP"
+          />
+
+          <!-- Slider 2: Controlador Máximo -->
+          <input 
+            type="range" 
+            id="price-slider-max" 
+            min={minPriceCUP} 
+            max={maxPriceCUP} 
+            value={maxPriceCUP} 
+            step="100"
+            class="dual-range-input absolute inset-0 w-full h-full cursor-pointer z-20"
+            aria-label="Ajustar precio máximo en CUP"
+          />
+        </div>
+
+        <!-- Input Max CUP -->
+        <div class="relative w-24 sm:w-28 shrink-0">
           <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-mono font-medium">$</span>
           <input
             type="number"
             id="price-max-input"
-            min={minPriceUSD}
-            max={maxPriceUSD}
-            value={maxPriceUSD}
-            step="1"
+            min={minPriceCUP}
+            max={maxPriceCUP}
+            value={maxPriceCUP}
+            step="100"
             class="w-full bg-[#0a0c14] border border-white/15 rounded-lg pl-6 pr-2 py-1.5 text-xs text-slate-100 font-mono font-bold focus:outline-none focus:border-amber-400 transition-colors text-right"
-            aria-label="Precio máximo en USD"
+            aria-label="Precio máximo en CUP"
           />
         </div>
       </div>
 
-      <!-- Slider de doble rango visual -->
-      <div class="relative flex items-center w-full sm:w-36 h-5 px-1">
-        <!-- Barra base -->
-        <div class="absolute left-0 right-0 h-1.5 bg-white/10 rounded-full"></div>
-        <!-- Barra activa iluminada -->
-        <div id="slider-track-highlight" class="absolute h-1.5 bg-gradient-to-r from-[#6d1e68] to-amber-400 rounded-full" style="left: 0%; right: 0%;"></div>
-        
-        <!-- Range input transparente para control deslizante rápido -->
-        <input 
-          type="range" 
-          id="price-slider-range" 
-          min={minPriceUSD} 
-          max={maxPriceUSD} 
-          value={maxPriceUSD} 
-          step="1"
-          class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-          aria-label="Ajustar precio máximo"
-        />
+      <!-- Contador de resultados y estado -->
+      <div class="flex items-center justify-between pt-1 border-t border-white/[0.04]">
+        <span class="text-xs text-slate-400 font-normal">Precios calculados en moneda nacional (CUP)</span>
+        <span id="filter-results-count" class="text-xs font-mono font-bold text-slate-300">
+          {totalProducts} productos
+        </span>
       </div>
-
-      <!-- Contador de resultados -->
-      <span id="filter-results-count" class="hidden sm:inline-block text-xs font-mono text-slate-400 border-l border-white/10 pl-3">
-        {totalProducts} productos
-      </span>
     </div>
 
   </div>
 </div>
 
 <style>
-  /* Quitar spinners molestos en navegadores para inputs limpios */
+  /* Quitar spinners de inputs numéricos */
   input[type=number]::-webkit-inner-spin-button, 
   input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none; 
@@ -137,49 +154,113 @@ const {
   input[type=number] {
     -moz-appearance: textfield;
   }
+
+  /* Estilos nativos para el Slider Dual Superpuesto */
+  .dual-range-input {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    pointer-events: none; /* Dejar pasar clics al track */
+  }
+
+  /* Thumbs con puntero activo para ambas manillas */
+  .dual-range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #f59e0b;
+    border: 2px solid #f3f4f6;
+    box-shadow: 0 2px 8px #090b11;
+    cursor: grab;
+    pointer-events: auto; /* Permitir arrastre del thumb */
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .dual-range-input::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    background: #F5D76B;
+  }
+
+  .dual-range-input::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.25);
+    background: #D4AF37;
+  }
+
+  .dual-range-input::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #f59e0b;
+    border: 2px solid #f3f4f6;
+    box-shadow: 0 2px 8px #090b11;
+    cursor: grab;
+    pointer-events: auto;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .dual-range-input::-moz-range-thumb:hover {
+    transform: scale(1.15);
+    background: #F5D76B;
+  }
+
+  .dual-range-input::-moz-range-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.25);
+    background: #D4AF37;
+  }
 </style>
 
-<!-- Script interactivo de filtrado instantáneo -->
+<!-- Script interactivo de filtrado instantáneo por CUP con Range Slider Dual -->
 <script is:inline>
   (function () {
     const tagSaleBtn = document.getElementById('filter-tag-sale');
     const tagTrendingBtn = document.getElementById('filter-tag-trending');
     const minInput = document.getElementById('price-min-input');
     const maxInput = document.getElementById('price-max-input');
-    const sliderRange = document.getElementById('price-slider-range');
+    const sliderMin = document.getElementById('price-slider-min');
+    const sliderMax = document.getElementById('price-slider-max');
     const sliderTrack = document.getElementById('slider-track-highlight');
     const priceLabel = document.getElementById('price-range-label');
     const resetBtn = document.getElementById('filter-reset-btn');
     const countEl = document.getElementById('filter-results-count');
 
     const catalogMin = parseFloat(minInput?.getAttribute('min') || '0');
-    const catalogMax = parseFloat(maxInput?.getAttribute('max') || '500');
+    const catalogMax = parseFloat(maxInput?.getAttribute('max') || '350000');
 
     let filterSale = false;
     let filterTrending = false;
     let minPrice = catalogMin;
     let maxPrice = catalogMax;
 
-    // Leer URL inicial
+    // Leer parámetros iniciales de URL en CUP
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('rebaja') === 'true') filterSale = true;
     if (urlParams.get('tendencia') === 'true') filterTrending = true;
-    if (urlParams.get('min')) minPrice = parseFloat(urlParams.get('min')) || catalogMin;
-    if (urlParams.get('max')) maxPrice = parseFloat(urlParams.get('max')) || catalogMax;
+    if (urlParams.get('min_cup')) minPrice = parseFloat(urlParams.get('min_cup')) || catalogMin;
+    if (urlParams.get('max_cup')) maxPrice = parseFloat(urlParams.get('max_cup')) || catalogMax;
 
     if (minInput) minInput.value = minPrice;
     if (maxInput) maxInput.value = maxPrice;
-    if (sliderRange) sliderRange.value = maxPrice;
+    if (sliderMin) sliderMin.value = minPrice;
+    if (sliderMax) sliderMax.value = maxPrice;
+
+    function formatNumber(n) {
+      return Number(n).toLocaleString('en-US');
+    }
 
     function updateSliderTrack() {
       if (!sliderTrack) return;
       const percentMin = Math.max(0, Math.min(100, ((minPrice - catalogMin) / (catalogMax - catalogMin)) * 100));
       const percentMax = Math.max(0, Math.min(100, ((maxPrice - catalogMin) / (catalogMax - catalogMin)) * 100));
+      
       sliderTrack.style.left = `${percentMin}%`;
       sliderTrack.style.right = `${100 - percentMax}%`;
 
       if (priceLabel) {
-        priceLabel.textContent = `$${minPrice} - $${maxPrice} USD`;
+        priceLabel.textContent = `${formatNumber(minPrice)} – ${formatNumber(maxPrice)} CUP`;
       }
     }
 
@@ -206,7 +287,7 @@ const {
         }
       }
 
-      // Reset button
+      // Botón Reset
       const hasActive = filterSale || filterTrending || minPrice > catalogMin || maxPrice < catalogMax;
       if (resetBtn) {
         resetBtn.classList.toggle('hidden', !hasActive);
@@ -220,14 +301,15 @@ const {
       let visible = 0;
 
       cards.forEach(card => {
-        const price = parseFloat(card.getAttribute('data-price-usd') || '0');
+        // Filtrado por precio CUP
+        const priceCUP = parseFloat(card.getAttribute('data-price-cup') || '0');
         const onSale = card.getAttribute('data-on-sale') === 'true';
         const trending = card.getAttribute('data-trending') === 'true';
 
         let match = true;
         if (filterSale && !onSale) match = false;
         if (filterTrending && !trending) match = false;
-        if (price < minPrice || price > maxPrice) match = false;
+        if (priceCUP < minPrice || priceCUP > maxPrice) match = false;
 
         card.style.display = match ? '' : 'none';
         if (match) visible++;
@@ -237,12 +319,12 @@ const {
         countEl.textContent = `${visible} productos`;
       }
 
-      // Sincronizar URL
+      // Sincronizar URL en CUP
       const params = new URLSearchParams();
       if (filterSale) params.set('rebaja', 'true');
       if (filterTrending) params.set('tendencia', 'true');
-      if (minPrice > catalogMin) params.set('min', minPrice.toString());
-      if (maxPrice < catalogMax) params.set('max', maxPrice.toString());
+      if (minPrice > catalogMin) params.set('min_cup', minPrice.toString());
+      if (maxPrice < catalogMax) params.set('max_cup', maxPrice.toString());
 
       const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
       window.history.replaceState({}, '', newUrl);
@@ -261,16 +343,28 @@ const {
       applyFilters();
     });
 
-    // Eventos de Inputs de Precio con debounce
+    // Control de inputs numéricos con debounce
     let priceTimer = null;
     function onPriceInputChange() {
       clearTimeout(priceTimer);
       priceTimer = setTimeout(() => {
-        const minVal = parseFloat(minInput?.value || '0');
-        const maxVal = parseFloat(maxInput?.value || '999999');
-        minPrice = isNaN(minVal) ? catalogMin : Math.max(catalogMin, minVal);
-        maxPrice = isNaN(maxVal) ? catalogMax : Math.min(catalogMax, maxVal);
-        if (sliderRange) sliderRange.value = maxPrice;
+        let minVal = parseFloat(minInput?.value || '0');
+        let maxVal = parseFloat(maxInput?.value || '999999');
+        if (isNaN(minVal)) minVal = catalogMin;
+        if (isNaN(maxVal)) maxVal = catalogMax;
+
+        // Evitar cruce entre mínimo y máximo
+        if (minVal > maxVal) {
+          const temp = minVal;
+          minVal = maxVal;
+          maxVal = temp;
+        }
+
+        minPrice = Math.max(catalogMin, minVal);
+        maxPrice = Math.min(catalogMax, maxVal);
+
+        if (sliderMin) sliderMin.value = minPrice;
+        if (sliderMax) sliderMax.value = maxPrice;
         applyFilters();
       }, 250);
     }
@@ -278,17 +372,37 @@ const {
     minInput?.addEventListener('input', onPriceInputChange);
     maxInput?.addEventListener('input', onPriceInputChange);
 
-    // Evento Slider
-    sliderRange?.addEventListener('input', (e) => {
+    // Control del Slider Mínimo
+    sliderMin?.addEventListener('input', (e) => {
       const val = parseFloat(e.target.value);
-      maxPrice = val;
-      if (maxInput) maxInput.value = val;
+      if (val > maxPrice) {
+        minPrice = maxPrice;
+        sliderMin.value = maxPrice;
+      } else {
+        minPrice = val;
+      }
+      if (minInput) minInput.value = minPrice;
       updateSliderTrack();
       clearTimeout(priceTimer);
-      priceTimer = setTimeout(applyFilters, 150);
+      priceTimer = setTimeout(applyFilters, 100);
     });
 
-    // Resetear
+    // Control del Slider Máximo
+    sliderMax?.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      if (val < minPrice) {
+        maxPrice = minPrice;
+        sliderMax.value = minPrice;
+      } else {
+        maxPrice = val;
+      }
+      if (maxInput) maxInput.value = maxPrice;
+      updateSliderTrack();
+      clearTimeout(priceTimer);
+      priceTimer = setTimeout(applyFilters, 100);
+    });
+
+    // Resetear filtros
     resetBtn?.addEventListener('click', () => {
       filterSale = false;
       filterTrending = false;
@@ -296,11 +410,12 @@ const {
       maxPrice = catalogMax;
       if (minInput) minInput.value = catalogMin;
       if (maxInput) maxInput.value = catalogMax;
-      if (sliderRange) sliderRange.value = catalogMax;
+      if (sliderMin) sliderMin.value = catalogMin;
+      if (sliderMax) sliderMax.value = catalogMax;
       applyFilters();
     });
 
-    // Init
+    // Inicialización al cargar la página
     updateUI();
     applyFilters();
   })();

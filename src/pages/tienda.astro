@@ -44,10 +44,10 @@ const validProducts = allRawProducts.filter(p => p.hasRealImage);
 // Los productos en stock y de mayor impacto comercial van arriba; los agotados al final.
 const sortedCatalogProducts = sortProductsByCuratedScore(validProducts);
 
-// Calcular rango de precios USD para el filtro
-const pricesUSD = sortedCatalogProducts.map(p => p.price).filter(p => p > 0);
-const minCatalogPriceUSD = pricesUSD.length > 0 ? Math.floor(Math.min(...pricesUSD)) : 0;
-const maxCatalogPriceUSD = pricesUSD.length > 0 ? Math.ceil(Math.max(...pricesUSD)) : 500;
+// Calcular rango de precios CUP para el filtro
+const pricesCUP = sortedCatalogProducts.map(p => p.priceCUP).filter(p => p > 0);
+const minCatalogPriceCUP = pricesCUP.length > 0 ? Math.floor(Math.min(...pricesCUP)) : 0;
+const maxCatalogPriceCUP = pricesCUP.length > 0 ? Math.ceil(Math.max(...pricesCUP)) : 350000;
 ---
 <Layout title="Carmay Outfit - Tienda Online">
   <Fragment slot="head">
@@ -154,10 +154,10 @@ const maxCatalogPriceUSD = pricesUSD.length > 0 ? Math.ceil(Math.max(...pricesUS
         </div>
       </div>
 
-      <!-- Barra Interactiva de Filtros: Tags (Rebaja/Tendencias) y Selector de Presupuesto con Slider -->
+      <!-- Barra Interactiva de Filtros: Tags (Rebaja/Tendencias) y Selector de Presupuesto con Slider Dual CUP -->
       <CatalogFilterBar 
-        minPriceUSD={minCatalogPriceUSD}
-        maxPriceUSD={maxCatalogPriceUSD}
+        minPriceCUP={minCatalogPriceCUP}
+        maxPriceCUP={maxCatalogPriceCUP}
         totalProducts={sortedCatalogProducts.length}
       />
 
