@@ -1,18 +1,23 @@
 ---
 ---
 
-<section class="py-20 sm:py-28 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative">
-  <div class="relative overflow-hidden rounded-3xl glass-card border border-purple-800/40 shadow-xl p-6 sm:p-12 lg:p-16">
-    
-    <!-- Fondo decorativo con trazos morados corporativos oscuro -->
-    <div class="absolute inset-0 bg-gradient-to-r from-purple-950/80 via-[#1a1628]/90 to-purple-900/60 z-0"></div>
-    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none z-0"></div>
+---
+---
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-14 items-center relative z-10">
+<!-- Sección de Visión: Ancho completo de pantalla (full-bleed) con contenido centrado y márgenes elegantes -->
+<section class="py-20 sm:py-28 w-full relative overflow-hidden bg-gradient-to-r from-purple-950/90 via-[#161322] to-purple-950/80 border-y border-purple-800/30">
+  
+  <!-- Fondos decorativos difuminados con brillo morado -->
+  <div class="absolute -right-24 -bottom-24 w-[450px] h-[450px] bg-purple-600/15 rounded-full blur-3xl pointer-events-none z-0"></div>
+  <div class="absolute -left-24 -top-24 w-[450px] h-[450px] bg-purple-800/15 rounded-full blur-3xl pointer-events-none z-0"></div>
+
+  <!-- Contenedor centrado con margen interior cómodo -->
+  <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-16 items-center">
       
-      <!-- Columna Izquierda: Logo centrado 200% más grande + Imagen limpia -->
+      <!-- Columna Izquierda: Logo centrado grande + Imagen institucional limpia -->
       <div class="lg:col-span-5 flex flex-col items-center gap-6">
-        <!-- Logo centrado y aumentado un 200% para máxima presencia y legibilidad -->
+        <!-- Logo centrado para máxima presencia de marca -->
         <div class="w-full flex justify-center py-2">
           <img 
             src="/logo.png" 
@@ -21,8 +26,8 @@
           />
         </div>
 
-        <!-- Imagen Institucional limpia sin nada superpuesto -->
-        <div class="w-full relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3] border border-white/15">
+        <!-- Imagen Institucional limpia sin agregados -->
+        <div class="w-full relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] border border-white/15">
           <img 
             src="/tienda-fisica.png" 
             alt="Tienda Física Carmay Outfit en Camagüey" 
@@ -35,19 +40,19 @@
         </div>
       </div>
 
-      <!-- Card Elegante con Fondo Oscuro General -->
+      <!-- Columna Derecha: Contenido editorial y visión empresarial -->
       <div class="lg:col-span-7 space-y-6 sm:space-y-8">
-        <!-- Encabezado / Título de la sección (limpio sin logo para no saturar) -->
+        <!-- Encabezado / Título de la sección -->
         <div>
           <span class="text-xs sm:text-sm font-semibold text-amber-400 tracking-wider uppercase block mb-2">
             Sobre Nosotros
           </span>
-          <h2 class="text-2xl sm:text-4xl lg:text-4xl font-black text-white tracking-normal leading-tight" style="font-family: 'Playfair Display', serif;">
+          <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-normal leading-tight" style="font-family: 'Playfair Display', serif;">
             Visión y Proyecciones de la Empresa
           </h2>
         </div>
 
-        <!-- Subtítulo de propuesta / declaración de marca -->
+        <!-- Subtítulo de propuesta de valor -->
         <h3 class="text-lg sm:text-2xl font-bold text-amber-300/90 tracking-wide leading-snug">
           La tienda más completa de Camagüey
         </h3>
@@ -56,7 +61,7 @@
           Somos una tienda camagüeyana pensada en resolver tus necesidades diarias de ropa, calzado y equipamiento con un catálogo variado para todos. Creemos que la innovación no debe tener fronteras, y estamos aquí para que tu día a día sea más cómodo y con estilo.
         </p>
 
-        <!-- Bloque destacado sutil para la frase clave: Contenedor oscuro iluminado con morado profundo y destellos -->
+        <!-- Bloque destacado sutil para la frase clave -->
         <div class="relative overflow-hidden rounded-2xl p-5 sm:p-7 shadow-2xl border border-purple-500/40 bg-gradient-to-r from-purple-900/60 via-[#261536]/80 to-purple-950/70 backdrop-blur-md">
           <div class="absolute left-0 top-0 bottom-0 w-2 bg-[#6d1e68]"></div>
           <div class="absolute -right-10 -top-10 w-36 h-36 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
@@ -65,15 +70,24 @@
           </p>
         </div>
 
-        <div class="pt-2 sm:pt-4 flex items-center gap-8 sm:gap-12">
-          <div>
-            <span class="block text-3xl sm:text-4xl font-black text-amber-400" style="font-family: 'Playfair Display', serif;">+2 Años</span>
-            <span class="text-xs sm:text-sm text-gray-300 font-medium">Compromiso local</span>
+        <!-- Cifras métricas enriquecidas -->
+        <div class="pt-4 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
+          <div class="space-y-1">
+            <span class="block text-3xl sm:text-4xl font-black text-amber-400" style="font-family: 'Playfair Display', serif;">
+              +2 Años de experiencia
+            </span>
+            <span class="text-xs sm:text-sm text-gray-300 font-medium block">
+              Compromiso y atención local en Camagüey
+            </span>
           </div>
-          <div class="w-px h-12 bg-white/20"></div>
-          <div>
-            <span class="block text-3xl sm:text-4xl font-black text-purple-400" style="font-family: 'Playfair Display', serif;">100% Calidad</span>
-            <span class="text-xs sm:text-sm text-gray-300 font-medium">Moda y Estilo</span>
+          <div class="hidden sm:block w-px h-14 bg-white/20"></div>
+          <div class="space-y-1">
+            <span class="block text-3xl sm:text-4xl font-black text-purple-400" style="font-family: 'Playfair Display', serif;">
+              100% Calidad en todos nuestros productos
+            </span>
+            <span class="text-xs sm:text-sm text-gray-300 font-medium block">
+              Prendas, calzado y equipos revisados
+            </span>
           </div>
         </div>
       </div>
