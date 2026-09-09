@@ -61,8 +61,8 @@ const categoryName = currentCategory ? currentCategory.name : category;
 <Layout title={`${categoryName} - Carmay Outfit`}>
   <Header />
 
-  <!-- ============= NAVBAR CATEGORÍAS (siempre visible) ============= -->
-  <nav class="fixed left-0 right-0 z-40 backdrop-blur-2xl bg-[#090b11]/75 border-b border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" style="top: var(--headerh, 0px);">
+  <!-- ============= NAVBAR CATEGORÍAS (Solo Desktop: en móvil está en el menú hamburguesa) ============= -->
+  <nav class="hidden md:block fixed left-0 right-0 z-40 backdrop-blur-2xl bg-[#090b11]/75 border-b border-white/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" style="top: var(--headerh, 0px);">
     <!-- Línea inferior de acento amarillo -->
     <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -91,7 +91,7 @@ import SubNavbar from './SubNavbar.astro';
   </div>
 
   <!-- Enlaces de navegación -->
-  <nav class="flex flex-col p-6 gap-2">
+  <nav class="flex flex-col p-6 gap-2 overflow-y-auto max-h-[calc(100vh-180px)] scrollbar-hide">
     <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -102,8 +102,38 @@ import SubNavbar from './SubNavbar.astro';
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
       </svg>
-      Tienda
+      Tienda (Todo el Catálogo)
     </a>
+
+    <!-- SECCIÓN CATEGORÍAS DENTRO DEL MENÚ MÓVIL -->
+    <div class="my-2 pt-3 pb-1 border-t border-b border-white/10">
+      <span class="text-[10px] font-black uppercase tracking-widest text-amber-400/90 px-4 mb-2 block">
+        Categorías
+      </span>
+      <div class="flex flex-col gap-1 pl-2">
+        <a href="/tienda/zapatos/" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <span class="text-xs">👟</span>
+          <span>Calzado</span>
+        </a>
+        <a href="/tienda/ropa/" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <span class="text-xs">👗</span>
+          <span>Ropa</span>
+        </a>
+        <a href="/tienda/jackets/" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <span class="text-xs">🎒</span>
+          <span>Bolsos y Mochilas</span>
+        </a>
+        <a href="/tienda/tecnologia/" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <span class="text-xs">⚡</span>
+          <span>Tecnología</span>
+        </a>
+        <a href="/tienda/accesorios/" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <span class="text-xs">🕶️</span>
+          <span>Accesorios</span>
+        </a>
+      </div>
+    </div>
+
     <button id="mobile-drawer-cart-btn" class="flex items-center gap-3 px-4 py-3 rounded-xl text-amber-400 font-bold hover:bg-white/5 transition-colors w-full text-left cursor-pointer">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -166,13 +196,57 @@ import SubNavbar from './SubNavbar.astro';
   document.addEventListener('DOMContentLoaded', () => {
     const cartBtn = document.getElementById('header-cart-btn');
     const mobileCartBtn = document.getElementById('mobile-drawer-cart-btn');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+
+    function openMobileMenu() {
+      if (!mobileMenuDrawer || !mobileMenuOverlay) return;
+      mobileMenuOverlay.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        mobileMenuOverlay.classList.remove('opacity-0');
+        mobileMenuDrawer.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    function closeMobileMenu() {
+      if (!mobileMenuDrawer || !mobileMenuOverlay) return;
+      mobileMenuOverlay.classList.add('opacity-0');
+      mobileMenuDrawer.classList.add('translate-x-full');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        mobileMenuOverlay.classList.add('hidden');
+      }, 300);
+    }
+
+    // Eventos táctiles y de clic para apertura/cierre de hamburguesa
+    mobileMenuBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      openMobileMenu();
+    });
+
+    mobileMenuClose?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMobileMenu();
+    });
+
+    mobileMenuOverlay?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMobileMenu();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMobileMenu();
+    });
 
     cartBtn?.addEventListener('click', () => {
       window.dispatchEvent(new CustomEvent('open-carmay-cart'));
     });
 
     mobileCartBtn?.addEventListener('click', () => {
-      document.getElementById('mobile-menu-close')?.click();
+      closeMobileMenu();
       setTimeout(() => {
         window.dispatchEvent(new CustomEvent('open-carmay-cart'));
       }, 350);
