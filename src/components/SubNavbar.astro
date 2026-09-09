@@ -8,9 +8,10 @@
 <div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md">
   <div class="subnav-inner border-t border-white/[0.06] min-h-0">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
-      <div class="subnav-items flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5">
+      <!-- En móvil (flex-col-reverse): El carrusel de mensajes arriba y el buscador siempre como ÚLTIMO elemento. En desktop (sm:flex-row): buscador izquierda, carrusel derecha -->
+      <div class="subnav-items flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5">
 
-      <!-- ===== COLUMNA IZQUIERDA: BUSCADOR (55%) ===== -->
+      <!-- ===== BUSCADOR (En móvil es el último elemento inferior por flex-col-reverse, en desktop 55% a la izquierda) ===== -->
       <div class="flex-1 sm:flex-[3] min-w-0">
         <div class="relative">
           <form id="subnav-search-form" class="flex items-center gap-2 w-full rounded-full border-2 border-white/30 bg-white/[0.08] px-3.5 py-2 focus-within:border-white/50 focus-within:bg-white/[0.12] focus-within:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all">
@@ -51,7 +52,7 @@
         </div>
       </div>
 
-      <!-- ===== COLUMNA DERECHA: CARRUSEL DE VALOR (45%) ===== -->
+      <!-- ===== CARRUSEL DE VALOR (En móvil arriba del buscador, en desktop 45% a la derecha) ===== -->
       <div class="flex-shrink-0 sm:flex-[2] lg:w-[45%]">
         <div class="relative overflow-hidden h-9 flex items-center rounded-lg border border-white/20 bg-white/[0.06] px-3">
 
