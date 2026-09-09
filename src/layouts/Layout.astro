@@ -99,6 +99,10 @@ const catalogJson = JSON.stringify(searchableData);
 <style is:global>
   html {
     color-scheme: dark;
+    /* Corta el desbordamiento horizontal para que nunca aparezca scroll lateral
+       que recorte el margen izquierdo. `clip` NO crea contenedor de scroll,
+       por lo que el header sticky y los paneles fixed siguen funcionando. */
+    overflow-x: clip;
   }
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
