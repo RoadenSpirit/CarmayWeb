@@ -5,11 +5,11 @@
 // Carrusel migrado del PHP original (5 mensajes) con diseño neo-dark premium.
 ---
 
-<div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md relative z-0">
-  <div class="subnav-inner border-t border-white/[0.06] min-h-0">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
+<div id="subnav" class="border-t border-white/[0.06] bg-[#0a0d14]/95 backdrop-blur-md">
+  <div class="subnav-inner">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
       <!-- En móvil (flex-col-reverse): El carrusel de mensajes arriba y el buscador siempre como ÚLTIMO elemento. En desktop (sm:flex-row): buscador izquierda, carrusel derecha -->
-      <div class="subnav-items flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-5">
+      <div class="subnav-items flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
 
       <!-- ===== BUSCADOR (En móvil es el último elemento inferior por flex-col-reverse, en desktop 55% a la izquierda) ===== -->
       <div class="flex-1 sm:flex-[3] min-w-0">
@@ -132,105 +132,6 @@
     const panel = document.getElementById('subnav-search-panel');
     const engine = window.SearchEngine;
     const items = Array.from(document.querySelectorAll('.carousel-item'));
-    const subnav = document.getElementById('subnav');
-
-    // ====== COLAPSO AL SCROLL CON ANIMACIÓN COMPLETA DE SECCIÓN E HISTÉRESIS ======
-    let lastScrollY = window.scrollY || 0;
-    let downAccumulator = 0;
-    let upAccumulator = 0;
-    let isTicking = false;
-    let isTransitioning = false;
-    let transitionTimeout = null;
-
-    const COLLAPSE_THRESHOLD = 50; // Requiere 50px continuos hacia abajo
-    const EXPAND_THRESHOLD = 30;   // Requiere 30px continuos hacia arriba
-    const TOP_DEADZONE = 100;      // En los primeros 100px siempre permanece abierto
-    const accentLine = document.getElementById('header-accent-line');
-    const header = document.querySelector('header');
-
-    function syncHeaderH() {
-      if (header) {
-        document.documentElement.style.setProperty('--headerh', header.offsetHeight + 'px');
-      }
-    }
-
-    function lockTransition() {
-      isTransitioning = true;
-      if (transitionTimeout) clearTimeout(transitionTimeout);
-      transitionTimeout = setTimeout(() => {
-        isTransitioning = false;
-        lastScrollY = window.scrollY;
-        syncHeaderH(); // Sincroniza la nueva altura del header tras el colapso/expansión
-      }, 400); // 380ms duración CSS + 20ms de margen
-    }
-
-    function collapse() {
-      if (!subnav || subnav.classList.contains('subnav-collapsed')) return;
-      subnav.classList.add('subnav-collapsed');
-      if (accentLine) accentLine.style.opacity = '0';
-      lockTransition();
-    }
-
-    function expand() {
-      if (!subnav || !subnav.classList.contains('subnav-collapsed')) return;
-      subnav.classList.remove('subnav-collapsed');
-      if (accentLine) accentLine.style.opacity = '1';
-      lockTransition();
-    }
-
-    window.addEventListener('load', syncHeaderH);
-    window.addEventListener('resize', syncHeaderH);
-
-    function onScrollUpdate() {
-      const currentY = window.scrollY;
-      const dy = currentY - lastScrollY;
-
-      // 1. Si está en plena animación de colapso/expansión, pausar para evitar bucles
-      if (isTransitioning) {
-        lastScrollY = currentY;
-        isTicking = false;
-        return;
-      }
-
-      // 2. Zona segura superior: siempre expandido
-      if (currentY <= TOP_DEADZONE) {
-        expand();
-        downAccumulator = 0;
-        upAccumulator = 0;
-        lastScrollY = currentY;
-        isTicking = false;
-        return;
-      }
-
-      // 3. Acumulación direccional de scroll
-      if (dy > 0) {
-        downAccumulator += dy;
-        upAccumulator = 0;
-
-        if (downAccumulator >= COLLAPSE_THRESHOLD) {
-          collapse();
-          downAccumulator = 0;
-        }
-      } else if (dy < 0) {
-        upAccumulator += Math.abs(dy);
-        downAccumulator = 0;
-
-        if (upAccumulator >= EXPAND_THRESHOLD) {
-          expand();
-          upAccumulator = 0;
-        }
-      }
-
-      lastScrollY = currentY;
-      isTicking = false;
-    }
-
-    window.addEventListener('scroll', () => {
-      if (!isTicking) {
-        window.requestAnimationFrame(onScrollUpdate);
-        isTicking = true;
-      }
-    }, { passive: true });
 
     let engineInstance = null;
     let currentQuery = '';
@@ -380,32 +281,5 @@
     grid-area: 1 / 1 / 2 / 2;
     width: max-content;
     max-width: 100%;
-  }
-
-  /* Animación completa de la sección SubNavbar mediante Grid Row Interpolation (de 1fr a 0fr) */
-  #subnav {
-    display: grid;
-    grid-template-rows: 1fr;
-    opacity: 1;
-    transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.28s ease;
-    will-change: grid-template-rows, opacity;
-  }
-
-  #subnav.subnav-collapsed {
-    grid-template-rows: 0fr;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  #subnav > .subnav-inner {
-    min-height: 0;
-    overflow: visible;
-    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  #subnav.subnav-collapsed > .subnav-inner {
-    overflow: hidden;
-    transform: translateY(-8px);
   }
 </style>

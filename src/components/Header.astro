@@ -1,6 +1,21 @@
 ---
 import CartDrawer from './CartDrawer.astro';
 import SubNavbar from './SubNavbar.astro';
+
+interface Props {
+  showCategoryBar?: boolean;
+  activeCategory?: string;
+}
+
+const { showCategoryBar = false, activeCategory = '' } = Astro.props;
+
+const storeCategories = [
+  { name: "Calzado", slug: "zapatos", emoji: "👟" },
+  { name: "Ropa", slug: "ropa", emoji: "👗" },
+  { name: "Bolsos y Mochilas", slug: "jackets", emoji: "🎒" },
+  { name: "Tecnología", slug: "tecnologia", emoji: "⚡" },
+  { name: "Accesorios", slug: "accesorios", emoji: "🕶️" }
+];
 ---
 
 <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#0e1019]/85 border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
@@ -66,8 +81,36 @@ import SubNavbar from './SubNavbar.astro';
 
   </div>
 
-  <!-- Sub-Navbar: Buscador + Carrusel de Mensajes (siempre visible al hacer scroll) -->
+  <!-- Sub-Navbar: Buscador + Carrusel de Mensajes (Siempre visible y fijo) -->
   <SubNavbar />
+
+  <!-- Barra de Categorías Integrada (Solo en catálogo/categorías, dentro del mismo sticky header para CERO superposición) -->
+  {showCategoryBar && (
+    <nav id="categorias-navbar" class="hidden md:block border-t border-white/[0.06] bg-[#07090e]/95 backdrop-blur-xl">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-center gap-1.5 py-2">
+          {storeCategories.map((cat, i) => (
+            <div class="flex items-center">
+              {i > 0 && <div class="h-3.5 mx-1.5" style="width: 1px; background: linear-gradient(to bottom, transparent, rgba(234,179,8,0.3), transparent);"></div>}
+              <a
+                href={`/tienda/${cat.slug}/`}
+                class={`text-xs sm:text-sm font-bold tracking-wide transition-all px-3 py-1 rounded-lg flex items-center gap-1.5 ${
+                  cat.slug === activeCategory 
+                    ? 'text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 shadow-[0_0_12px_rgba(234,179,8,0.15)]' 
+                    : 'text-slate-300 hover:text-yellow-400 hover:bg-white/[0.04]'
+                }`}
+              >
+                <span class="text-xs opacity-80">{cat.emoji}</span>
+                <span>{cat.name}</span>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+      <!-- Línea inferior de acento amarillo -->
+      <div class="h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent"></div>
+    </nav>
+  )}
 </header>
 
 <!-- Drawer Móvil -->
