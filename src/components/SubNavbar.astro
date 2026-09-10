@@ -134,11 +134,14 @@
     const items = Array.from(document.querySelectorAll('.carousel-item'));
     const subnav = document.getElementById('subnav');
 
-    // ====== COLAPSO AL SCROLL CON HISTÉRESIS Y RAF (Cero vibración, cero saltos) ======
+    // ====== COLAPSO AL SCROLL CON ANIMACIÓN COMPLETA DE SECCIÓN E HISTÉRESIS ======
     let lastScrollY = window.scrollY || 0;
     let downAccumulator = 0;
     let upAccumulator = 0;
     let isTicking = false;
+    let isTransitioning = false;
+    let transitionTimeout = null;
+
     const COLLAPSE_THRESHOLD = 50; // Requiere 50px continuos hacia abajo
     const EXPAND_THRESHOLD = 30;   // Requiere 30px continuos hacia arriba
     const TOP_DEADZONE = 100;      // En los primeros 100px siempre permanece abierto
@@ -151,16 +154,27 @@
       }
     }
 
+    function lockTransition() {
+      isTransitioning = true;
+      if (transitionTimeout) clearTimeout(transitionTimeout);
+      transitionTimeout = setTimeout(() => {
+        isTransitioning = false;
+        lastScrollY = window.scrollY;
+      }, 400); // 380ms duración CSS + 20ms de margen
+    }
+
     function collapse() {
       if (!subnav || subnav.classList.contains('subnav-collapsed')) return;
       subnav.classList.add('subnav-collapsed');
       if (accentLine) accentLine.style.opacity = '0';
+      lockTransition();
     }
 
     function expand() {
       if (!subnav || !subnav.classList.contains('subnav-collapsed')) return;
       subnav.classList.remove('subnav-collapsed');
       if (accentLine) accentLine.style.opacity = '1';
+      lockTransition();
     }
 
     window.addEventListener('load', syncHeaderH);
@@ -170,7 +184,14 @@
       const currentY = window.scrollY;
       const dy = currentY - lastScrollY;
 
-      // 1. Zona segura superior: siempre expandido
+      // 1. Si está en plena animación de colapso/expansión, pausar para evitar bucles
+      if (isTransitioning) {
+        lastScrollY = currentY;
+        isTicking = false;
+        return;
+      }
+
+      // 2. Zona segura superior: siempre expandido
       if (currentY <= TOP_DEADZONE) {
         expand();
         downAccumulator = 0;
@@ -180,7 +201,7 @@
         return;
       }
 
-      // 2. Acumulación direccional de scroll
+      // 3. Acumulación direccional de scroll
       if (dy > 0) {
         downAccumulator += dy;
         upAccumulator = 0;
@@ -360,26 +381,30 @@
     max-width: 100%;
   }
 
-  /* Animación GPU-only sin alterar la altura del layout ni provocar rebotes de scroll */
+  /* Animación completa de la sección SubNavbar mediante Grid Row Interpolation (de 1fr a 0fr) */
   #subnav {
-    transform: translateY(0);
+    display: grid;
+    grid-template-rows: 1fr;
     opacity: 1;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
-    will-change: transform, opacity;
+    transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.28s ease;
+    will-change: grid-template-rows, opacity;
   }
 
   #subnav.subnav-collapsed {
-    transform: translateY(-100%);
+    grid-template-rows: 0fr;
     opacity: 0;
     pointer-events: none;
   }
 
-  #subnav .subnav-items {
-    transition: opacity 0.2s ease, transform 0.25s ease;
+  #subnav > .subnav-inner {
+    min-height: 0;
+    overflow: visible;
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  #subnav.subnav-collapsed .subnav-items {
-    opacity: 0;
-    transform: translateY(-4px);
+  #subnav.subnav-collapsed > .subnav-inner {
+    overflow: hidden;
+    transform: translateY(-8px);
   }
 </style>
