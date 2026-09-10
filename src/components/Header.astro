@@ -89,9 +89,9 @@ const storeCategories = [
     </div>
   </div>
 
-  <!-- Barra de Categorías Integrada (Solo en catálogo/categorías, dentro del mismo sticky header para CERO superposición) -->
+  <!-- Barra de Categorías Integrada (Mismo fondo glass del header principal, CERO parches de color) -->
   {showCategoryBar && (
-    <nav id="categorias-navbar" class="hidden md:block border-t border-white/[0.06] bg-[#07090e]/95 backdrop-blur-xl">
+    <nav id="categorias-navbar" class="hidden md:block border-t border-white/[0.06] bg-transparent">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-center gap-1.5 py-2">
           {storeCategories.map((cat, i) => (
