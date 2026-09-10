@@ -5,7 +5,7 @@
 // Carrusel migrado del PHP original (5 mensajes) con diseño neo-dark premium.
 ---
 
-<div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md">
+<div id="subnav" class="bg-[#0a0d14]/95 backdrop-blur-md relative z-0">
   <div class="subnav-inner border-t border-white/[0.06] min-h-0">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3">
       <!-- En móvil (flex-col-reverse): El carrusel de mensajes arriba y el buscador siempre como ÚLTIMO elemento. En desktop (sm:flex-row): buscador izquierda, carrusel derecha -->
@@ -134,12 +134,13 @@
     const items = Array.from(document.querySelectorAll('.carousel-item'));
     const subnav = document.getElementById('subnav');
 
-    // ====== COLAPSO AL SCROLL CON HISTÉRESIS (Cero vibración, cero saltos) ======
+    // ====== COLAPSO AL SCROLL CON HISTÉRESIS Y RAF (Cero vibración, cero saltos) ======
     let lastScrollY = window.scrollY || 0;
     let downAccumulator = 0;
     let upAccumulator = 0;
-    const COLLAPSE_THRESHOLD = 45; // Requiere 45px de scroll descendente continuo
-    const EXPAND_THRESHOLD = 25;   // Requiere 25px de scroll ascendente continuo
+    let isTicking = false;
+    const COLLAPSE_THRESHOLD = 50; // Requiere 50px continuos hacia abajo
+    const EXPAND_THRESHOLD = 30;   // Requiere 30px continuos hacia arriba
     const TOP_DEADZONE = 100;      // En los primeros 100px siempre permanece abierto
     const accentLine = document.getElementById('header-accent-line');
     const header = document.querySelector('header');
@@ -165,33 +166,32 @@
     window.addEventListener('load', syncHeaderH);
     window.addEventListener('resize', syncHeaderH);
 
-    window.addEventListener('scroll', () => {
+    function onScrollUpdate() {
       const currentY = window.scrollY;
       const dy = currentY - lastScrollY;
 
-      // 1. Zona segura superior: siempre visible en el tope
+      // 1. Zona segura superior: siempre expandido
       if (currentY <= TOP_DEADZONE) {
         expand();
         downAccumulator = 0;
         upAccumulator = 0;
         lastScrollY = currentY;
+        isTicking = false;
         return;
       }
 
-      // 2. Acumuladores de histéresis direccional
+      // 2. Acumulación direccional de scroll
       if (dy > 0) {
-        // Scroll hacia abajo
         downAccumulator += dy;
-        upAccumulator = 0; // Reiniciar dirección opuesta
+        upAccumulator = 0;
 
         if (downAccumulator >= COLLAPSE_THRESHOLD) {
           collapse();
           downAccumulator = 0;
         }
       } else if (dy < 0) {
-        // Scroll hacia arriba
         upAccumulator += Math.abs(dy);
-        downAccumulator = 0; // Reiniciar dirección opuesta
+        downAccumulator = 0;
 
         if (upAccumulator >= EXPAND_THRESHOLD) {
           expand();
@@ -200,6 +200,14 @@
       }
 
       lastScrollY = currentY;
+      isTicking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!isTicking) {
+        window.requestAnimationFrame(onScrollUpdate);
+        isTicking = true;
+      }
     }, { passive: true });
 
     let engineInstance = null;
@@ -352,22 +360,18 @@
     max-width: 100%;
   }
 
+  /* Animación GPU-only sin alterar la altura del layout ni provocar rebotes de scroll */
   #subnav {
-    overflow: hidden;
-    max-height: 120px;
-    opacity: 1;
     transform: translateY(0);
-    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease,
-                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: max-height, opacity, transform;
+    opacity: 1;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    will-change: transform, opacity;
   }
 
   #subnav.subnav-collapsed {
-    max-height: 0px !important;
-    opacity: 0 !important;
-    transform: translateY(-8px) !important;
-    pointer-events: none !important;
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
   }
 
   #subnav .subnav-items {
@@ -376,6 +380,6 @@
 
   #subnav.subnav-collapsed .subnav-items {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-4px);
   }
 </style>
