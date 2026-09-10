@@ -312,8 +312,8 @@ const storeCategories = [
     let isTransitioning = false;
     let transitionTimer: any = null;
 
-    const COLLAPSE_THRESHOLD = 50; // 50px continuos hacia abajo para colapsar
-    const EXPAND_THRESHOLD = 30;   // 30px continuos hacia arriba para expandir
+    const COLLAPSE_THRESHOLD = 60; // 60px continuos hacia abajo para colapsar
+    const EXPAND_THRESHOLD = 60;   // 60px continuos hacia arriba para expandir
     const TOP_DEADZONE = 100;      // En los primeros 100px siempre permanece expandido
 
     function lockTransition() {
@@ -323,7 +323,7 @@ const storeCategories = [
         isTransitioning = false;
         lastScrollY = window.scrollY;
         syncHeaderHeight();
-      }, 380);
+      }, 550); // 520ms duración CSS fluida + 30ms de margen seguro
     }
 
     function collapseTop() {
@@ -394,8 +394,8 @@ const storeCategories = [
     display: grid;
     grid-template-rows: 1fr;
     opacity: 1;
-    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease;
+    transition: grid-template-rows 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: grid-template-rows, opacity;
   }
 
