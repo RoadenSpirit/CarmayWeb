@@ -160,6 +160,7 @@
       transitionTimeout = setTimeout(() => {
         isTransitioning = false;
         lastScrollY = window.scrollY;
+        syncHeaderH(); // Sincroniza la nueva altura del header tras el colapso/expansión
       }, 400); // 380ms duración CSS + 20ms de margen
     }
 
