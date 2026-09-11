@@ -5,7 +5,7 @@
 // Carrusel migrado del PHP original (5 mensajes) con diseño neo-dark premium.
 ---
 
-<div id="subnav" class="border-t border-white/[0.06] bg-transparent">
+<div id="subnav" class="border-t border-white/[0.08] bg-white/[0.015] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
   <div class="subnav-inner">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
       <!-- En móvil (flex-col-reverse): El carrusel de mensajes arriba y el buscador siempre como ÚLTIMO elemento. En desktop (sm:flex-row): buscador izquierda, carrusel derecha -->
@@ -14,7 +14,7 @@
       <!-- ===== BUSCADOR (En móvil es el último elemento inferior por flex-col-reverse, en desktop 55% a la izquierda) ===== -->
       <div class="flex-1 sm:flex-[3] min-w-0">
         <div class="relative">
-          <form id="subnav-search-form" class="flex items-center gap-2 w-full rounded-full border-2 border-white/30 bg-white/[0.08] px-3.5 py-2 focus-within:border-white/50 focus-within:bg-white/[0.12] focus-within:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all">
+          <form id="subnav-search-form" class="flex items-center gap-2 w-full rounded-full border border-white/20 bg-black/35 backdrop-blur-md px-3.5 py-2 focus-within:border-amber-400/50 focus-within:bg-black/50 focus-within:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
             <input
               type="text"
               id="subnav-search-input"
@@ -45,13 +45,13 @@
           </form>
 
           <!-- Panel desplegable de resultados -->
-          <div id="subnav-search-panel" class="hidden absolute left-0 right-0 top-full mt-3 bg-[#12141c] rounded-2xl border-2 border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.9)] p-3 max-h-[70vh] overflow-y-auto z-50 scrollbar-hide"></div>
+          <div id="subnav-search-panel" class="hidden absolute left-0 right-0 top-full mt-3 bg-[#12141c]/95 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.9)] p-3 max-h-[70vh] overflow-y-auto z-50 scrollbar-hide"></div>
         </div>
       </div>
 
       <!-- ===== CARRUSEL DE VALOR (Auto-ajustado milimétricamente al texto más largo con CSS Grid Overlap) ===== -->
       <div class="flex-shrink-0 w-fit max-w-full flex justify-center sm:justify-end">
-        <div class="carousel-container relative overflow-hidden h-9 rounded-lg border border-white/20 bg-white/[0.06] px-3">
+        <div class="carousel-container relative overflow-hidden h-9 rounded-lg border border-white/15 bg-black/25 backdrop-blur-md px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
           
           <!-- Grid wrapper donde todos los items comparten la misma celda (1/1) determinando el tamaño exacto sin desperdicio -->
           <div class="carousel-grid h-full items-center">
