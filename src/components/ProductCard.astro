@@ -319,10 +319,11 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
 </script>
 
 <style>
-  /* Transición de elevación en hover una vez que la tarjeta ya se ha revelado en pantalla */
-  .product-card-item.is-revealed {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+  /* Transición fluida de entrada (opacity + transform) combinada con elevación suave en hover */
+  .product-card-item {
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.3s ease-out,
-                border-color 0.3s ease-out !important;
+                border-color 0.3s ease-out;
   }
 </style>

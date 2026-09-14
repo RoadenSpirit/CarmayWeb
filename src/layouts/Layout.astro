@@ -62,9 +62,25 @@ const catalogJson = JSON.stringify(searchableData);
 
         let observer = null;
 
-        function createObserver() {
+        function initAnimations() {
           if (observer) observer.disconnect();
 
+          const elements = Array.from(document.querySelectorAll('.reveal-on-scroll, .reveal-scale, .reveal-fade'));
+          const windowHeight = window.innerHeight;
+
+          // 1. Elementos ya visibles al cargar la página (Above the Fold):
+          // Se revelan de forma secuenciada tras un breve instante para que la entrada sea visible ante los ojos del usuario
+          elements.forEach((el, index) => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < windowHeight - 40 && !el.classList.contains('is-revealed')) {
+              setTimeout(() => {
+                el.classList.add('is-revealed');
+              }, 80 + Math.min(index * 60, 400));
+            }
+          });
+
+          // 2. Elementos bajo el scroll (Below the Fold):
+          // Se observan para animarse cuando el usuario desciende hacia ellos
           observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
@@ -74,34 +90,27 @@ const catalogJson = JSON.stringify(searchableData);
               }
             });
           }, {
-            threshold: 0.05,
-            rootMargin: '0px 0px -20px 0px'
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
           });
 
-          const elements = document.querySelectorAll('.reveal-on-scroll, .reveal-scale, .reveal-fade');
           elements.forEach(el => {
-            // Si no está ya revelado, observarlo
             if (!el.classList.contains('is-revealed')) {
               observer.observe(el);
             }
           });
         }
 
-        // Dar un frame para que el navegador pinte el estado inicial con opacity:0 antes de observar
-        function start() {
-          requestAnimationFrame(() => {
-            setTimeout(createObserver, 60);
-          });
-        }
-
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', start);
+          document.addEventListener('DOMContentLoaded', () => {
+            requestAnimationFrame(() => setTimeout(initAnimations, 50));
+          });
         } else {
-          start();
+          requestAnimationFrame(() => setTimeout(initAnimations, 50));
         }
 
-        // Re-observar si se filtran o renderizan nuevos elementos
-        window.addEventListener('carmay-refresh-reveals', createObserver);
+        // Re-observar cuando se aplican filtros o se inyectan nuevos elementos
+        window.addEventListener('carmay-refresh-reveals', initAnimations);
       })();
     </script>
   </body>
@@ -127,15 +136,15 @@ const catalogJson = JSON.stringify(searchableData);
   /* Animaciones Scroll Reveal con Easing Profesional Quintic (Impeccable Motion System) */
   .reveal-on-scroll {
     opacity: 0 !important;
-    transform: translateY(32px) !important;
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transform: translateY(40px) !important;
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
     will-change: opacity, transform;
   }
 
   .reveal-scale {
     opacity: 0 !important;
-    transform: scale(0.95) !important;
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transform: scale(0.94) !important;
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
     will-change: opacity, transform;
   }
 
