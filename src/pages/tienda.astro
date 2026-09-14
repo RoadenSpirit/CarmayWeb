@@ -88,18 +88,19 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
       </p>
     </div>
 
-    <!-- Cards de categoría -->
+    <!-- Cards de categoría con animación escalonada -->
     <div class="w-full max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 px-4">
-      {storeCategories.map((cat) => (
+      {storeCategories.map((cat, idx) => (
         <a
           href={`/tienda/${cat.slug}/`}
-          class="group relative rounded-2xl overflow-hidden
+          class={`group relative rounded-2xl overflow-hidden
             bg-[#0f1120]/80 backdrop-blur-sm
             border border-white/[0.08]
             shadow-[0_8px_32px_rgba(255,255,255,0.06),0_2px_60px_rgba(0,0,0,0.6)]
             hover:shadow-[0_12px_48px_rgba(234,179,8,0.12),0_2px_60px_rgba(0,0,0,0.6)]
-            hover:-translate-y-1
-            transition-[transform,box-shadow] duration-300 ease-out">
+            hover:-translate-y-1.5
+            transition-[transform,box-shadow] duration-300 ease-out
+            reveal-on-scroll reveal-delay-${(idx % 3) + 1}`}>
           <!-- Halo dorado en hover -->
           <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
             style="box-shadow: inset 0 0 0 1px rgba(234,179,8,0.15);"></div>

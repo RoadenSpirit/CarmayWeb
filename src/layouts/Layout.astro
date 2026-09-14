@@ -55,7 +55,7 @@ const catalogJson = JSON.stringify(searchableData);
     <!-- Índice global del catálogo para el buscador (SubNavbar) -->
     <script id="catalog-data" type="application/json" set:html={catalogJson}></script>
 
-    <!-- Script de Animaciones de Entrada Suave (Scroll Reveal acelerado por GPU - Impeccable Motion) -->
+    <!-- Script de Animaciones de Entrada Suave (Scroll Reveal con Keyframes acelerados por GPU) -->
     <script is:inline>
       (function() {
         if (typeof window === 'undefined') return;
@@ -65,51 +65,31 @@ const catalogJson = JSON.stringify(searchableData);
         function initAnimations() {
           if (observer) observer.disconnect();
 
-          const elements = Array.from(document.querySelectorAll('.reveal-on-scroll, .reveal-scale, .reveal-fade'));
-          const windowHeight = window.innerHeight;
-
-          // 1. Elementos ya visibles al cargar la página (Above the Fold):
-          // Se revelan de forma secuenciada tras un breve instante para que la entrada sea visible ante los ojos del usuario
-          elements.forEach((el, index) => {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < windowHeight - 40 && !el.classList.contains('is-revealed')) {
-              setTimeout(() => {
-                el.classList.add('is-revealed');
-              }, 80 + Math.min(index * 60, 400));
-            }
-          });
-
-          // 2. Elementos bajo el scroll (Below the Fold):
-          // Se observan para animarse cuando el usuario desciende hacia ellos
           observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
-                const el = entry.target;
-                el.classList.add('is-revealed');
-                observer.unobserve(el);
+                entry.target.classList.add('is-revealed');
+                observer.unobserve(entry.target);
               }
             });
           }, {
             threshold: 0.1,
-            rootMargin: '0px 0px -40px 0px'
+            rootMargin: '0px 0px -30px 0px'
           });
 
+          const elements = document.querySelectorAll('.reveal-on-scroll, .reveal-scale, .reveal-fade');
           elements.forEach(el => {
-            if (!el.classList.contains('is-revealed')) {
-              observer.observe(el);
-            }
+            observer.observe(el);
           });
         }
 
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', () => {
-            requestAnimationFrame(() => setTimeout(initAnimations, 50));
-          });
+          document.addEventListener('DOMContentLoaded', initAnimations);
         } else {
-          requestAnimationFrame(() => setTimeout(initAnimations, 50));
+          initAnimations();
         }
 
-        // Re-observar cuando se aplican filtros o se inyectan nuevos elementos
+        // Re-observar cuando se filtren productos o cambie el contenido
         window.addEventListener('carmay-refresh-reveals', initAnimations);
       })();
     </script>
@@ -133,51 +113,73 @@ const catalogJson = JSON.stringify(searchableData);
     text-wrap: balance;
   }
 
-  /* Animaciones Scroll Reveal con Easing Profesional Quintic (Impeccable Motion System) */
+  /* Animaciones Scroll Reveal con Keyframes Profesionales Quintic (Infalibles y 100% en GPU) */
+  @keyframes revealFadeUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes revealScaleIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.93);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes revealFadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
   .reveal-on-scroll {
-    opacity: 0 !important;
-    transform: translateY(40px) !important;
-    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    will-change: opacity, transform;
+    opacity: 0;
   }
 
   .reveal-scale {
-    opacity: 0 !important;
-    transform: scale(0.94) !important;
-    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    will-change: opacity, transform;
+    opacity: 0;
   }
 
   .reveal-fade {
-    opacity: 0 !important;
-    transition: opacity 0.5s ease-out !important;
-    will-change: opacity;
+    opacity: 0;
   }
 
-  .reveal-on-scroll.is-revealed,
-  .reveal-scale.is-revealed,
+  .reveal-on-scroll.is-revealed {
+    animation: revealFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+
+  .reveal-scale.is-revealed {
+    animation: revealScaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+
   .reveal-fade.is-revealed {
-    opacity: 1 !important;
-    transform: translateY(0) scale(1) !important;
+    animation: revealFadeIn 0.5s ease-out forwards !important;
   }
 
   /* Retrasos escalonados rítmicos para listas y cuadrículas de cards (Stagger Cascade) */
-  .reveal-delay-1 { transition-delay: 60ms !important; }
-  .reveal-delay-2 { transition-delay: 130ms !important; }
-  .reveal-delay-3 { transition-delay: 200ms !important; }
-  .reveal-delay-4 { transition-delay: 270ms !important; }
-  .reveal-delay-5 { transition-delay: 340ms !important; }
-  .reveal-delay-6 { transition-delay: 410ms !important; }
+  .reveal-delay-1.is-revealed { animation-delay: 60ms !important; }
+  .reveal-delay-2.is-revealed { animation-delay: 130ms !important; }
+  .reveal-delay-3.is-revealed { animation-delay: 200ms !important; }
+  .reveal-delay-4.is-revealed { animation-delay: 270ms !important; }
+  .reveal-delay-5.is-revealed { animation-delay: 340ms !important; }
+  .reveal-delay-6.is-revealed { animation-delay: 410ms !important; }
 
-  /* Desactivar animaciones si el usuario prefiere reducción de movimiento */
-  @media (prefers-reduced-motion: reduce) {
-    .reveal-on-scroll,
-    .reveal-scale,
-    .reveal-fade {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
+  /* Transición de carga suave para todas las imágenes de productos */
+  img {
+    transition: opacity 0.4s ease;
   }
 
   /* Neo-style glass cards */
