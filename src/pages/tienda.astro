@@ -125,7 +125,7 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
   <section id="productos-section" class="py-12 sm:py-20 border-t border-white/[0.04]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header de sección -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-white/[0.06]">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-white/[0.06] reveal-on-scroll">
         <div>
           <span class="text-xs font-black text-amber-400 uppercase tracking-widest block mb-2 drop-shadow-[0_2px_8px_rgba(234,179,8,0.2)]">CATÁLOGO CURADO</span>
           <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-[0_4px_15px_rgba(255,255,255,0.05)]">
@@ -138,15 +138,17 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
       </div>
 
       <!-- Barra Interactiva de Filtros: Tags (Rebaja/Tendencias) y Selector de Presupuesto con Slider Dual CUP -->
-      <CatalogFilterBar 
-        minPriceCUP={minCatalogPriceCUP}
-        maxPriceCUP={maxCatalogPriceCUP}
-        totalProducts={sortedCatalogProducts.length}
-      />
+      <div class="reveal-on-scroll reveal-delay-1">
+        <CatalogFilterBar 
+          minPriceCUP={minCatalogPriceCUP}
+          maxPriceCUP={maxCatalogPriceCUP}
+          totalProducts={sortedCatalogProducts.length}
+        />
+      </div>
 
-      <!-- Grid de productos -->
+      <!-- Grid de productos con Cascada Stagger -->
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {sortedCatalogProducts.map((product) => (
+        {sortedCatalogProducts.map((product, idx) => (
           <ProductCard
             title={product.name}
             price={product.priceFormatted}
@@ -164,6 +166,7 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
             stockQuantity={product.stockQuantity}
             isInStock={product.isInStock}
             permalink={`/producto/${product.slug}/`}
+            revealDelayClass={`reveal-delay-${(idx % 4) + 1}`}
           />
         ))}
 

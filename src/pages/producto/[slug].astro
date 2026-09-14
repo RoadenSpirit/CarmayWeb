@@ -61,9 +61,9 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
       <!-- ============= COLUMNA IZQUIERDA: GALERÍA DE IMÁGENES ============= -->
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4 reveal-scale">
         <!-- Imagen Principal -->
-        <div class="relative rounded-3xl overflow-hidden border border-white/[0.08] bg-[#0f1120]/80 backdrop-blur-sm shadow-[0_8px_32px_rgba(255,255,255,0.06),0_2px_60px_rgba(0,0,0,0.6)]">
+        <div class="relative rounded-3xl overflow-hidden border border-white/[0.08] bg-[#0f1120]/80 backdrop-blur-sm shadow-[0_8px_32px_rgba(255,255,255,0.06),0_2px_60px_rgba(0,0,0,0.6)] group">
           <!-- Badges sobre imagen -->
           <div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
             {product.isOnSale && (
@@ -73,24 +73,24 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
             )}
           </div>
 
-          <!-- Imagen grande -->
+          <!-- Imagen grande con micro-zoom en hover -->
           <img
             id="main-image"
             src={product.primaryImage}
             alt={product.name}
             width="800"
             height="800"
-            class="w-full aspect-square object-cover object-center"
+            class="w-full aspect-square object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
           />
         </div>
 
         <!-- Miniaturas (solo si hay más de 1 imagen) -->
         {product.hasMultipleImages && (
-          <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+          <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide reveal-on-scroll reveal-delay-1">
             {product.images.map((img, i) => (
               <button
                 data-thumb={img}
-                class={`thumb-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 ${i === 0 ? 'border-amber-400 shadow-[0_0_15px_rgba(234,179,8,0.3)]' : 'border-white/10 hover:border-amber-400/50'}`}
+                class={`thumb-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 active:scale-95 ${i === 0 ? 'border-amber-400 shadow-[0_0_15px_rgba(234,179,8,0.3)]' : 'border-white/10 hover:border-amber-400/50'}`}
               >
                 <img
                   src={img}
@@ -107,7 +107,7 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
       </div>
 
       <!-- ============= COLUMNA DERECHA: INFORMACIÓN DEL PRODUCTO ============= -->
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6 reveal-on-scroll reveal-delay-1">
         <!-- Categoría -->
         {(product.categoryName || product.categories[0]?.name) && (
           <a href={`/tienda/${product.categorySlug || product.categories[0]?.slug || 'general'}/`}
@@ -236,17 +236,17 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
         <div>
           <label class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 block">Cantidad</label>
           <div class="flex items-center gap-4">
-            <button id="qty-minus" class="w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-xl hover:border-amber-400/50 hover:text-amber-400 transition-all duration-200 flex items-center justify-center">
+            <button id="qty-minus" class="w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-xl hover:border-amber-400/50 hover:text-amber-400 active:scale-90 transition-all duration-150 flex items-center justify-center cursor-pointer">
               &minus;
             </button>
-            <span id="qty-value" class="text-xl font-bold text-white min-w-[40px] text-center">1</span>
-            <button id="qty-plus" class="w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-xl hover:border-amber-400/50 hover:text-amber-400 transition-all duration-200 flex items-center justify-center">
+            <span id="qty-value" class="text-xl font-bold text-white min-w-[40px] text-center font-mono">1</span>
+            <button id="qty-plus" class="w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-xl hover:border-amber-400/50 hover:text-amber-400 active:scale-90 transition-all duration-150 flex items-center justify-center cursor-pointer">
               +
             </button>
           </div>
         </div>
 
-        <!-- Botón Agregar al Carrito -->
+        <!-- Botón Agregar al Carrito con micro-interacción de pulsación -->
         <button
           id="add-to-cart"
           disabled={!product.isInStock}
@@ -258,9 +258,9 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
             priceUSD: product.price,
             priceCUP: product.priceCUP,
           })}
-          class={`w-full py-4 px-6 rounded-2xl font-extrabold text-lg uppercase tracking-wider transition-all duration-300 border border-white/[0.06]
+          class={`w-full py-4 px-6 rounded-2xl font-extrabold text-lg uppercase tracking-wider transition-all duration-300 border border-white/[0.06] active:scale-[0.98]
             ${product.isInStock
-              ? 'bg-gradient-to-r from-purple-700 to-purple-900 hover:from-yellow-600 hover:to-yellow-800 text-white shadow-[0_4px_20px_rgba(168,85,247,0.3)] hover:shadow-[0_6px_30px_rgba(234,179,8,0.3)] cursor-pointer'
+              ? 'bg-gradient-to-r from-purple-700 to-purple-900 hover:from-yellow-600 hover:to-yellow-800 hover:scale-[1.01] text-white shadow-[0_4px_20px_rgba(168,85,247,0.3)] hover:shadow-[0_8px_32px_rgba(234,179,8,0.35)] cursor-pointer'
               : 'bg-slate-700 text-slate-500 cursor-not-allowed shadow-none'}`}
         >
           {product.isInStock ? '🛒 Agregar al Carrito' : 'Agotado'}
@@ -286,7 +286,7 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
   </section>
 
   <!-- ===== DESCRIPCIÓN ===== -->
-  <section class="pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal-on-scroll">
     <div class="bg-[#0f1120]/80 backdrop-blur-sm rounded-3xl p-6 sm:p-10 border border-white/[0.08] shadow-[0_8px_32px_rgba(255,255,255,0.06),0_2px_60px_rgba(0,0,0,0.6)]">
       <h2 class="text-2xl font-extrabold text-white mb-6" style="font-family: 'Outfit', sans-serif;">
         Descripción del Producto
@@ -303,13 +303,13 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
 
   <!-- ===== PRODUCTOS RELACIONADOS ===== -->
   {relatedFiltered.length > 0 && (
-    <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-white/[0.06]">
+    <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-white/[0.06] reveal-on-scroll">
       <div class="mb-10">
         <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">También te puede interesar</span>
         <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Productos Relacionados</h2>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {relatedFiltered.map((p) => (
+        {relatedFiltered.map((p, idx) => (
           <ProductCard
             title={p.name}
             price={p.priceFormatted}
@@ -325,6 +325,7 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
             slug={p.slug}
             isTrending={p.isTrending}
             permalink={`/producto/${p.slug}/`}
+            revealDelayClass={`reveal-delay-${(idx % 4) + 1}`}
           />
         ))}
       </div>

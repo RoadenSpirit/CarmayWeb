@@ -64,8 +64,8 @@ const categoryName = currentCategory ? currentCategory.name : category;
   <!-- ============= SECTION: PRODUCTOS FILTRADOS ============= -->
   <section id="productos-section" class="py-12 sm:py-16 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header de sección -->
-    <div class="text-center mb-8 sm:mb-12 pb-8 border-b border-white/[0.06]">
+    <!-- Header de sección con reveal -->
+    <div class="text-center mb-8 sm:mb-12 pb-8 border-b border-white/[0.06] reveal-on-scroll">
       <span class="text-xs font-black text-amber-400 uppercase tracking-widest block mb-3 drop-shadow-[0_2px_8px_rgba(234,179,8,0.2)]">{categoryName}</span>
       <h1 class="text-3xl sm:text-5xl font-black tracking-widest mb-4 drop-shadow-[0_4px_20px_rgba(234,179,8,0.15)]"
         style="background: linear-gradient(to right, #D4AF37, #F5D76B);
@@ -79,16 +79,18 @@ const categoryName = currentCategory ? currentCategory.name : category;
       </p>
     </div>
 
-    <!-- Barra Interactiva de Filtros: Tags (Rebaja/Tendencias) y Selector de Presupuesto con Slider Dual CUP -->
-    <CatalogFilterBar 
-      minPriceCUP={minCatPriceCUP}
-      maxPriceCUP={maxCatPriceCUP}
-      totalProducts={sortedProducts.length}
-    />
+    <!-- Barra Interactiva de Filtros con animación -->
+    <div class="reveal-on-scroll reveal-delay-1">
+      <CatalogFilterBar 
+        minPriceCUP={minCatPriceCUP}
+        maxPriceCUP={maxCatPriceCUP}
+        totalProducts={sortedProducts.length}
+      />
+    </div>
 
-      <!-- Grid de productos -->
+      <!-- Grid de productos con Cascada Stagger -->
       <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {sortedProducts.map((product) => (
+        {sortedProducts.map((product, idx) => (
           <ProductCard
             title={product.name}
             price={product.priceFormatted}
@@ -106,6 +108,7 @@ const categoryName = currentCategory ? currentCategory.name : category;
             stockQuantity={product.stockQuantity}
             isInStock={product.isInStock}
             permalink={`/producto/${product.slug}/`}
+            revealDelayClass={`reveal-delay-${(idx % 4) + 1}`}
           />
         ))}
 

@@ -232,12 +232,17 @@ const storeCategories = [
     const countEl = document.getElementById('header-cart-count');
     const mobileCountEl = document.getElementById('mobile-cart-badge');
 
-    if (countEl) {
-      countEl.textContent = String(totalUnits);
+    function animateBadge(el: HTMLElement | null) {
+      if (!el) return;
+      el.textContent = String(totalUnits);
+      el.classList.add('scale-125', 'brightness-125');
+      setTimeout(() => {
+        el.classList.remove('scale-125', 'brightness-125');
+      }, 250);
     }
-    if (mobileCountEl) {
-      mobileCountEl.textContent = String(totalUnits);
-    }
+
+    animateBadge(countEl);
+    animateBadge(mobileCountEl);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
