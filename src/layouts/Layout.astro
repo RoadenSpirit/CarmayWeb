@@ -73,11 +73,13 @@ const catalogJson = JSON.stringify(searchableData);
               }
             });
           }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -30px 0px'
+            threshold: 0.08,
+            rootMargin: '0px 0px -20px 0px'
           });
 
-          const elements = document.querySelectorAll('.reveal-on-scroll, .reveal-scale, .reveal-fade');
+          const elements = document.querySelectorAll(
+            '.reveal-on-scroll, .reveal-scale, .reveal-card, .reveal-pop, .reveal-slide-right, .reveal-slide-left, .reveal-blur-fade, .reveal-fade'
+          );
           elements.forEach(el => {
             observer.observe(el);
           });
@@ -113,11 +115,16 @@ const catalogJson = JSON.stringify(searchableData);
     text-wrap: balance;
   }
 
-  /* Animaciones Scroll Reveal con Keyframes Profesionales Quintic (Infalibles y 100% en GPU) */
+  /* ==========================================================================
+     Sistema de Animaciones Especializadas Impeccable Motion (100% GPU)
+     Distancias controladas para fluidez en escritorio y suavidad en móvil
+     ========================================================================== */
+
+  /* 1. Reveal Fade Up: Para textos, títulos y párrafos */
   @keyframes revealFadeUp {
     0% {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(28px);
     }
     100% {
       opacity: 1;
@@ -125,14 +132,80 @@ const catalogJson = JSON.stringify(searchableData);
     }
   }
 
+  /* 2. Reveal Scale: Para logos, imágenes focales y categorías (profundidad 3D) */
   @keyframes revealScaleIn {
     0% {
       opacity: 0;
-      transform: scale(0.93);
+      transform: scale(0.92);
     }
     100% {
       opacity: 1;
       transform: scale(1);
+    }
+  }
+
+  /* 3. Reveal Card: Para tarjetas de producto (subida corta con escala sutil) */
+  @keyframes revealCardIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* 4. Reveal Pop: Para badges, pills, precios y botones de llamada a la acción */
+  @keyframes revealPopIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.86);
+    }
+    70% {
+      transform: scale(1.03);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* 5. Reveal Slide Right: Para items de valor (flujo direccional) */
+  @keyframes revealSlideRightIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* 6. Reveal Slide Left: Para testimonios intercalados */
+  @keyframes revealSlideLeftIn {
+    0% {
+      opacity: 0;
+      transform: translateX(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* 7. Reveal Blur Fade: Enfoque cinematográfico para banners y visión */
+  @keyframes revealBlurFadeIn {
+    0% {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(16px);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translateY(0);
     }
   }
 
@@ -145,37 +218,82 @@ const catalogJson = JSON.stringify(searchableData);
     }
   }
 
-  .reveal-on-scroll {
-    opacity: 0;
-  }
-
-  .reveal-scale {
-    opacity: 0;
-  }
-
+  /* Estados iniciales (invisibles antes de llegar al viewport) */
+  .reveal-on-scroll,
+  .reveal-scale,
+  .reveal-card,
+  .reveal-pop,
+  .reveal-slide-right,
+  .reveal-slide-left,
+  .reveal-blur-fade,
   .reveal-fade {
     opacity: 0;
   }
 
+  /* Disparadores de animación al entrar al viewport */
   .reveal-on-scroll.is-revealed {
-    animation: revealFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    animation: revealFadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
   }
 
   .reveal-scale.is-revealed {
-    animation: revealScaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    animation: revealScaleIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+
+  .reveal-card.is-revealed {
+    animation: revealCardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+
+  .reveal-pop.is-revealed {
+    animation: revealPopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+
+  .reveal-slide-right.is-revealed {
+    animation: revealSlideRightIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+
+  .reveal-slide-left.is-revealed {
+    animation: revealSlideLeftIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+
+  .reveal-blur-fade.is-revealed {
+    animation: revealBlurFadeIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
   }
 
   .reveal-fade.is-revealed {
     animation: revealFadeIn 0.5s ease-out forwards !important;
   }
 
-  /* Retrasos escalonados rítmicos para listas y cuadrículas de cards (Stagger Cascade) */
+  /* Retrasos escalonados armónicos (Stagger Cascade) */
   .reveal-delay-1.is-revealed { animation-delay: 60ms !important; }
   .reveal-delay-2.is-revealed { animation-delay: 130ms !important; }
   .reveal-delay-3.is-revealed { animation-delay: 200ms !important; }
   .reveal-delay-4.is-revealed { animation-delay: 270ms !important; }
   .reveal-delay-5.is-revealed { animation-delay: 340ms !important; }
   .reveal-delay-6.is-revealed { animation-delay: 410ms !important; }
+
+  /* Ajustes para móviles: reducimos desplazamiento y desactivamos blur para 60fps constantes */
+  @media (max-width: 640px) {
+    @keyframes revealFadeUp {
+      0% { opacity: 0; transform: translateY(14px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes revealCardIn {
+      0% { opacity: 0; transform: translateY(12px) scale(0.99); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes revealSlideRightIn {
+      0% { opacity: 0; transform: translateX(-12px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes revealSlideLeftIn {
+      0% { opacity: 0; transform: translateX(12px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes revealBlurFadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  }
 
   /* Transición de carga suave para todas las imágenes de productos */
   img {

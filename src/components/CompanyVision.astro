@@ -15,10 +15,10 @@
   <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-16 items-center">
       
-      <!-- Columna Izquierda: Logo centrado grande + Imagen institucional limpia -->
+      <!-- Columna Izquierda: Logo centrado grande con reveal-blur-fade + Imagen con reveal-scale -->
       <div class="lg:col-span-5 flex flex-col items-center gap-6">
-        <!-- Logo centrado para máxima presencia de marca -->
-        <div class="w-full flex justify-center py-2">
+        <!-- Logo centrado con entrada cinematográfica blur-fade -->
+        <div class="w-full flex justify-center py-2 reveal-blur-fade">
           <img 
             src="/logo.png" 
             alt="Carmay Outfit" 
@@ -26,8 +26,8 @@
           />
         </div>
 
-        <!-- Imagen Institucional limpia sin agregados -->
-        <div class="w-full relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] border border-white/15">
+        <!-- Imagen Institucional limpia con reveal-scale -->
+        <div class="w-full relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] border border-white/15 reveal-scale reveal-delay-2">
           <img 
             src="/tienda-fisica.png" 
             alt="Tienda Física Carmay Outfit en Camagüey" 
@@ -40,10 +40,10 @@
         </div>
       </div>
 
-      <!-- Columna Derecha: Contenido editorial y visión empresarial -->
+      <!-- Columna Derecha: Contenido editorial y visión con reveal-fade-up y reveal-pop -->
       <div class="lg:col-span-7 space-y-6 sm:space-y-8">
         <!-- Encabezado / Título de la sección -->
-        <div>
+        <div class="reveal-on-scroll">
           <span class="text-xs sm:text-sm font-semibold text-amber-400 tracking-wider uppercase block mb-2">
             Sobre Nosotros
           </span>
@@ -53,16 +53,16 @@
         </div>
 
         <!-- Subtítulo de propuesta de valor -->
-        <h3 class="text-lg sm:text-2xl font-bold text-amber-300/90 tracking-wide leading-snug">
+        <h3 class="text-lg sm:text-2xl font-bold text-amber-300/90 tracking-wide leading-snug reveal-on-scroll reveal-delay-1">
           La tienda más completa de Camagüey
         </h3>
 
-        <p class="text-gray-200 text-base sm:text-lg lg:text-xl leading-relaxed font-normal">
+        <p class="text-gray-200 text-base sm:text-lg lg:text-xl leading-relaxed font-normal reveal-on-scroll reveal-delay-2">
           Somos una tienda camagüeyana pensada en resolver tus necesidades diarias de ropa, calzado y equipamiento con un catálogo variado para todos. Creemos que la innovación no debe tener fronteras, y estamos aquí para que tu día a día sea más cómodo y con estilo.
         </p>
 
-        <!-- Bloque destacado sutil para la frase clave -->
-        <div class="relative overflow-hidden rounded-2xl p-5 sm:p-7 shadow-2xl border border-purple-500/40 bg-gradient-to-r from-purple-900/60 via-[#261536]/80 to-purple-950/70 backdrop-blur-md">
+        <!-- Bloque destacado sutil para la frase clave: reveal-blur-fade -->
+        <div class="relative overflow-hidden rounded-2xl p-5 sm:p-7 shadow-2xl border border-purple-500/40 bg-gradient-to-r from-purple-900/60 via-[#261536]/80 to-purple-950/70 backdrop-blur-md reveal-blur-fade reveal-delay-3">
           <div class="absolute left-0 top-0 bottom-0 w-2 bg-[#6d1e68]"></div>
           <div class="absolute -right-10 -top-10 w-36 h-36 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
           <p class="relative z-10 text-white text-base sm:text-lg lg:text-xl leading-relaxed font-semibold italic tracking-wide sm:tracking-wider pl-3 drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]" style="font-family: 'Playfair Display', serif;">
@@ -70,8 +70,8 @@
           </p>
         </div>
 
-        <!-- Cifras métricas enriquecidas -->
-        <div class="pt-4 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
+        <!-- Cifras métricas enriquecidas: reveal-pop -->
+        <div class="pt-4 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12 reveal-pop reveal-delay-4">
           <div class="space-y-1">
             <span class="block text-3xl sm:text-4xl font-black text-amber-400" style="font-family: 'Playfair Display', serif;">
               +2 Años de experiencia

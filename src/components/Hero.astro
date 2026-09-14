@@ -11,8 +11,8 @@
       
       <!-- Contenido Izquierda: Logo + Textos (centrados vertical y horizontalmente con orquestación de entrada) -->
       <div class="text-center space-y-3 sm:space-y-4 flex flex-col justify-center items-center my-auto w-full">
-        <!-- Logo centrado (al doble de tamaño) -->
-        <div class="flex justify-center w-full reveal-scale">
+        <!-- Logo centrado: reveal-blur-fade focal -->
+        <div class="flex justify-center w-full reveal-blur-fade">
           <div class="relative">
             <div class="absolute inset-0 bg-yellow-500/25 blur-3xl rounded-full pointer-events-none animate-pulse"></div>
             <img 
@@ -57,13 +57,14 @@
           <em class="text-purple-300 not-italic font-semibold">"Todos tienen derecho a disfrutar de la belleza de la moda"</em>
         </p>
 
-        <!-- Badge entre texto y botones -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-purple-900/40 text-amber-300 border border-purple-700/50 shadow-inner self-center reveal-scale reveal-delay-3">
+        <!-- Badge entre texto y botones: reveal-pop rítmico -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-purple-900/40 text-amber-300 border border-purple-700/50 shadow-inner self-center reveal-pop reveal-delay-3">
           <span class="w-2 h-2 rounded-full bg-amber-400"></span>
           <span>La tienda más completa de Camagüey</span>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full reveal-on-scroll reveal-delay-4">
+        <!-- Botones CTA con entrada pop diferenciada -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full reveal-pop reveal-delay-4">
           <a href="/tienda/" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 active:scale-95 text-white font-extrabold px-6 py-3 sm:px-8 sm:py-4 rounded-2xl shadow-xl shadow-orange-600/30 hover:-translate-y-0.5 transition-all text-sm sm:text-base text-center">
             🛍️ Ver Catálogo Activo
           </a>
@@ -73,7 +74,7 @@
         </div>
       </div>
 
-      <!-- Imagen Destacada Derecha - con entrada reveal-scale -->
+      <!-- Imagen Destacada Derecha - con entrada de escala y badge con pop -->
       <div class="relative flex flex-col min-h-0 reveal-scale reveal-delay-2">
         <div class="relative flex-1 flex flex-col min-h-0">
           <div class="absolute -inset-1.5 bg-gradient-to-r from-purple-600 to-amber-500 rounded-3xl blur-xl opacity-40 animate-pulse"></div>
@@ -88,8 +89,8 @@
               decoding="async"
               class="w-full flex-1 object-cover rounded-2xl shadow-inner min-h-0"
             />
-            <!-- Badge debajo de la imagen -->
-            <div class="mt-2 sm:mt-3 p-2.5 sm:p-3 glass-card rounded-xl border border-white/15 flex items-center gap-3 shrink-0">
+            <!-- Badge debajo de la imagen con reveal-pop -->
+            <div class="mt-2 sm:mt-3 p-2.5 sm:p-3 glass-card rounded-xl border border-white/15 flex items-center gap-3 shrink-0 reveal-pop reveal-delay-4">
               <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-xs sm:text-sm shrink-0">
                 ✨
               </div>
@@ -97,6 +98,7 @@
                 <h4 class="font-bold text-white text-[11px] sm:text-xs">Tienda Física en Camagüey</h4>
                 <p class="text-[9px] sm:text-[10px] text-purple-200">Avellaneda No. 260</p>
               </div>
+            </div>
             </div>
           </div>
         </div>

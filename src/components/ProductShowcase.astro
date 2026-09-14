@@ -12,22 +12,22 @@ const { title, subtitle, products } = Astro.props;
 ---
 
 <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-  <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+  <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 reveal-on-scroll">
     <div>
       <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">{subtitle}</span>
       <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
         {title}
       </h2>
     </div>
-    <a href="/tienda/" class="mt-4 md:mt-0 inline-flex items-center gap-2 text-amber-400 font-bold hover:text-yellow-300 transition-colors text-sm">
+    <a href="/tienda/" class="mt-4 md:mt-0 inline-flex items-center gap-2 text-amber-400 font-bold hover:text-yellow-300 transition-colors text-sm group">
       <span>Ver todo en la Tienda</span>
-      <span>&rarr;</span>
+      <span class="group-hover:translate-x-1 transition-transform duration-200">&rarr;</span>
     </a>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
     {products.map((product, idx) => (
-      <div class={`reveal-on-scroll reveal-delay-${Math.min(idx + 1, 4)}`}>
+      <div class={`reveal-card reveal-delay-${Math.min(idx + 1, 4)}`}>
         <ProductCard {...product} />
       </div>
     ))}

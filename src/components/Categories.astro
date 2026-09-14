@@ -34,7 +34,7 @@ const categories = [
 ---
 
 <section class="py-14 sm:py-20 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-  <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+  <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14 reveal-on-scroll">
     <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">Explora por Secciones</span>
     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
       Nuestras Categorías Principales
@@ -45,7 +45,7 @@ const categories = [
     {categories.map((cat, idx) => (
       <a 
         href={`/tienda/${cat.slug}/`}
-        class={`group relative overflow-hidden rounded-2xl sm:rounded-3xl aspect-[16/9] sm:aspect-[4/3] md:aspect-[3/4] glass-card flex flex-col justify-end p-4 sm:p-5 md:p-6 border border-white/10 hover:border-amber-500/50 transition-all duration-500 shadow-md hover:shadow-xl hover:-translate-y-1.5 reveal-on-scroll reveal-delay-${Math.min((idx % 4) + 1, 4)}`}
+        class={`group relative overflow-hidden rounded-2xl sm:rounded-3xl aspect-[16/9] sm:aspect-[4/3] md:aspect-[3/4] glass-card flex flex-col justify-end p-4 sm:p-5 md:p-6 border border-white/10 hover:border-amber-500/50 transition-all duration-500 shadow-md hover:shadow-xl hover:-translate-y-1.5 reveal-scale reveal-delay-${Math.min((idx % 4) + 1, 4)}`}
       >
         <!-- Imagen de fondo -->
         <img 

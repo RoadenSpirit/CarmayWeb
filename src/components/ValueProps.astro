@@ -27,8 +27,9 @@ const values = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {values.map((item, idx) => (
-        <div class={`glass-card glass-card-hover p-6 rounded-2xl flex items-start gap-4 transition-all duration-300 reveal-on-scroll reveal-delay-${idx + 1}`}>
-          <div class="w-12 h-12 rounded-xl bg-purple-900/40 border border-purple-700/50 flex items-center justify-center shrink-0" set:html={item.icon}>
+        <div class={`glass-card glass-card-hover p-6 rounded-2xl flex items-start gap-4 transition-all duration-300 reveal-slide-right reveal-delay-${idx + 1}`}>
+          <!-- Icono con micro-aparición pop diferenciada -->
+          <div class="w-12 h-12 rounded-xl bg-purple-900/40 border border-purple-700/50 flex items-center justify-center shrink-0 reveal-pop" set:html={item.icon}>
           </div>
           <div>
             <h3 class="font-bold text-white text-base mb-1">{item.title}</h3>

@@ -20,7 +20,7 @@ const faqs = [
 ---
 
 <section class="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-  <div class="text-center mb-16">
+  <div class="text-center mb-16 reveal-on-scroll">
     <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">Resolviendo tus dudas</span>
     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
       Preguntas Frecuentes (FAQ)
@@ -29,7 +29,7 @@ const faqs = [
 
   <div class="space-y-4">
     {faqs.map((faq, idx) => (
-      <details class="glass-card rounded-2xl p-6 sm:p-8 border border-white/10 group transition-all duration-300">
+      <details class={`glass-card rounded-2xl p-6 sm:p-8 border border-white/10 group transition-all duration-300 reveal-on-scroll reveal-delay-${idx + 1}`}>
         <summary class="font-bold text-white text-base sm:text-lg cursor-pointer flex items-center justify-between select-none">
           <span class="flex items-center gap-3">
             <span class="text-amber-400 font-black">0{idx + 1}.</span>

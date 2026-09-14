@@ -69,7 +69,7 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
     shadow-[0_4px_20px_rgba(0,0,0,0.25)]
     hover:shadow-[0_12px_36px_rgba(234,179,8,0.18)]
     hover:-translate-y-1.5
-    ${revealDelayClass ? `reveal-on-scroll ${revealDelayClass}` : ''}
+    ${revealDelayClass ? `reveal-card ${revealDelayClass}` : ''}
     ${stockLevel === 4 ? 'opacity-85 hover:opacity-100' : ''}`}
   data-product-slug={slug}
   data-price-usd={priceUSD}

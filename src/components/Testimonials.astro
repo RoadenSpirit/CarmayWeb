@@ -22,7 +22,7 @@ const testimonials = [
 ---
 
 <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-  <div class="text-center max-w-2xl mx-auto mb-16">
+  <div class="text-center max-w-2xl mx-auto mb-16 reveal-on-scroll">
     <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">Opiniones Reales</span>
     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
       Lo que dicen nuestros clientes
@@ -34,7 +34,7 @@ const testimonials = [
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     {testimonials.map((t, idx) => (
-      <div class={`bg-[#121522]/95 backdrop-blur-xl p-7 sm:p-8 rounded-3xl flex flex-col justify-between border border-purple-500/20 hover:border-amber-400/40 relative shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1.5 reveal-on-scroll reveal-delay-${idx + 1}`}>
+      <div class={`bg-[#121522]/95 backdrop-blur-xl p-7 sm:p-8 rounded-3xl flex flex-col justify-between border border-purple-500/20 hover:border-amber-400/40 relative shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1.5 ${idx === 0 ? 'reveal-slide-right' : idx === 2 ? 'reveal-slide-left' : 'reveal-scale'} reveal-delay-${idx + 1}`}>
         
         <!-- Contenido del comentario -->
         <div class="space-y-4">
