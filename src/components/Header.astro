@@ -18,80 +18,75 @@ const storeCategories = [
 ];
 ---
 
-<header class="sticky top-0 z-50 backdrop-blur-2xl backdrop-saturate-[180%] bg-[#0c0e17]/75 border-b border-white/[0.12] shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] transition-all duration-300">
+<header class="sticky top-0 z-50 backdrop-blur-2xl backdrop-saturate-[180%] bg-[#0c0e17]/85 border-b border-white/[0.12] shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]">
   <!-- Scroll progress bar -->
   <div id="scroll-progress" class="absolute top-0 left-0 h-[2px] bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 w-0 transition-all duration-75 z-50"></div>
 
   <!-- Línea inferior de acento amarillo -->
   <div id="header-accent-line" class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent" style="transition: opacity 0.3s ease-out"></div>
 
-  <!-- SECCIÓN SUPERIOR COLAPSABLE: Contiene Piso 1 (Logo/Nav/Cart) + Piso 2 (Buscador/Carrusel) -->
-  <div id="header-collapsible-top" class="header-top-grid">
-    <div class="header-top-inner">
-      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between">
-        
-        <!-- Logo -->
-        <a href="/" class="flex items-center group">
-          <div class="w-28 h-28 sm:w-32 sm:h-32 flex items-center justify-center group-hover:scale-105 transition-transform">
-            <img src="/logo.png" alt="Carmay Outfit" class="w-full h-full object-contain filter drop-shadow-[0_2px_12px_rgba(234,179,8,0.35)]" />
-          </div>
+  <!-- ================= PISO 1: MENÚ PRINCIPAL (SIEMPRE FIJO) ================= -->
+  <div id="header-main-nav" class="relative z-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="/" class="flex items-center group">
+        <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <img src="/logo.png" alt="Carmay Outfit" class="w-full h-full object-contain filter drop-shadow-[0_2px_12px_rgba(234,179,8,0.35)]" />
+        </div>
+      </a>
+
+      <!-- Navegación Escritorio -->
+      <nav class="hidden md:flex items-center gap-8 text-base font-bold">
+        <a href="/" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Inicio</a>
+        <a href="/tienda/" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Tienda</a>
+        <a href="/contact" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Contacto</a>
+      </nav>
+
+      <!-- Botón Carrito + WhatsApp + Hamburguesa Móvil -->
+      <div class="flex items-center gap-3">
+        <!-- Ícono Carrito de Compras -->
+        <button id="header-cart-btn" class="relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:scale-105 transition-all shadow-[0_2px_12px_rgba(234,179,8,0.2)] cursor-pointer" aria-label="Ver carrito">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <!-- Badge Contador -->
+          <span id="header-cart-count" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-r from-red-600 to-orange-500 text-white text-[10px] font-black flex items-center justify-center shadow-lg border border-white/20">
+            0
+          </span>
+        </button>
+
+        <!-- Píldora sutil: Atención al Cliente -->
+        <a 
+          href="https://wa.me/REDACTED_PHONE_1" 
+          target="_blank" 
+          class="inline-flex items-center gap-2 p-2 sm:px-4 sm:py-2 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-amber-400/40 text-slate-300 hover:text-white transition-all text-xs sm:text-sm font-medium shadow-sm hover:shadow-md"
+          title="Contactar con Atención al Cliente"
+          aria-label="Atención al Cliente por WhatsApp"
+        >
+          <!-- SVG Customer Support -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 18v-6a9 9 0 0118 0v6" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 16v1a2 2 0 01-2 2h-5" />
+          </svg>
+          <span class="hidden sm:inline whitespace-nowrap">Atención al cliente</span>
         </a>
 
-        <!-- Navegación Escritorio -->
-        <nav class="hidden md:flex items-center gap-8 text-base sm:text-lg font-bold">
-          <a href="/" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Inicio</a>
-          <a href="/tienda/" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Tienda</a>
-          <a href="/contact" class="text-slate-200 hover:text-yellow-400 hover:underline hover:underline-offset-8 hover:decoration-yellow-400 hover:decoration-2 transition-all drop-shadow-[0_1px_4px_rgba(255,255,255,0.05)]">Contacto</a>
-        </nav>
-
-        <!-- Botón Carrito + WhatsApp + Hamburguesa Móvil -->
-        <div class="flex items-center gap-3">
-          <!-- Ícono Carrito de Compras -->
-          <button id="header-cart-btn" class="relative flex items-center justify-center w-11 h-11 rounded-full border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:scale-105 transition-all shadow-[0_2px_12px_rgba(234,179,8,0.2)] cursor-pointer" aria-label="Ver carrito">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
-            <!-- Badge Contador -->
-            <span id="header-cart-count" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-r from-red-600 to-orange-500 text-white text-[10px] font-black flex items-center justify-center shadow-lg border border-white/20">
-              0
-            </span>
-          </button>
-
-          <!-- Píldora sutil: Atención al Cliente -->
-          <a 
-            href="https://wa.me/REDACTED_PHONE_1" 
-            target="_blank" 
-            class="inline-flex items-center gap-2 p-2.5 sm:px-4 sm:py-2 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-amber-400/40 text-slate-300 hover:text-white transition-all text-xs sm:text-sm font-medium shadow-sm hover:shadow-md"
-            title="Contactar con Atención al Cliente"
-            aria-label="Atención al Cliente por WhatsApp"
-          >
-            <!-- SVG Customer Support (Headset/Support) -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 18v-6a9 9 0 0118 0v6" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 16v1a2 2 0 01-2 2h-5" />
-            </svg>
-            <span class="hidden sm:inline whitespace-nowrap">Atención al cliente</span>
-          </a>
-
-          <!-- Botón Hamburguesa (solo móvil) -->
-          <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors" aria-label="Abrir menú">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-
+        <!-- Botón Hamburguesa (solo móvil) -->
+        <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors" aria-label="Abrir menú">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
 
-      <!-- Sub-Navbar: Buscador + Carrusel de Mensajes -->
-      <SubNavbar />
     </div>
   </div>
 
-  <!-- Barra de Categorías Integrada (Mismo fondo glass premium, con highlight interior) -->
+  <!-- ================= PISO 2: MENÚ DE CATEGORÍAS (SIEMPRE FIJO, EN TIENDA / CATÁLOGO) ================= -->
   {showCategoryBar && (
-    <nav id="categorias-navbar" class="hidden md:block border-t border-white/[0.08] bg-white/[0.015] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+    <nav id="categorias-navbar" class="hidden md:block border-t border-white/[0.08] bg-white/[0.015] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] relative z-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-center gap-1.5 py-2">
           {storeCategories.map((cat, i) => (
@@ -111,10 +106,15 @@ const storeCategories = [
           ))}
         </div>
       </div>
-      <!-- Línea inferior de acento amarillo -->
-      <div class="h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent"></div>
     </nav>
   )}
+
+  <!-- ================= PISO 3: MENÚ BUSCADOR + CARRUSEL (ÚLTIMO, COLAPSABLE AL SCROLL) ================= -->
+  <div id="subnav-collapsible" class="subnav-grid">
+    <div class="subnav-grid-inner">
+      <SubNavbar />
+    </div>
+  </div>
 </header>
 
 <!-- Drawer Móvil -->
@@ -307,115 +307,109 @@ const storeCategories = [
     window.addEventListener('carmay-cart-changed', updateBadge);
     updateBadge();
 
-    // ====== COLAPSO AL SCROLL DE LOS PISOS SUPERIORES (Deja solo Categorías visible) ======
-    const collapsibleTop = document.getElementById('header-collapsible-top');
-    const headerEl = document.querySelector('header');
-    let lastScrollY = window.scrollY || 0;
-    let downAccumulator = 0;
-    let upAccumulator = 0;
-    let isTicking = false;
+    // ====== COLAPSO SUAVE DEL SUBNAV (BUSCADOR/CARRUSEL) AL SCROLL ======
+    // El Piso 1 (Menú Principal) y el Piso 2 (Categorías) permanecen SIEMPRE fijos.
+    // Solo el Piso 3 (SubNavbar) colapsa hacia arriba, eliminando cualquier vibración.
+    const subnavCollapsible = document.getElementById('subnav-collapsible');
     let isTransitioning = false;
     let transitionTimer: any = null;
-
-    const COLLAPSE_THRESHOLD = 60; // 60px continuos hacia abajo para colapsar
-    const EXPAND_THRESHOLD = 60;   // 60px continuos hacia arriba para expandir
-    const TOP_DEADZONE = 100;      // En los primeros 100px siempre permanece expandido
+    const TOP_DEADZONE = 80; // Dentro de los primeros 80px siempre expandido
 
     function lockTransition() {
       isTransitioning = true;
       if (transitionTimer) clearTimeout(transitionTimer);
       transitionTimer = setTimeout(() => {
         isTransitioning = false;
-        lastScrollY = window.scrollY;
         syncHeaderHeight();
-      }, 550); // 520ms duración CSS fluida + 30ms de margen seguro
+      }, 480); // Duración de transición + margen seguro
     }
 
-    function collapseTop() {
-      if (!collapsibleTop || collapsibleTop.classList.contains('is-collapsed')) return;
-      collapsibleTop.classList.add('is-collapsed');
+    function collapseSubnav() {
+      if (!subnavCollapsible || subnavCollapsible.classList.contains('is-collapsed')) return;
+      subnavCollapsible.classList.add('is-collapsed');
       lockTransition();
     }
 
-    function expandTop() {
-      if (!collapsibleTop || !collapsibleTop.classList.contains('is-collapsed')) return;
-      collapsibleTop.classList.remove('is-collapsed');
+    function expandSubnav() {
+      if (!subnavCollapsible || !subnavCollapsible.classList.contains('is-collapsed')) return;
+      subnavCollapsible.classList.remove('is-collapsed');
       lockTransition();
     }
 
-    function onScroll() {
+    // 1. Detección por Rueda del Ratón (Desktop):
+    // deltaY da la intención directa del usuario antes del reflow y NO produce bucles de layout
+    window.addEventListener('wheel', (e) => {
+      if (isTransitioning) return;
       const currentY = window.scrollY;
-      const dy = currentY - lastScrollY;
 
-      // 1. Si está en plena transición, ignorar para evitar saltos
-      if (isTransitioning) {
-        lastScrollY = currentY;
-        isTicking = false;
-        return;
-      }
-
-      // 2. Zona segura superior: siempre visible
       if (currentY <= TOP_DEADZONE) {
-        expandTop();
-        downAccumulator = 0;
-        upAccumulator = 0;
-        lastScrollY = currentY;
-        isTicking = false;
+        expandSubnav();
         return;
       }
 
-      // 3. Acumulación direccional de scroll
-      if (dy > 0) {
-        downAccumulator += dy;
-        upAccumulator = 0;
-        if (downAccumulator >= COLLAPSE_THRESHOLD) {
-          collapseTop();
-          downAccumulator = 0;
-        }
-      } else if (dy < 0) {
-        upAccumulator += Math.abs(dy);
-        downAccumulator = 0;
-        if (upAccumulator >= EXPAND_THRESHOLD) {
-          expandTop();
-          upAccumulator = 0;
-        }
+      if (e.deltaY > 15) {
+        collapseSubnav();
+      } else if (e.deltaY < -15) {
+        expandSubnav();
+      }
+    }, { passive: true });
+
+    // 2. Detección por Gesto Táctil (Móvil):
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (isTransitioning) return;
+      const currentY = window.scrollY;
+      const touchCurrentY = e.touches[0].clientY;
+      const dy = touchStartY - touchCurrentY; // dy > 0: arrastre hacia arriba (pantalla baja)
+
+      if (currentY <= TOP_DEADZONE) {
+        expandSubnav();
+        return;
       }
 
-      lastScrollY = currentY;
-      isTicking = false;
-    }
+      if (dy > 20) {
+        collapseSubnav();
+      } else if (dy < -20) {
+        expandSubnav();
+      }
+    }, { passive: true });
 
+    // 3. Respaldo para cuando el scroll vuelve a la cima
     window.addEventListener('scroll', () => {
-      if (!isTicking) {
-        window.requestAnimationFrame(onScroll);
-        isTicking = true;
+      if (window.scrollY <= TOP_DEADZONE) {
+        expandSubnav();
       }
     }, { passive: true });
   });
 </script>
 
 <style>
-  .header-top-grid {
+  /* Animación CSS Grid Row Interpolation con GPU Easing para el Piso 3 */
+  .subnav-grid {
     display: grid;
     grid-template-rows: 1fr;
     opacity: 1;
-    transition: grid-template-rows 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.38s ease-out;
     will-change: grid-template-rows, opacity;
   }
 
-  .header-top-grid.is-collapsed {
+  .subnav-grid.is-collapsed {
     grid-template-rows: 0fr;
     opacity: 0;
     pointer-events: none;
   }
 
-  .header-top-inner {
+  .subnav-grid-inner {
     min-height: 0;
     overflow: visible;
   }
 
-  .header-top-grid.is-collapsed > .header-top-inner {
+  .subnav-grid.is-collapsed > .subnav-grid-inner {
     overflow: hidden;
   }
 </style>
