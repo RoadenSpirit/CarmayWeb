@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import ProductCard from '../components/ProductCard.astro';
 import CatalogFilterBar from '../components/CatalogFilterBar.astro';
+import StoreBanner from '../components/StoreBanner.astro';
 import { woo } from '../api';
 import { sortProductsByCuratedScore } from '../utils/productRanking';
 
@@ -121,6 +122,9 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
       ))}
     </div>
   </section>
+
+  <!-- Banner de Tienda Física & Entrega Diaria Garantizada (Justo después de las cards de categorías) -->
+  <StoreBanner />
 
   <!-- ============= SECTION: CATÁLOGO COMPLETO DE PRODUCTOS ============= -->
   <section id="productos-section" class="py-12 sm:py-20 border-t border-white/[0.04]">

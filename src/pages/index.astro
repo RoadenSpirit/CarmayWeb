@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import ValueProps from '../components/ValueProps.astro';
 import Categories from '../components/Categories.astro';
+import StoreBanner from '../components/StoreBanner.astro';
 import ProductShowcase from '../components/ProductShowcase.astro';
 import CompanyVision from '../components/CompanyVision.astro';
 import Testimonials from '../components/Testimonials.astro';
@@ -40,6 +41,9 @@ const specialOffers = offersRaw
 
   <!-- 3. Categorías Principales (5 Cards: Calzado, Ropa, Bolsos y Mochilas, Tecnología, Accesorios) -->
   <Categories />
+
+  <!-- 3.1 Banner de Tienda Física & Entrega Diaria Garantizada (Justo después de categorías) -->
+  <StoreBanner />
 
   <!-- 4. Muestra Intercalada 1: Productos Más Vendidos -->
   <ProductShowcase 
