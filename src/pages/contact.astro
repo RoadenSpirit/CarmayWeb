@@ -64,28 +64,57 @@ const contactChannels = [
   </div>
 
   <!-- ================= 1. HERO SECTION: Estamos aquí para ayudarte ================= -->
-  <section class="pb-16 pt-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+  <section class="pb-12 sm:pb-16 pt-4 sm:pt-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
       
-      <!-- Columna Texto (7 cols) -->
-      <div class="lg:col-span-7 space-y-6">
+      <!-- Columna 1 (Izquierda en desktop, OCULTA en móvil): Imagen de Atención al Cliente a Gran Escala -->
+      <div class="hidden lg:flex lg:col-span-5 xl:col-span-5 justify-center items-center reveal-scale">
+        <div class="relative w-full max-w-lg">
+          <!-- Brillo de fondo sutil -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-amber-500/25 via-purple-600/20 to-transparent rounded-full blur-3xl -z-10 pointer-events-none"></div>
+          
+          <div class="relative rounded-3xl overflow-hidden border border-white/[0.12] bg-[#0e101a]/70 backdrop-blur-xl p-5 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
+            <img 
+              src="/atencion-cliente.png" 
+              alt="Atención al Cliente Carmay Outfit" 
+              width="700" 
+              height="700"
+              class="w-full h-auto object-contain rounded-2xl filter drop-shadow-[0_12px_32px_rgba(0,0,0,0.5)] transition-transform duration-500 hover:scale-[1.02]"
+              loading="eager"
+            />
+            <!-- Insignia flotante integrada -->
+            <div class="mt-4 p-3.5 rounded-2xl bg-black/50 border border-white/10 flex items-center gap-3.5 backdrop-blur-md">
+              <div class="w-11 h-11 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-xl shrink-0">
+                ✨
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm">Asesoría Cálida y Humana</h4>
+                <p class="text-xs text-slate-300">Atención directa y personalizada en Camagüey</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna 2 (Derecha en desktop, ancho completo en móvil): Contenido Editorial & Acciones -->
+      <div class="lg:col-span-7 xl:col-span-7 space-y-6 w-full">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 reveal-pop">
           <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
           <span>Atención al Cliente Personalizada</span>
         </div>
 
-        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] reveal-on-scroll reveal-delay-1" style="font-family: 'Outfit', sans-serif;">
+        <h1 class="text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black text-white tracking-tight leading-[1.15] reveal-on-scroll reveal-delay-1" style="font-family: 'Outfit', sans-serif;">
           Estamos aquí para <br />
           <span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
             ayudarte siempre
           </span>
         </h1>
 
-        <p class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl reveal-on-scroll reveal-delay-2">
+        <p class="text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl reveal-on-scroll reveal-delay-2">
           Si tienes dudas sobre tu pedido, quieres conocer nuestras ofertas o necesitas asistencia personalizada, escríbenos. En <strong class="text-white font-bold">Carmay Outfit</strong> tu satisfacción es nuestra prioridad absoluta.
         </p>
 
-        <!-- Píldoras de Beneficios Rápidos -->
+        <!-- Píldoras de Beneficios Rápidos (2 columnas simétricas en desktop/tablet, apiladas cómodas en móvil) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 reveal-on-scroll reveal-delay-3">
           <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
             <span class="text-xl shrink-0">⚡</span>
@@ -97,51 +126,21 @@ const contactChannels = [
           </div>
         </div>
 
-        <!-- Botones de Acción Directa con Simetría Idéntica a las Píldoras (Grid 2 Columnas) -->
+        <!-- Botones de Acción Directa con Simetría Idéntica a las Píldoras -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 reveal-pop reveal-delay-4">
           <a 
             href="https://wa.me/5363791924?text=Hola%20Carmay%20Outfit,%20necesito%20asistencia" 
             target="_blank"
-            class="w-full flex items-center justify-center gap-2 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 active:scale-95 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/40 hover:-translate-y-0.5 transition-all cursor-pointer text-center"
+            class="w-full min-h-[48px] flex items-center justify-center gap-2 p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 active:scale-95 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/40 hover:-translate-y-0.5 transition-all cursor-pointer text-center"
           >
             <span>💬 Escribir por WhatsApp</span>
           </a>
           <a 
             href="#tienda-fisica" 
-            class="w-full flex items-center justify-center gap-2 p-3.5 sm:p-4 rounded-2xl border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] hover:border-amber-400/40 text-slate-200 hover:text-white active:scale-95 text-xs sm:text-sm font-bold hover:-translate-y-0.5 transition-all cursor-pointer text-center"
+            class="w-full min-h-[48px] flex items-center justify-center gap-2 p-3.5 sm:p-4 rounded-2xl border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] hover:border-amber-400/40 text-slate-200 hover:text-white active:scale-95 text-xs sm:text-sm font-bold hover:-translate-y-0.5 transition-all cursor-pointer text-center"
           >
             <span>📍 Visitar Tienda Física</span>
           </a>
-        </div>
-      </div>
-
-      <!-- Columna Imagen (5 cols) con halo, glassmorphism e imagen invertida horizontalmente apuntando al contenido -->
-      <div class="lg:col-span-5 flex justify-center reveal-scale reveal-delay-2">
-        <div class="relative w-full max-w-md">
-          <!-- Brillo de fondo -->
-          <div class="absolute inset-0 bg-gradient-to-tr from-amber-500/20 via-purple-600/20 to-transparent rounded-3xl blur-3xl -z-10 pointer-events-none"></div>
-          
-          <div class="relative rounded-3xl overflow-hidden border border-white/[0.12] bg-[#0e101a]/85 backdrop-blur-xl p-4 sm:p-6 shadow-[0_16px_50px_rgba(0,0,0,0.6)]">
-            <img 
-              src="/atencion-cliente.png" 
-              alt="Atención al Cliente Carmay Outfit" 
-              width="600" 
-              height="600"
-              class="w-full h-auto object-contain rounded-2xl filter drop-shadow-[0_8px_24px_rgba(0,0,0,0.4)] -scale-x-100"
-              style="transform: scaleX(-1);"
-              loading="eager"
-            />
-            <!-- Insignia flotante -->
-            <div class="mt-4 p-3 rounded-xl bg-black/40 border border-white/10 flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-lg shrink-0">
-                ✨
-              </div>
-              <div>
-                <h4 class="font-bold text-white text-xs sm:text-sm">Asesoría Cálida y Humana</h4>
-                <p class="text-[11px] text-slate-400">Atención directa desde Camagüey</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -162,13 +161,13 @@ const contactChannels = [
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {contactChannels.map((c, idx) => (
-          <div class={`group relative rounded-3xl p-6 sm:p-7 bg-[#0f1220]/90 backdrop-blur-md border border-white/[0.08] flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] ${c.accentGlow} reveal-card reveal-delay-${idx + 1}`}>
+          <div class={`group relative rounded-3xl p-5 sm:p-7 bg-[#0f1220]/90 backdrop-blur-md border border-white/[0.08] flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] ${c.accentGlow} reveal-card reveal-delay-${idx + 1}`}>
             <div>
               <!-- Icono y Badge -->
-              <div class="flex items-center justify-between gap-2 mb-5">
-                <div class={`w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 ${c.iconBg}`} set:html={c.icon}>
+              <div class="flex items-center justify-between gap-2 mb-4 sm:mb-5">
+                <div class={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl border flex items-center justify-center shrink-0 ${c.iconBg}`} set:html={c.icon}>
                 </div>
                 <span class={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${c.badgeColor}`}>
                   {c.subtitle}
@@ -176,19 +175,19 @@ const contactChannels = [
               </div>
 
               <!-- Textos -->
-              <h3 class="text-lg font-extrabold text-white mb-1 group-hover:text-amber-300 transition-colors">
+              <h3 class="text-base sm:text-lg font-extrabold text-white mb-1 group-hover:text-amber-300 transition-colors">
                 {c.title}
               </h3>
-              <p class="text-xs sm:text-sm font-mono text-slate-300 font-medium break-all mb-6">
+              <p class="text-xs sm:text-sm font-mono text-slate-300 font-medium break-all mb-5 sm:mb-6">
                 {c.value}
               </p>
             </div>
 
-            <!-- Botón CTA -->
+            <!-- Botón CTA con mínimo 44px de área táctil -->
             <a 
               href={c.link} 
               target="_blank"
-              class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-white/15 bg-white/[0.04] hover:bg-white/[0.12] hover:border-amber-400/50 text-white font-bold text-xs transition-all cursor-pointer"
+              class="w-full min-h-[44px] inline-flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-xl border border-white/15 bg-white/[0.04] hover:bg-white/[0.12] hover:border-amber-400/50 text-white font-bold text-xs transition-all cursor-pointer"
             >
               <span>{c.btnText}</span>
               <span class="text-amber-400">&nearr;</span>
