@@ -339,7 +339,7 @@ const storeCategories = [
         lastScrollY = window.scrollY;
         downAccumulator = 0;
         upAccumulator = 0;
-      }, 400); // 380ms duración CSS + 20ms de margen seguro
+      }, 360); // 340ms duración CSS + 20ms de margen seguro
     }
 
     function collapseSubnav() {
@@ -411,30 +411,27 @@ const storeCategories = [
     overflow-anchor: none;
   }
 
-  /* Animación Suave de SubNavbar según directrices Vercel:
-     - Altura calibrada a la altura real (75px) para evitar tiempos muertos en la interpolación
-     - Easing natural armónico sin tirón brusco
-     - will-change únicamente en propiedades de GPU (transform, opacity) */
+  /* Plegado Puro y Uniforme con CSS Grid (Sin desgarros ni doble aceleración con translateY):
+     - grid-template-rows interpola linealmente el alto sin saltos
+     - opacity desvanece el contenido limpiamente
+     - subnav-grid-inner con overflow: hidden constante */
   .subnav-grid {
-    max-height: 80px;
+    display: grid;
+    grid-template-rows: 1fr;
     opacity: 1;
-    transform: translateY(0);
-    transform-origin: top center;
-    transition: max-height 0.38s cubic-bezier(0.25, 1, 0.5, 1),
-                transform 0.38s cubic-bezier(0.25, 1, 0.5, 1),
-                opacity 0.28s ease-out;
-    overflow: hidden;
-    will-change: transform, opacity;
+    transition: grid-template-rows 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.24s ease-out;
+    will-change: grid-template-rows, opacity;
   }
 
   .subnav-grid.is-collapsed {
-    max-height: 0px !important;
-    opacity: 0 !important;
-    transform: translateY(-100%) !important;
-    pointer-events: none !important;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    pointer-events: none;
   }
 
   .subnav-grid-inner {
     min-height: 0;
+    overflow: hidden;
   }
 </style>
