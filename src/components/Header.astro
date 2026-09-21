@@ -314,105 +314,48 @@ const storeCategories = [
     window.addEventListener('carmay-cart-changed', updateBadge);
     updateBadge();
 
-    // ====== COLAPSO SUAVE DEL SUBNAV (BUSCADOR/CARRUSEL) AL SCROLL ======
+    // ====== CONTROLADOR DE SCROLL VERCEL GUIDELINES (CERO VIBRACIÓN) ======
     // El Piso 1 (Menú Principal) y el Piso 2 (Categorías) permanecen SIEMPRE fijos.
-    // Solo el Piso 3 (SubNavbar) colapsa hacia arriba.
-    // Solución Anti-Vibración:
-    // 1. Umbral superior estricto en el tope absoluto (scrollY <= 15px) para evitar el conflicto
-    //    con la pérdida de 50px de altura del header.
-    // 2. Acumulador direccional con histeresis amplia (50px hacia abajo / 40px hacia arriba).
-    // 3. Bloqueo atómico durante la animación (isTransitioning) para evitar bucles de eventos.
+    // Solo el Piso 3 (SubNavbar) se oculta en scroll descendente y reaparece en scroll ascendente.
     const subnavCollapsible = document.getElementById('subnav-collapsible');
-    let isTransitioning = false;
-    let transitionTimer: any = null;
-    let downDelta = 0;
-    let upDelta = 0;
+    let lastScrollY = window.scrollY || 0;
+    let ticking = false;
 
-    const DOWN_THRESHOLD = 50; // Requiere 50px de desplazamiento deliberado hacia abajo
-    const UP_THRESHOLD = 40;   // Requiere 40px de desplazamiento deliberado hacia arriba
+    function updateNavScroll() {
+      const currentScrollY = window.scrollY;
+      const diff = currentScrollY - lastScrollY;
 
-    function lockTransition() {
-      isTransitioning = true;
-      if (transitionTimer) clearTimeout(transitionTimer);
-      transitionTimer = setTimeout(() => {
-        isTransitioning = false;
-        downDelta = 0;
-        upDelta = 0;
-      }, 420); // 400ms duración CSS + 20ms de margen
-    }
-
-    function collapseSubnav() {
-      if (!subnavCollapsible || subnavCollapsible.classList.contains('is-collapsed') || isTransitioning) return;
-      subnavCollapsible.classList.add('is-collapsed');
-      lockTransition();
-    }
-
-    function expandSubnav() {
-      if (!subnavCollapsible || !subnavCollapsible.classList.contains('is-collapsed') || isTransitioning) return;
-      subnavCollapsible.classList.remove('is-collapsed');
-      lockTransition();
-    }
-
-    // 1. Detección por Rueda del Ratón (Desktop):
-    // Lee deltaY físico sin disparar bucles de scroll
-    window.addEventListener('wheel', (e) => {
-      if (isTransitioning) return;
-      const currentY = window.scrollY;
-
-      // Si está en el tope absoluto de la página, siempre expandido
-      if (currentY <= 15) {
-        expandSubnav();
-        downDelta = 0;
-        upDelta = 0;
+      // 1. En la cabecera superior (primeros 50px): siempre expandido
+      if (currentScrollY <= 50) {
+        subnavCollapsible?.classList.remove('is-collapsed');
+        lastScrollY = currentScrollY;
+        ticking = false;
         return;
       }
 
-      if (e.deltaY > 0) {
-        downDelta += e.deltaY;
-        upDelta = 0;
-        if (downDelta >= DOWN_THRESHOLD) {
-          collapseSubnav();
-        }
-      } else if (e.deltaY < 0) {
-        upDelta += Math.abs(e.deltaY);
-        downDelta = 0;
-        if (upDelta >= UP_THRESHOLD) {
-          expandSubnav();
-        }
-      }
-    }, { passive: true });
-
-    // 2. Detección por Gesto Táctil (Móvil):
-    let touchStartY = 0;
-    window.addEventListener('touchstart', (e) => {
-      touchStartY = e.touches[0].clientY;
-      downDelta = 0;
-      upDelta = 0;
-    }, { passive: true });
-
-    window.addEventListener('touchmove', (e) => {
-      if (isTransitioning) return;
-      const currentY = window.scrollY;
-      const touchCurrentY = e.touches[0].clientY;
-      const dy = touchStartY - touchCurrentY; // dy > 0: arrastre hacia arriba (pantalla baja)
-
-      if (currentY <= 15) {
-        expandSubnav();
+      // 2. Filtro de histeresis: ignorar micro-movimientos o temblores menores a 8px
+      if (Math.abs(diff) < 8) {
+        ticking = false;
         return;
       }
 
-      if (dy > DOWN_THRESHOLD) {
-        collapseSubnav();
-      } else if (dy < -UP_THRESHOLD) {
-        expandSubnav();
+      // 3. Dirección deliberada:
+      if (diff > 0) {
+        // Scroll hacia ABAJO -> Ocultar SubNavbar
+        subnavCollapsible?.classList.add('is-collapsed');
+      } else {
+        // Scroll hacia ARRIBA -> Mostrar SubNavbar
+        subnavCollapsible?.classList.remove('is-collapsed');
       }
-    }, { passive: true });
 
-    // 3. Respaldo de seguridad al regresar al tope absoluto
+      lastScrollY = currentScrollY;
+      ticking = false;
+    }
+
     window.addEventListener('scroll', () => {
-      if (isTransitioning) return;
-      if (window.scrollY <= 15) {
-        expandSubnav();
+      if (!ticking) {
+        window.requestAnimationFrame(updateNavScroll);
+        ticking = true;
       }
     }, { passive: true });
   });
@@ -424,28 +367,30 @@ const storeCategories = [
     overflow-anchor: none;
   }
 
-  /* Animación CSS Grid Row Interpolation con GPU Easing para el Piso 3 */
+  /* Animación Suave de SubNavbar según directrices Vercel:
+     - Anima transform y opacity acelerados 100% por GPU
+     - max-height con curva quintic desacelerada
+     - overflow: hidden constante para evitar repaints por cambio de contexto */
   .subnav-grid {
-    display: grid;
-    grid-template-rows: 1fr;
+    max-height: 120px;
     opacity: 1;
-    transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.35s ease-out;
-    will-change: grid-template-rows, opacity;
+    transform: translateY(0);
+    transform-origin: top center;
+    transition: max-height 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease-out;
+    overflow: hidden;
+    will-change: max-height, transform, opacity;
   }
 
   .subnav-grid.is-collapsed {
-    grid-template-rows: 0fr;
-    opacity: 0;
-    pointer-events: none;
+    max-height: 0px !important;
+    opacity: 0 !important;
+    transform: translateY(-100%) !important;
+    pointer-events: none !important;
   }
 
   .subnav-grid-inner {
     min-height: 0;
-    overflow: visible;
-  }
-
-  .subnav-grid.is-collapsed > .subnav-grid-inner {
-    overflow: hidden;
   }
 </style>
