@@ -339,7 +339,7 @@ const storeCategories = [
         lastScrollY = window.scrollY;
         downAccumulator = 0;
         upAccumulator = 0;
-      }, 350); // 320ms duración CSS + 30ms de margen seguro
+      }, 400); // 380ms duración CSS + 20ms de margen seguro
     }
 
     function collapseSubnav() {
@@ -412,19 +412,19 @@ const storeCategories = [
   }
 
   /* Animación Suave de SubNavbar según directrices Vercel:
-     - Anima transform y opacity acelerados 100% por GPU
-     - max-height con curva quintic desacelerada
-     - overflow: hidden constante para evitar repaints por cambio de contexto */
+     - Altura calibrada a la altura real (75px) para evitar tiempos muertos en la interpolación
+     - Easing natural armónico sin tirón brusco
+     - will-change únicamente en propiedades de GPU (transform, opacity) */
   .subnav-grid {
-    max-height: 120px;
+    max-height: 80px;
     opacity: 1;
     transform: translateY(0);
     transform-origin: top center;
-    transition: max-height 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.25s ease-out;
+    transition: max-height 0.38s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.38s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.28s ease-out;
     overflow: hidden;
-    will-change: max-height, transform, opacity;
+    will-change: transform, opacity;
   }
 
   .subnav-grid.is-collapsed {
