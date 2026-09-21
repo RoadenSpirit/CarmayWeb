@@ -314,38 +314,82 @@ const storeCategories = [
     window.addEventListener('carmay-cart-changed', updateBadge);
     updateBadge();
 
-    // ====== CONTROLADOR DE SCROLL VERCEL GUIDELINES (CERO VIBRACIÓN) ======
+    // ====== CONTROLADOR DE SCROLL ANTI-BUCLE CON HISTERESIS BLINDADA ======
     // El Piso 1 (Menú Principal) y el Piso 2 (Categorías) permanecen SIEMPRE fijos.
     // Solo el Piso 3 (SubNavbar) se oculta en scroll descendente y reaparece en scroll ascendente.
     const subnavCollapsible = document.getElementById('subnav-collapsible');
     let lastScrollY = window.scrollY || 0;
+    let downAccumulator = 0;
+    let upAccumulator = 0;
+    let isTransitioning = false;
+    let transitionTimer: any = null;
     let ticking = false;
+
+    // Umbrales mayores que la altura del SubNavbar (52px) para absorber completamente
+    // el salto de scroll que produce el navegador al cambiar el tamaño del header.
+    const COLLAPSE_THRESHOLD = 70; // 70px continuos hacia abajo para colapsar
+    const EXPAND_THRESHOLD = 70;   // 70px continuos hacia arriba para expandir
+    const TOP_DEADZONE = 60;       // En los primeros 60px siempre permanece expandido
+
+    function lockTransition() {
+      isTransitioning = true;
+      if (transitionTimer) clearTimeout(transitionTimer);
+      transitionTimer = setTimeout(() => {
+        isTransitioning = false;
+        lastScrollY = window.scrollY;
+        downAccumulator = 0;
+        upAccumulator = 0;
+      }, 350); // 320ms duración CSS + 30ms de margen seguro
+    }
+
+    function collapseSubnav() {
+      if (!subnavCollapsible || subnavCollapsible.classList.contains('is-collapsed')) return;
+      subnavCollapsible.classList.add('is-collapsed');
+      lockTransition();
+    }
+
+    function expandSubnav() {
+      if (!subnavCollapsible || !subnavCollapsible.classList.contains('is-collapsed')) return;
+      subnavCollapsible.classList.remove('is-collapsed');
+      lockTransition();
+    }
 
     function updateNavScroll() {
       const currentScrollY = window.scrollY;
       const diff = currentScrollY - lastScrollY;
 
-      // 1. En la cabecera superior (primeros 50px): siempre expandido
-      if (currentScrollY <= 50) {
-        subnavCollapsible?.classList.remove('is-collapsed');
+      // 1. Si está en plena animación de colapso/expansión, ignorar para romper cualquier bucle
+      if (isTransitioning) {
         lastScrollY = currentScrollY;
         ticking = false;
         return;
       }
 
-      // 2. Filtro de histeresis: ignorar micro-movimientos o temblores menores a 8px
-      if (Math.abs(diff) < 8) {
+      // 2. En la cabecera superior (primeros 60px): siempre expandido
+      if (currentScrollY <= TOP_DEADZONE) {
+        expandSubnav();
+        downAccumulator = 0;
+        upAccumulator = 0;
+        lastScrollY = currentScrollY;
         ticking = false;
         return;
       }
 
-      // 3. Dirección deliberada:
+      // 3. Acumulación direccional estricta
       if (diff > 0) {
-        // Scroll hacia ABAJO -> Ocultar SubNavbar
-        subnavCollapsible?.classList.add('is-collapsed');
-      } else {
-        // Scroll hacia ARRIBA -> Mostrar SubNavbar
-        subnavCollapsible?.classList.remove('is-collapsed');
+        // Movimiento hacia ABAJO
+        downAccumulator += diff;
+        upAccumulator = 0;
+        if (downAccumulator >= COLLAPSE_THRESHOLD) {
+          collapseSubnav();
+        }
+      } else if (diff < 0) {
+        // Movimiento hacia ARRIBA
+        upAccumulator += Math.abs(diff);
+        downAccumulator = 0;
+        if (upAccumulator >= EXPAND_THRESHOLD) {
+          expandSubnav();
+        }
       }
 
       lastScrollY = currentScrollY;
