@@ -95,15 +95,6 @@ const catalogJson = JSON.stringify(searchableData);
         window.addEventListener('carmay-refresh-reveals', initAnimations);
       })();
     </script>
-
-    <!-- Script de Diagnóstico y Telemetría: Analiza el ID 'subnav-collapsible' durante 30s -->
-    <script>
-      import { startElementWatcher } from '../utils/debugWatcher';
-      document.addEventListener('DOMContentLoaded', () => {
-        // Iniciar observador de 30 segundos sobre el navbar inferior
-        startElementWatcher('subnav-collapsible', 30);
-      });
-    </script>
   </body>
 </html>
 
