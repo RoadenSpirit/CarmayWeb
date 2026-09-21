@@ -233,18 +233,7 @@ const storeCategories = [
 <script>
   import { CartCRUD } from '../utils/cartStore';
 
-  // Expone la altura real del header (fila principal + SubNavbar) como var CSS
-  // para que los navbars fijos y paddings de las páginas queden siempre debajo.
-  function syncHeaderHeight() {
-    const header = document.querySelector('header');
-    if (header) {
-      document.documentElement.style.setProperty('--headerh', header.offsetHeight + 'px');
-    }
-  }
-  window.addEventListener('load', syncHeaderHeight);
-  window.addEventListener('resize', syncHeaderHeight);
-  document.addEventListener('DOMContentLoaded', syncHeaderHeight);
-
+  // Manejo reactivo del badge del carrito
   function updateBadge() {
     const { totalUnits } = CartCRUD.getTotals();
     const countEl = document.getElementById('header-cart-count');
@@ -327,48 +316,69 @@ const storeCategories = [
 
     // ====== COLAPSO SUAVE DEL SUBNAV (BUSCADOR/CARRUSEL) AL SCROLL ======
     // El Piso 1 (Menú Principal) y el Piso 2 (Categorías) permanecen SIEMPRE fijos.
-    // Solo el Piso 3 (SubNavbar) colapsa hacia arriba, eliminando cualquier vibración.
+    // Solo el Piso 3 (SubNavbar) colapsa hacia arriba.
+    // Solución Anti-Vibración:
+    // 1. Umbral superior estricto en el tope absoluto (scrollY <= 15px) para evitar el conflicto
+    //    con la pérdida de 50px de altura del header.
+    // 2. Acumulador direccional con histeresis amplia (50px hacia abajo / 40px hacia arriba).
+    // 3. Bloqueo atómico durante la animación (isTransitioning) para evitar bucles de eventos.
     const subnavCollapsible = document.getElementById('subnav-collapsible');
     let isTransitioning = false;
     let transitionTimer: any = null;
-    const TOP_DEADZONE = 80; // Dentro de los primeros 80px siempre expandido
+    let downDelta = 0;
+    let upDelta = 0;
+
+    const DOWN_THRESHOLD = 50; // Requiere 50px de desplazamiento deliberado hacia abajo
+    const UP_THRESHOLD = 40;   // Requiere 40px de desplazamiento deliberado hacia arriba
 
     function lockTransition() {
       isTransitioning = true;
       if (transitionTimer) clearTimeout(transitionTimer);
       transitionTimer = setTimeout(() => {
         isTransitioning = false;
-        syncHeaderHeight();
-      }, 480); // Duración de transición + margen seguro
+        downDelta = 0;
+        upDelta = 0;
+      }, 420); // 400ms duración CSS + 20ms de margen
     }
 
     function collapseSubnav() {
-      if (!subnavCollapsible || subnavCollapsible.classList.contains('is-collapsed')) return;
+      if (!subnavCollapsible || subnavCollapsible.classList.contains('is-collapsed') || isTransitioning) return;
       subnavCollapsible.classList.add('is-collapsed');
       lockTransition();
     }
 
     function expandSubnav() {
-      if (!subnavCollapsible || !subnavCollapsible.classList.contains('is-collapsed')) return;
+      if (!subnavCollapsible || !subnavCollapsible.classList.contains('is-collapsed') || isTransitioning) return;
       subnavCollapsible.classList.remove('is-collapsed');
       lockTransition();
     }
 
     // 1. Detección por Rueda del Ratón (Desktop):
-    // deltaY da la intención directa del usuario antes del reflow y NO produce bucles de layout
+    // Lee deltaY físico sin disparar bucles de scroll
     window.addEventListener('wheel', (e) => {
       if (isTransitioning) return;
       const currentY = window.scrollY;
 
-      if (currentY <= TOP_DEADZONE) {
+      // Si está en el tope absoluto de la página, siempre expandido
+      if (currentY <= 15) {
         expandSubnav();
+        downDelta = 0;
+        upDelta = 0;
         return;
       }
 
-      if (e.deltaY > 15) {
-        collapseSubnav();
-      } else if (e.deltaY < -15) {
-        expandSubnav();
+      if (e.deltaY > 0) {
+        downDelta += e.deltaY;
+        upDelta = 0;
+        if (downDelta >= DOWN_THRESHOLD) {
+          collapseSubnav();
+        }
+      } else if (e.deltaY < 0) {
+        upDelta += Math.abs(e.deltaY);
+        downDelta = 0;
+        if (upDelta >= UP_THRESHOLD) {
+          expandSubnav();
+        }
       }
     }, { passive: true });
 
@@ -376,6 +386,8 @@ const storeCategories = [
     let touchStartY = 0;
     window.addEventListener('touchstart', (e) => {
       touchStartY = e.touches[0].clientY;
+      downDelta = 0;
+      upDelta = 0;
     }, { passive: true });
 
     window.addEventListener('touchmove', (e) => {
@@ -384,21 +396,22 @@ const storeCategories = [
       const touchCurrentY = e.touches[0].clientY;
       const dy = touchStartY - touchCurrentY; // dy > 0: arrastre hacia arriba (pantalla baja)
 
-      if (currentY <= TOP_DEADZONE) {
+      if (currentY <= 15) {
         expandSubnav();
         return;
       }
 
-      if (dy > 20) {
+      if (dy > DOWN_THRESHOLD) {
         collapseSubnav();
-      } else if (dy < -20) {
+      } else if (dy < -UP_THRESHOLD) {
         expandSubnav();
       }
     }, { passive: true });
 
-    // 3. Respaldo para cuando el scroll vuelve a la cima
+    // 3. Respaldo de seguridad al regresar al tope absoluto
     window.addEventListener('scroll', () => {
-      if (window.scrollY <= TOP_DEADZONE) {
+      if (isTransitioning) return;
+      if (window.scrollY <= 15) {
         expandSubnav();
       }
     }, { passive: true });
@@ -406,13 +419,18 @@ const storeCategories = [
 </script>
 
 <style>
+  /* Desactivar scroll anchoring en el header para que el navegador no mueva la página al cambiar de altura */
+  header {
+    overflow-anchor: none;
+  }
+
   /* Animación CSS Grid Row Interpolation con GPU Easing para el Piso 3 */
   .subnav-grid {
     display: grid;
     grid-template-rows: 1fr;
     opacity: 1;
-    transition: grid-template-rows 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.38s ease-out;
+    transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.35s ease-out;
     will-change: grid-template-rows, opacity;
   }
 
