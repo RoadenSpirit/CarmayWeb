@@ -42,6 +42,24 @@ const {
         <span>Tendencias</span>
       </button>
 
+      <!-- Píldora de Búsqueda Activa (visible dinámicamente si hay ?s= o búsqueda) -->
+      <div 
+        id="filter-search-badge" 
+        class="hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-semibold border border-amber-400/40 bg-amber-400/10 text-amber-200 select-none shadow-[0_2px_12px_rgba(245,158,11,0.2)]"
+      >
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+        <span>Búsqueda: <strong id="filter-search-query-text" class="text-white font-bold"></strong></span>
+        <button 
+          type="button" 
+          id="filter-search-clear-badge" 
+          class="hover:text-white hover:bg-white/20 p-1 rounded-full cursor-pointer ml-1 font-black transition-colors" 
+          title="Quitar búsqueda"
+          aria-label="Quitar búsqueda"
+        >
+          ✕
+        </button>
+      </div>
+
       <!-- Botón Limpiar filtros (se muestra cuando hay filtros activos) -->
       <button
         type="button"
@@ -213,11 +231,23 @@ const {
   }
 </style>
 
+<!-- Bundled Script: asegurar motor de búsqueda disponible -->
+<script>
+  import { SearchEngine } from '../utils/searchEngine';
+  if (typeof window !== 'undefined') {
+    (window as any).SearchEngine = SearchEngine;
+    window.dispatchEvent(new CustomEvent('carmay-engine-ready'));
+  }
+</script>
+
 <!-- Script interactivo de filtrado instantáneo por CUP con Range Slider Dual -->
 <script is:inline>
   (function () {
     const tagSaleBtn = document.getElementById('filter-tag-sale');
     const tagTrendingBtn = document.getElementById('filter-tag-trending');
+    const searchBadge = document.getElementById('filter-search-badge');
+    const searchQueryText = document.getElementById('filter-search-query-text');
+    const searchClearBadge = document.getElementById('filter-search-clear-badge');
     const minInput = document.getElementById('price-min-input');
     const maxInput = document.getElementById('price-max-input');
     const sliderMin = document.getElementById('price-slider-min');
@@ -237,17 +267,47 @@ const {
     let minPrice = defaultSliderMin;
     let maxPrice = defaultSliderMax;
 
-    // Leer parámetros iniciales de URL en CUP
+    // Leer parámetros iniciales de URL
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('rebaja') === 'true') filterSale = true;
     if (urlParams.get('tendencia') === 'true') filterTrending = true;
     if (urlParams.get('min_cup')) minPrice = parseFloat(urlParams.get('min_cup')) || defaultSliderMin;
     if (urlParams.get('max_cup')) maxPrice = parseFloat(urlParams.get('max_cup')) || defaultSliderMax;
+    let searchFilter = (urlParams.get('s') || urlParams.get('q') || '').trim();
 
     if (minInput) minInput.value = minPrice;
     if (maxInput) maxInput.value = maxPrice;
     if (sliderMin) sliderMin.value = Math.min(minPrice, defaultSliderMax);
     if (sliderMax) sliderMax.value = Math.min(maxPrice, defaultSliderMax);
+
+    // Cache local de SearchEngine
+    let catalogEngineInstance = null;
+    function getCatalogSearchEngine() {
+      if (catalogEngineInstance) return catalogEngineInstance;
+      const engine = window.SearchEngine;
+      const dataEl = document.getElementById('catalog-data');
+      if (!engine || !dataEl) return null;
+      try {
+        const rawData = JSON.parse(dataEl.textContent || '[]');
+        catalogEngineInstance = new engine(rawData);
+      } catch (e) {
+        console.error('Error instanciando SearchEngine en catálogo:', e);
+      }
+      return catalogEngineInstance;
+    }
+
+    function getMatchingSlugs(query) {
+      if (!query || query.length < 2) return null;
+      const engine = getCatalogSearchEngine();
+      if (!engine) return null;
+      try {
+        const results = engine.search(query);
+        return new Set(results.map(r => r.slug));
+      } catch (e) {
+        console.error('Error buscando coincidencias:', e);
+        return null;
+      }
+    }
 
     function formatNumber(n) {
       return Number(n).toLocaleString('en-US');
@@ -292,8 +352,18 @@ const {
         }
       }
 
+      // Badge de Búsqueda
+      if (searchBadge) {
+        if (searchFilter && searchFilter.length >= 2) {
+          searchBadge.classList.remove('hidden');
+          if (searchQueryText) searchQueryText.textContent = `"${searchFilter}"`;
+        } else {
+          searchBadge.classList.add('hidden');
+        }
+      }
+
       // Botón Reset
-      const hasActive = filterSale || filterTrending || minPrice > defaultSliderMin || maxPrice < defaultSliderMax;
+      const hasActive = Boolean(searchFilter && searchFilter.length >= 2) || filterSale || filterTrending || minPrice > defaultSliderMin || maxPrice < defaultSliderMax;
       if (resetBtn) {
         resetBtn.classList.toggle('hidden', !hasActive);
       }
@@ -304,16 +374,19 @@ const {
     function applyFilters() {
       const cards = Array.from(document.querySelectorAll('.product-card-item'));
       let visible = 0;
+      const matchingSlugs = searchFilter && searchFilter.length >= 2 ? getMatchingSlugs(searchFilter) : null;
 
       cards.forEach(card => {
         const priceCUP = parseFloat(card.getAttribute('data-price-cup') || '0');
         const onSale = card.getAttribute('data-on-sale') === 'true';
         const trending = card.getAttribute('data-trending') === 'true';
+        const slug = card.getAttribute('data-product-slug') || '';
 
         let match = true;
         if (filterSale && !onSale) match = false;
         if (filterTrending && !trending) match = false;
         if (priceCUP < minPrice || priceCUP > maxPrice) match = false;
+        if (matchingSlugs !== null && !matchingSlugs.has(slug)) match = false;
 
         card.style.display = match ? '' : 'none';
         if (match) visible++;
@@ -326,10 +399,22 @@ const {
       // Mostrar u ocultar mensaje cuando nada coincide (Empty State)
       if (emptyStateEl) {
         emptyStateEl.classList.toggle('hidden', visible > 0);
+        const titleEl = emptyStateEl.querySelector('h3');
+        const descEl = emptyStateEl.querySelector('p');
+        if (titleEl && descEl) {
+          if (searchFilter && searchFilter.length >= 2) {
+            titleEl.textContent = `No encontramos "${searchFilter}"`;
+            descEl.textContent = `No hay artículos que coincidan con "${searchFilter}" y los filtros aplicados. Prueba limpiando los filtros o escríbenos para encargártelo.`;
+          } else {
+            titleEl.textContent = 'No encontramos productos en este rango';
+            descEl.textContent = 'No hay artículos que coincidan con los filtros aplicados. Prueba ampliando tu presupuesto o limpiando los filtros para ver todo el catálogo.';
+          }
+        }
       }
 
-      // Sincronizar URL en CUP
+      // Sincronizar URL en CUP y término de búsqueda
       const params = new URLSearchParams();
+      if (searchFilter && searchFilter.length >= 2) params.set('s', searchFilter);
       if (filterSale) params.set('rebaja', 'true');
       if (filterTrending) params.set('tendencia', 'true');
       if (minPrice > defaultSliderMin) params.set('min_cup', minPrice.toString());
@@ -350,6 +435,29 @@ const {
     tagTrendingBtn?.addEventListener('click', () => {
       filterTrending = !filterTrending;
       applyFilters();
+    });
+
+    // Evento limpiar búsqueda desde el badge
+    searchClearBadge?.addEventListener('click', () => {
+      searchFilter = '';
+      const subInput = document.getElementById('subnav-search-input');
+      const subClear = document.getElementById('subnav-search-clear');
+      if (subInput) subInput.value = '';
+      if (subClear) subClear.classList.add('hidden');
+      applyFilters();
+    });
+
+    // Escuchar cambios de búsqueda desde el SubNavbar en tiempo real
+    window.addEventListener('carmay-search', (e) => {
+      searchFilter = (e.detail?.query || '').trim();
+      applyFilters();
+    });
+
+    // Re-evaluar filtros cuando el motor de búsqueda termine de inicializarse
+    window.addEventListener('carmay-engine-ready', () => {
+      if (searchFilter && searchFilter.length >= 2) {
+        applyFilters();
+      }
     });
 
     // Control de inputs numéricos libres con debounce (sin forzar números al usuario)
@@ -406,6 +514,7 @@ const {
 
     // Función global de Reset
     function resetAllFilters() {
+      searchFilter = '';
       filterSale = false;
       filterTrending = false;
       minPrice = defaultSliderMin;
@@ -414,6 +523,12 @@ const {
       if (maxInput) maxInput.value = defaultSliderMax;
       if (sliderMin) sliderMin.value = defaultSliderMin;
       if (sliderMax) sliderMax.value = defaultSliderMax;
+
+      const subInput = document.getElementById('subnav-search-input');
+      const subClear = document.getElementById('subnav-search-clear');
+      if (subInput) subInput.value = '';
+      if (subClear) subClear.classList.add('hidden');
+
       applyFilters();
     }
 

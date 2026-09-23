@@ -171,12 +171,14 @@
             </a>
           </div>`;
       } else {
+        const topResults = results.slice(0, 8);
+        const encodedQ = encodeURIComponent(query);
         panel.innerHTML = `
           <div class="flex items-center justify-between pb-2 mb-2 border-b-2 border-white/20">
             <span class="text-white font-bold text-sm">Resultados</span>
             <span class="text-amber-300/80 text-xs">${results.length} ${results.length === 1 ? 'producto' : 'productos'}</span>
           </div>
-          <div class="flex flex-col gap-1">${results.slice(0, 8).map(item => `
+          <div class="flex flex-col gap-1">${topResults.map(item => `
             <a href="/producto/${item.slug}/" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.08] transition-colors">
               <img src="${item.primaryImage}" class="w-11 h-11 rounded-lg object-cover shrink-0 border-2 border-white/20" alt="${item.name}" />
               <div class="min-w-0 flex-1">
@@ -185,6 +187,12 @@
               </div>
               <span class="text-amber-400">→</span>
             </a>`).join('')}
+          </div>
+          <div class="mt-2.5 pt-2 border-t border-white/10 text-center">
+            <a href="/tienda/?s=${encodedQ}" class="inline-flex items-center justify-center gap-1.5 w-full py-1.5 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 font-bold text-xs transition-colors">
+              <span>Ver todos los ${results.length} productos en la tienda</span>
+              <span>→</span>
+            </a>
           </div>`;
       }
       if (panel) panel.classList.remove('hidden');
@@ -192,17 +200,59 @@
 
     let debounce = null;
     if (input) {
+      // Inicializar con parámetro de URL si existe (?s= o ?q=)
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialQuery = (urlParams.get('s') || urlParams.get('q') || '').trim();
+      if (initialQuery) {
+        input.value = initialQuery;
+        currentQuery = initialQuery;
+        if (clearBtn) clearBtn.classList.remove('hidden');
+      }
+
       input.addEventListener('input', () => {
         clearTimeout(debounce);
         currentQuery = input.value.trim();
         if (clearBtn) clearBtn.classList.toggle('hidden', currentQuery.length === 0);
-        debounce = setTimeout(() => renderSearch(currentQuery), 140);
+        debounce = setTimeout(() => {
+          renderSearch(currentQuery);
+          // Si estamos en catálogo o tienda, notificar para filtrado en vivo de las tarjetas
+          window.dispatchEvent(new CustomEvent('carmay-search', { detail: { query: currentQuery } }));
+        }, 140);
       });
     }
 
     document.getElementById('subnav-search-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
-      renderSearch(currentQuery);
+      const q = currentQuery.trim();
+      const isTienda = window.location.pathname.startsWith('/tienda');
+
+      if (!q) {
+        if (isTienda) {
+          window.dispatchEvent(new CustomEvent('carmay-search', { detail: { query: '' } }));
+        }
+        return;
+      }
+
+      if (isTienda) {
+        // En tienda: ocultar dropdown para ver el catálogo y sincronizar la URL sin recargar
+        if (panel) panel.classList.add('hidden');
+        const params = new URLSearchParams(window.location.search);
+        params.set('s', q);
+        window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+        window.dispatchEvent(new CustomEvent('carmay-search', { detail: { query: q } }));
+
+        // Desplazarse suavemente al catálogo si está fuera de pantalla
+        const prodSection = document.getElementById('productos-section');
+        if (prodSection) {
+          const rect = prodSection.getBoundingClientRect();
+          if (rect.top > 200 || rect.top < -100) {
+            prodSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      } else {
+        // En cualquier otra página (Home, Contacto, Carrito): navegar a la tienda con el término
+        window.location.href = `/tienda/?s=${encodeURIComponent(q)}`;
+      }
     });
 
     clearBtn?.addEventListener('click', () => {
@@ -211,6 +261,16 @@
       clearBtn.classList.add('hidden');
       renderSearch('');
       input?.focus();
+
+      window.dispatchEvent(new CustomEvent('carmay-search', { detail: { query: '' } }));
+
+      if (window.location.pathname.startsWith('/tienda')) {
+        const params = new URLSearchParams(window.location.search);
+        params.delete('s');
+        params.delete('q');
+        const newSearch = params.toString() ? `?${params.toString()}` : '';
+        window.history.replaceState({}, '', `${window.location.pathname}${newSearch}`);
+      }
     });
 
     document.addEventListener('click', (e) => {
