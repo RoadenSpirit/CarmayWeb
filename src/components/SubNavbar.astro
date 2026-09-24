@@ -45,7 +45,7 @@
           </form>
 
           <!-- Panel desplegable de resultados -->
-          <div id="subnav-search-panel" class="hidden absolute left-0 sm:w-[620px] lg:w-[700px] max-w-[92vw] top-full mt-3 bg-[#12141c]/98 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.9)] p-4 sm:p-5 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide"></div>
+          <div id="subnav-search-panel" class="hidden absolute left-0 w-full sm:w-[580px] md:w-[680px] lg:w-[760px] max-w-[95vw] top-full mt-3 bg-[#0c0e17] rounded-3xl border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-4 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-4"></div>
         </div>
       </div>
 
@@ -154,6 +154,37 @@
       }
     }
 
+    function createProductMiniCard(item: any): string {
+      const priceCUPFormatted = Number(item.priceCUP || 0).toLocaleString('en-US');
+      const priceUSD = Number(item.priceUSD || 0);
+      const priceUSDFormatted = priceUSD % 1 === 0 ? `$${priceUSD.toFixed(0)}` : `$${priceUSD.toFixed(2)}`;
+
+      return `
+        <a href="/producto/${item.slug}/" class="group relative rounded-2xl overflow-hidden flex flex-col justify-between bg-[#0f1120] border border-white/10 hover:border-amber-400/50 hover:shadow-[0_8px_24px_rgba(234,179,8,0.18)] p-3 transition-all duration-200">
+          <div class="aspect-square rounded-xl overflow-hidden bg-black/60 mb-2.5 relative">
+            <img 
+              src="${item.primaryImage}" 
+              alt="${item.name}" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+              loading="lazy" 
+            />
+            <span class="absolute top-2 right-2 bg-black/85 backdrop-blur-md text-amber-300 text-[10px] px-2 py-0.5 rounded-full border border-amber-400/30 font-bold uppercase tracking-wider">
+              ${item.category}
+            </span>
+          </div>
+          <div class="flex-1 flex flex-col justify-between">
+            <h5 class="font-bold text-white text-xs line-clamp-2 leading-snug group-hover:text-amber-300 transition-colors">
+              ${item.name}
+            </h5>
+            <div class="text-[11px] font-black text-orange-400 mt-2 flex items-center justify-between">
+              <span>${priceCUPFormatted} CUP</span>
+              <span class="text-slate-400 font-semibold text-[10px]">${priceUSDFormatted} USD</span>
+            </div>
+          </div>
+        </a>
+      `;
+    }
+
     function renderSearch(query: string) {
       if (!query || query.length < 2) {
         if (panel) {
@@ -171,22 +202,22 @@
         const whatsappMsg = `Hola Carmay Outfit 👋, me interesa encargar el producto *"${query}"* que estuve buscando en su sitio web pero no encontré en el catálogo activo. ¿Tienen disponibilidad o fecha de llegada?`;
 
         panel!.innerHTML = `
-          <div class="space-y-5 text-center py-2">
+          <div class="space-y-6 text-center py-2">
             <div class="max-w-md mx-auto space-y-2.5">
               <div class="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center text-2xl mx-auto text-amber-400 shadow-inner">
                 🔎
               </div>
-              <h4 class="text-sm sm:text-base font-extrabold text-white">
-                No encontramos coincidencias exactas para <span class="text-amber-300">"${query}"</span>
+              <h4 class="text-base sm:text-lg font-extrabold text-white">
+                No encontramos coincidencias exactas para <span class="text-amber-300 font-black">"${query}"</span>
               </h4>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                Lo que buscas no está disponible en este momento en el catálogo, pero puedes solicitarnos un encargo especial o explorar estas sugerencias populares.
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Lo que buscas no está disponible en este momento en el catálogo, pero te sugerimos estos productos populares o puedes solicitarnos un encargo especial.
               </p>
-              <div class="pt-1.5">
+              <div class="pt-2">
                 <a 
                   href="https://wa.me/REDACTED_PHONE_1?text=${encodeURIComponent(whatsappMsg)}" 
                   target="_blank"
-                  class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-purple-900/40 hover:shadow-orange-500/30 border border-purple-500/40 hover:border-amber-400 transition-all"
+                  class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-purple-900/40 hover:shadow-orange-500/30 border border-purple-500/40 hover:border-amber-400 transition-all cursor-pointer"
                 >
                   <span>💬 Encargar por WhatsApp lo que buscas</span>
                 </a>
@@ -195,64 +226,39 @@
 
             ${sampleRecommended.length > 0 ? `
               <div class="pt-4 border-t border-white/[0.08] text-left">
-                <span class="text-[11px] font-bold text-amber-400 uppercase tracking-widest block mb-3 text-center sm:text-left">
-                  ⭐ Productos sugeridos para ti
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-3 text-center sm:text-left">
+                  ⭐ Productos recomendados para ti
                 </span>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                  ${sampleRecommended.map(p => `
-                    <a href="/producto/${p.slug}/" class="group flex items-center gap-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-amber-400/40 hover:bg-white/[0.06] p-2.5 transition-all">
-                      <img src="${p.primaryImage}" alt="${p.name}" class="w-12 h-12 object-cover rounded-lg bg-black/40 shrink-0 border border-white/[0.06] group-hover:scale-105 transition-transform" />
-                      <div class="flex-1 min-w-0">
-                        <h6 class="font-bold text-white text-xs truncate group-hover:text-amber-300 transition-colors leading-tight">
-                          ${p.name}
-                        </h6>
-                        <div class="text-[11px] font-bold text-slate-300 mt-1">
-                          <span class="text-orange-400">${p.priceCUP.toLocaleString('en-US')} CUP</span>
-                        </div>
-                      </div>
-                      <span class="text-white/30 group-hover:text-amber-300 text-xs pr-1">→</span>
-                    </a>
-                  `).join('')}
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  ${sampleRecommended.map(createProductMiniCard).join('')}
                 </div>
               </div>
             ` : ''}
           </div>`;
       } else {
-        const topResults = results.slice(0, 8);
+        const topResults = results.slice(0, 9);
         const encodedQ = encodeURIComponent(query);
         panel!.innerHTML = `
-          <div class="flex items-center justify-between pb-3 mb-3 border-b border-white/[0.12]">
-            <h4 class="text-sm font-extrabold text-white">
-              Resultados para <span class="text-amber-300">"${query}"</span>
-            </h4>
-            <span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
-              ${results.length} ${results.length === 1 ? 'coincidencia' : 'coincidencias'}
-            </span>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${topResults.map(item => `
-            <a href="/producto/${item.slug}/" class="group relative rounded-xl overflow-hidden flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] hover:border-amber-400/50 hover:bg-white/[0.08] p-2.5 transition-all">
-              <img src="${item.primaryImage}" alt="${item.name}" class="w-13 h-13 object-cover rounded-lg bg-black/40 shrink-0 border border-white/[0.08] group-hover:scale-105 transition-transform" />
-              <div class="flex-1 min-w-0">
-                <span class="text-[10px] font-bold text-amber-400/90 uppercase tracking-wider inline-block">
-                  ${item.category}
-                </span>
-                <h5 class="font-bold text-white text-xs truncate group-hover:text-amber-300 transition-colors leading-tight">
-                  ${item.name}
-                </h5>
-                <div class="text-[11px] font-bold mt-1">
-                  <span class="text-orange-400 font-black">${item.priceCUP.toLocaleString('en-US')} CUP</span>
-                  <span class="text-white/40"> · </span>
-                  <span class="text-white/80 font-bold">$${item.priceUSD % 1 === 0 ? item.priceUSD.toFixed(0) : item.priceUSD.toFixed(2)} USD</span>
-                </div>
-              </div>
-              <span class="shrink-0 text-amber-400/50 group-hover:text-amber-300 group-hover:translate-x-0.5 transition-all text-sm pr-1">→</span>
-            </a>`).join('')}
-          </div>
-          <div class="mt-3.5 pt-2.5 border-t border-white/10 text-center">
-            <a href="/tienda/?s=${encodedQ}" class="inline-flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 font-bold text-xs transition-colors">
-              <span>Ver todos los ${results.length} productos en la tienda</span>
-              <span>→</span>
-            </a>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+              <h4 class="text-sm font-extrabold text-white">
+                Resultados para <span class="text-amber-300 font-black">"${query}"</span>
+              </h4>
+              <span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20 font-mono">
+                ${results.length} ${results.length === 1 ? 'coincidencia' : 'coincidencias'}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+              ${topResults.map(createProductMiniCard).join('')}
+            </div>
+
+            <div class="pt-3 border-t border-white/[0.08] text-center">
+              <a href="/tienda/?s=${encodedQ}" class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500/15 via-amber-400/20 to-amber-500/15 hover:from-amber-500/30 hover:to-amber-500/30 border border-amber-400/30 text-amber-300 font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_2px_12px_rgba(234,179,8,0.1)]">
+                <span>Ver todos los ${results.length} productos en la tienda</span>
+                <span>→</span>
+              </a>
+            </div>
           </div>`;
       }
       if (panel) panel.classList.remove('hidden');
