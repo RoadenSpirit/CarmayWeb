@@ -13,7 +13,7 @@
 
       <!-- ===== BUSCADOR (En móvil es el último elemento inferior por flex-col-reverse, en desktop 55% a la izquierda) ===== -->
       <div class="flex-1 sm:flex-[3] min-w-0">
-        <div class="relative">
+        <div class="relative z-50">
           <form id="subnav-search-form" class="flex items-center gap-2 w-full rounded-full border border-white/20 bg-black/35 backdrop-blur-md px-3.5 py-2 focus-within:border-amber-400/50 focus-within:bg-black/50 focus-within:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
             <input
               type="text"
@@ -113,42 +113,39 @@
   </div>
 </div>
 
-<!-- Bundled Script: motor de búsqueda global -->
 <script>
   import { SearchEngine } from '../utils/searchEngine';
+
   if (typeof window !== 'undefined') {
     (window as any).SearchEngine = SearchEngine;
+    window.dispatchEvent(new CustomEvent('carmay-engine-ready'));
   }
-</script>
 
-<script is:inline>
-  (function () {
-    // ====== MOTOR DE BÚSQUEDA (lee índice global del Layout) ======
-    const input = document.getElementById('subnav-search-input');
+  function initSubNavbar() {
+    const input = document.getElementById('subnav-search-input') as HTMLInputElement | null;
     const clearBtn = document.getElementById('subnav-search-clear');
     const panel = document.getElementById('subnav-search-panel');
-    const engine = window.SearchEngine;
-    const items = Array.from(document.querySelectorAll('.carousel-item'));
+    const form = document.getElementById('subnav-search-form');
+    const items = Array.from(document.querySelectorAll('.carousel-item')) as HTMLElement[];
 
-    let engineInstance = null;
+    let engineInstance: SearchEngine | null = null;
     let currentQuery = '';
-    let intervalId = null;
+    let intervalId: any = null;
 
-    function getEngine() {
+    function getEngine(): SearchEngine | null {
       if (engineInstance) return engineInstance;
-      if (!engine) return null;
       const dataEl = document.getElementById('catalog-data');
       try {
         const rawData = dataEl ? JSON.parse(dataEl.textContent || '[]') : [];
-        engineInstance = new engine(rawData);
+        engineInstance = new SearchEngine(rawData);
       } catch (e) {
         console.error('Error indexando catálogo:', e);
-        engineInstance = new engine([]);
+        engineInstance = new SearchEngine([]);
       }
       return engineInstance;
     }
 
-    function getCatalogData() {
+    function getCatalogData(): any[] {
       const dataEl = document.getElementById('catalog-data');
       try {
         return dataEl ? JSON.parse(dataEl.textContent || '[]') : [];
@@ -157,7 +154,7 @@
       }
     }
 
-    function renderSearch(query) {
+    function renderSearch(query: string) {
       if (!query || query.length < 2) {
         if (panel) {
           panel.innerHTML = '';
@@ -171,10 +168,9 @@
       if (results.length === 0) {
         const catalog = getCatalogData();
         const sampleRecommended = catalog.slice(0, 3);
-        const encodedQ = encodeURIComponent(query);
         const whatsappMsg = `Hola Carmay Outfit 👋, me interesa encargar el producto *"${query}"* que estuve buscando en su sitio web pero no encontré en el catálogo activo. ¿Tienen disponibilidad o fecha de llegada?`;
 
-        panel.innerHTML = `
+        panel!.innerHTML = `
           <div class="space-y-5 text-center py-2">
             <div class="max-w-md mx-auto space-y-2.5">
               <div class="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center text-2xl mx-auto text-amber-400 shadow-inner">
@@ -224,7 +220,7 @@
       } else {
         const topResults = results.slice(0, 8);
         const encodedQ = encodeURIComponent(query);
-        panel.innerHTML = `
+        panel!.innerHTML = `
           <div class="flex items-center justify-between pb-3 mb-3 border-b border-white/[0.12]">
             <h4 class="text-sm font-extrabold text-white">
               Resultados para <span class="text-amber-300">"${query}"</span>
@@ -262,7 +258,7 @@
       if (panel) panel.classList.remove('hidden');
     }
 
-    let debounce = null;
+    let debounce: any = null;
     if (input) {
       // Inicializar con parámetro de URL si existe (?s= o ?q=)
       const urlParams = new URLSearchParams(window.location.search);
@@ -285,7 +281,7 @@
       });
     }
 
-    document.getElementById('subnav-search-form')?.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', (e) => {
       e.preventDefault();
       const q = currentQuery.trim();
       const isTienda = window.location.pathname.startsWith('/tienda');
@@ -338,7 +334,7 @@
     });
 
     document.addEventListener('click', (e) => {
-      const t = e.target;
+      const t = e.target as Node;
       if (panel && !panel.contains(t) && !input?.contains(t)) {
         panel.classList.add('hidden');
       }
@@ -360,7 +356,7 @@
       }, 4500);
     }
 
-    function show(n) {
+    function show(n: number) {
       items.forEach((el, i) => {
         const active = i === n;
         el.style.opacity = active ? '1' : '0';
@@ -382,7 +378,13 @@
     } else if (items.length === 1) {
       show(0);
     }
-  })();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSubNavbar);
+  } else {
+    initSubNavbar();
+  }
 </script>
 
 <style>

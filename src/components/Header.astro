@@ -128,7 +128,7 @@ const storeCategories = [
   )}
 
   <!-- ================= PISO 3: MENÚ BUSCADOR + CARRUSEL (ÚLTIMO, COLAPSABLE AL SCROLL) ================= -->
-  <div id="subnav-collapsible" class="subnav-grid">
+  <div id="subnav-collapsible" class="subnav-grid relative z-30">
     <div class="subnav-grid-inner">
       <SubNavbar />
     </div>
@@ -432,6 +432,10 @@ const storeCategories = [
 
   .subnav-grid-inner {
     min-height: 0;
+    overflow: visible;
+  }
+
+  .subnav-grid.is-collapsed .subnav-grid-inner {
     overflow: hidden;
   }
 </style>

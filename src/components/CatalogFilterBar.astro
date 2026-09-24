@@ -231,27 +231,20 @@ const {
   }
 </style>
 
-<!-- Bundled Script: asegurar motor de búsqueda disponible -->
+<!-- Script interactivo de filtrado instantáneo por CUP con Range Slider Dual y Búsqueda -->
 <script>
   import { SearchEngine } from '../utils/searchEngine';
-  if (typeof window !== 'undefined') {
-    (window as any).SearchEngine = SearchEngine;
-    window.dispatchEvent(new CustomEvent('carmay-engine-ready'));
-  }
-</script>
 
-<!-- Script interactivo de filtrado instantáneo por CUP con Range Slider Dual -->
-<script is:inline>
-  (function () {
+  function initCatalogFilter() {
     const tagSaleBtn = document.getElementById('filter-tag-sale');
     const tagTrendingBtn = document.getElementById('filter-tag-trending');
     const searchBadge = document.getElementById('filter-search-badge');
     const searchQueryText = document.getElementById('filter-search-query-text');
     const searchClearBadge = document.getElementById('filter-search-clear-badge');
-    const minInput = document.getElementById('price-min-input');
-    const maxInput = document.getElementById('price-max-input');
-    const sliderMin = document.getElementById('price-slider-min');
-    const sliderMax = document.getElementById('price-slider-max');
+    const minInput = document.getElementById('price-min-input') as HTMLInputElement | null;
+    const maxInput = document.getElementById('price-max-input') as HTMLInputElement | null;
+    const sliderMin = document.getElementById('price-slider-min') as HTMLInputElement | null;
+    const sliderMax = document.getElementById('price-slider-max') as HTMLInputElement | null;
     const sliderTrack = document.getElementById('slider-track-highlight');
     const priceLabel = document.getElementById('price-range-label');
     const resetBtn = document.getElementById('filter-reset-btn');
@@ -271,32 +264,31 @@ const {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('rebaja') === 'true') filterSale = true;
     if (urlParams.get('tendencia') === 'true') filterTrending = true;
-    if (urlParams.get('min_cup')) minPrice = parseFloat(urlParams.get('min_cup')) || defaultSliderMin;
-    if (urlParams.get('max_cup')) maxPrice = parseFloat(urlParams.get('max_cup')) || defaultSliderMax;
+    if (urlParams.get('min_cup')) minPrice = parseFloat(urlParams.get('min_cup') || '') || defaultSliderMin;
+    if (urlParams.get('max_cup')) maxPrice = parseFloat(urlParams.get('max_cup') || '') || defaultSliderMax;
     let searchFilter = (urlParams.get('s') || urlParams.get('q') || '').trim();
 
-    if (minInput) minInput.value = minPrice;
-    if (maxInput) maxInput.value = maxPrice;
-    if (sliderMin) sliderMin.value = Math.min(minPrice, defaultSliderMax);
-    if (sliderMax) sliderMax.value = Math.min(maxPrice, defaultSliderMax);
+    if (minInput) minInput.value = minPrice.toString();
+    if (maxInput) maxInput.value = maxPrice.toString();
+    if (sliderMin) sliderMin.value = Math.min(minPrice, defaultSliderMax).toString();
+    if (sliderMax) sliderMax.value = Math.min(maxPrice, defaultSliderMax).toString();
 
     // Cache local de SearchEngine
-    let catalogEngineInstance = null;
-    function getCatalogSearchEngine() {
+    let catalogEngineInstance: SearchEngine | null = null;
+    function getCatalogSearchEngine(): SearchEngine | null {
       if (catalogEngineInstance) return catalogEngineInstance;
-      const engine = window.SearchEngine;
       const dataEl = document.getElementById('catalog-data');
-      if (!engine || !dataEl) return null;
+      if (!dataEl) return null;
       try {
         const rawData = JSON.parse(dataEl.textContent || '[]');
-        catalogEngineInstance = new engine(rawData);
+        catalogEngineInstance = new SearchEngine(rawData);
       } catch (e) {
         console.error('Error instanciando SearchEngine en catálogo:', e);
       }
       return catalogEngineInstance;
     }
 
-    function getMatchingSlugs(query) {
+    function getMatchingSlugs(query: string): Set<string> | null {
       if (!query || query.length < 2) return null;
       const engine = getCatalogSearchEngine();
       if (!engine) return null;
@@ -309,7 +301,7 @@ const {
       }
     }
 
-    function formatNumber(n) {
+    function formatNumber(n: number) {
       return Number(n).toLocaleString('en-US');
     }
 
@@ -372,7 +364,7 @@ const {
     }
 
     function applyFilters() {
-      const cards = Array.from(document.querySelectorAll('.product-card-item'));
+      const cards = Array.from(document.querySelectorAll('.product-card-item')) as HTMLElement[];
       let visible = 0;
       const matchingSlugs = searchFilter && searchFilter.length >= 2 ? getMatchingSlugs(searchFilter) : null;
 
@@ -440,7 +432,7 @@ const {
     // Evento limpiar búsqueda desde el badge
     searchClearBadge?.addEventListener('click', () => {
       searchFilter = '';
-      const subInput = document.getElementById('subnav-search-input');
+      const subInput = document.getElementById('subnav-search-input') as HTMLInputElement | null;
       const subClear = document.getElementById('subnav-search-clear');
       if (subInput) subInput.value = '';
       if (subClear) subClear.classList.add('hidden');
@@ -448,20 +440,13 @@ const {
     });
 
     // Escuchar cambios de búsqueda desde el SubNavbar en tiempo real
-    window.addEventListener('carmay-search', (e) => {
+    window.addEventListener('carmay-search', ((e: CustomEvent) => {
       searchFilter = (e.detail?.query || '').trim();
       applyFilters();
-    });
-
-    // Re-evaluar filtros cuando el motor de búsqueda termine de inicializarse
-    window.addEventListener('carmay-engine-ready', () => {
-      if (searchFilter && searchFilter.length >= 2) {
-        applyFilters();
-      }
-    });
+    }) as EventListener);
 
     // Control de inputs numéricos libres con debounce (sin forzar números al usuario)
-    let priceTimer = null;
+    let priceTimer: any = null;
     function onPriceInputChange() {
       clearTimeout(priceTimer);
       priceTimer = setTimeout(() => {
@@ -473,8 +458,8 @@ const {
         minPrice = minVal;
         maxPrice = maxVal;
 
-        if (sliderMin) sliderMin.value = Math.min(minPrice, defaultSliderMax);
-        if (sliderMax) sliderMax.value = Math.min(maxPrice, defaultSliderMax);
+        if (sliderMin) sliderMin.value = Math.min(minPrice, defaultSliderMax).toString();
+        if (sliderMax) sliderMax.value = Math.min(maxPrice, defaultSliderMax).toString();
         applyFilters();
       }, 250);
     }
@@ -484,14 +469,14 @@ const {
 
     // Control del Slider Mínimo
     sliderMin?.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
+      const val = parseFloat((e.target as HTMLInputElement).value);
       if (val > maxPrice) {
         minPrice = maxPrice;
-        sliderMin.value = maxPrice;
+        sliderMin.value = maxPrice.toString();
       } else {
         minPrice = val;
       }
-      if (minInput) minInput.value = minPrice;
+      if (minInput) minInput.value = minPrice.toString();
       updateSliderTrack();
       clearTimeout(priceTimer);
       priceTimer = setTimeout(applyFilters, 100);
@@ -499,14 +484,14 @@ const {
 
     // Control del Slider Máximo
     sliderMax?.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
+      const val = parseFloat((e.target as HTMLInputElement).value);
       if (val < minPrice) {
         maxPrice = minPrice;
-        sliderMax.value = minPrice;
+        sliderMax.value = minPrice.toString();
       } else {
         maxPrice = val;
       }
-      if (maxInput) maxInput.value = maxPrice;
+      if (maxInput) maxInput.value = maxPrice.toString();
       updateSliderTrack();
       clearTimeout(priceTimer);
       priceTimer = setTimeout(applyFilters, 100);
@@ -519,12 +504,12 @@ const {
       filterTrending = false;
       minPrice = defaultSliderMin;
       maxPrice = defaultSliderMax;
-      if (minInput) minInput.value = defaultSliderMin;
-      if (maxInput) maxInput.value = defaultSliderMax;
-      if (sliderMin) sliderMin.value = defaultSliderMin;
-      if (sliderMax) sliderMax.value = defaultSliderMax;
+      if (minInput) minInput.value = defaultSliderMin.toString();
+      if (maxInput) maxInput.value = defaultSliderMax.toString();
+      if (sliderMin) sliderMin.value = defaultSliderMin.toString();
+      if (sliderMax) sliderMax.value = defaultSliderMax.toString();
 
-      const subInput = document.getElementById('subnav-search-input');
+      const subInput = document.getElementById('subnav-search-input') as HTMLInputElement | null;
       const subClear = document.getElementById('subnav-search-clear');
       if (subInput) subInput.value = '';
       if (subClear) subClear.classList.add('hidden');
@@ -538,5 +523,11 @@ const {
     // Inicialización
     updateUI();
     applyFilters();
-  })();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCatalogFilter);
+  } else {
+    initCatalogFilter();
+  }
 </script>
