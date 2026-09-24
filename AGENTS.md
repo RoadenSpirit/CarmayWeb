@@ -73,3 +73,16 @@ Para activar la herramienta sobre cualquier componente problemático:
    ```
 2. Si se requiere recibir los logs de forma remota, reactivar en n8n el flujo `Carmay Telemetry Collector` (ID: `VKKoV2FewcG8BKba`).
 3. Al terminar la sesión de depuración, retirar la llamada del archivo Astro. El módulo en `src/utils/debugWatcher.ts` debe permanecer preservado en el repositorio como herramienta de diagnóstico estándar.
+
+---
+
+## 3. Regla Estricta e Inmutable: Preservación de UI/UX y Componentes Aprobados
+
+### Principio de Cambios Estrictamente Aditivos
+**BAJO NINGÚN CONCEPTO se deben alterar, simplificar, recortar ni eliminar estilos, mini-cards, estados visuales, layouts o lógica de interacción que hayan sido previamente diseñados, implementados y aprobados por el usuario.**
+
+1. **Mejoras sin destrucción:** Si el usuario solicita mejorar, sincronizar o ampliar una funcionalidad (por ejemplo, conectar el buscador a la URL o al catálogo):
+   - La nueva funcionalidad debe **sumarse** a la existente.
+   - **NUNCA** se debe sustituir o borrar el renderizado rico preexistente (ej. autocompletado en rejilla, mini cards con imágenes y precios duales, vistas sin resultados con botón dinámico a WhatsApp y productos recomendados).
+2. **Prohibición de simplificaciones unilaterales:** Un agente no puede decidir de forma autónoma reducir el diseño de un componente a una versión minimalista o más básica.
+3. **Consulta previa obligatoria:** Si una refactorización requiere modificar la estructura visual o retirar algún elemento ya existente, se debe consultar y obtener aprobación expresa del usuario antes de tocar el código.
