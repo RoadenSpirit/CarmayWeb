@@ -35,7 +35,6 @@ const categories = [
 
 <section class="py-14 sm:py-20 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
   <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14 reveal-on-scroll">
-    <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mb-2">Explora por Secciones</span>
     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
       Nuestras Categorías Principales
     </h2>
@@ -62,10 +61,10 @@ const categories = [
 
         <!-- Contenido -->
         <div class="relative z-10">
-          <span class="text-[11px] sm:text-xs font-black text-amber-400 tracking-wider uppercase block mb-1">{cat.count}</span>
           <h3 class="text-lg sm:text-xl md:text-2xl font-black text-white group-hover:text-amber-300 transition-colors leading-tight">
             {cat.name}
           </h3>
+          <span class="text-xs sm:text-xs font-black text-amber-400 tracking-wider uppercase block mt-1">{cat.count}</span>
         </div>
       </a>
     ))}

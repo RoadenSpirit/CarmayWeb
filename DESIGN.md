@@ -116,6 +116,7 @@ Diseño neo-dark con estética futurista y elegante. Paleta oscura con acentos m
 - h3: clamp(1.25rem, 2vw, 1.875rem)
 - body: 1rem
 - small: 0.875rem
+- Mínimo de legibilidad: 0.75rem (12px) — nunca usar tamaños inferiores en texto funcional
 
 ## Layout
 
@@ -141,6 +142,7 @@ Diseño neo-dark con estética futurista y elegante. Paleta oscura con acentos m
 - **Card**: `0 4px 30px rgba(0, 0, 0, 0.3)`
 - **Card hover**: `0 8px 40px rgba(0, 0, 0, 0.4)`
 - **Glow purple**: `0 0 60px rgba(168, 85, 247, 0.08)`
+- **Glow amber (halo de hover)**: `inset 0 0 0 1px rgba(234, 179, 8, 0.15)` — halo dorado de marca sobre cards y CTAs
 
 ### Glassmorphism
 - Backdrop blur: 20px

@@ -77,11 +77,7 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
 
     <!-- Mensaje marketing en dorado con brillo metálico -->
     <div class="text-center mb-10 px-4">
-      <h1 class="text-3xl sm:text-5xl font-black tracking-widest mb-3 drop-shadow-[0_4px_20px_rgba(234,179,8,0.2)]"
-        style="background: linear-gradient(to right, #D4AF37, #F5D76B);
-               -webkit-background-clip: text;
-               -webkit-text-fill-color: transparent;
-               text-fill-color: transparent;">
+      <h1 class="text-3xl sm:text-5xl font-black tracking-widest mb-3 text-white drop-shadow-[0_4px_20px_rgba(234,179,8,0.2)]">
         <span class="block">ENCUENTRA LO QUE BUSCAS</span>
       </h1>
       <p class="text-sm sm:text-lg text-slate-400 drop-shadow-[0_2px_8px_rgba(255,255,255,0.03)]">
@@ -132,7 +128,6 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
       <!-- Header de sección -->
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-white/[0.06] reveal-on-scroll">
         <div>
-          <span class="text-xs font-black text-amber-400 uppercase tracking-widest block mb-2 drop-shadow-[0_2px_8px_rgba(234,179,8,0.2)]">CATÁLOGO CURADO</span>
           <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-[0_4px_15px_rgba(255,255,255,0.05)]">
             Todos Nuestros Productos
           </h2>
@@ -179,7 +174,9 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
         <div id="filter-empty-state" class="hidden col-span-2 sm:col-span-2 lg:col-span-4 py-16 px-4 text-center">
           <div class="max-w-md mx-auto bg-[#0d0f1a] border border-white/[0.08] rounded-3xl p-8 sm:p-10 shadow-2xl space-y-4">
             <div class="w-16 h-16 rounded-2xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-center mx-auto text-2xl shadow-inner">
-              🔍
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </div>
             <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight">
               No encontramos productos en este rango
@@ -191,7 +188,7 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
               <button 
                 type="button" 
                 id="empty-state-reset-btn"
-                class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-xs tracking-wider uppercase transition-all shadow-[0_4px_20px_rgba(234,179,8,0.3)] hover:-translate-y-0.5 cursor-pointer"
+                class="inline-flex items-center gap-2 min-h-[44px] px-6 py-3.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-xs tracking-wider uppercase transition-all shadow-[0_4px_20px_rgba(234,179,8,0.3)] hover:-translate-y-0.5 cursor-pointer"
               >
                 Ver todos los productos
               </button>
