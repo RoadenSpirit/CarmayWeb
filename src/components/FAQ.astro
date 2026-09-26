@@ -1,46 +1,86 @@
 ---
-const faqs = [
+const faqCategories = [
   {
-    question: "¿Cómo funciona la compra en la web y cómo recibo atención?",
-    answer: "Nuestra web te permite explorar el catálogo actualizado, armar tu carrito de compras y generar tu pedido para enviárselo directamente a un gestor por WhatsApp, quien coordinará tu entrega de inmediato. Además, siempre tienes la opción de escribirnos directamente a nuestro WhatsApp o visitarnos personalmente en nuestra tienda física para elegir tus prendas y artículos."
+    categoryTitle: "Garantía y Calidad",
+    items: [
+      {
+        question: "¿Qué garantía tienen los productos que compro?",
+        points: [
+          "<strong>Probamos el 100% de los productos:</strong> En nuestra tienda física verificamos personalmente cada artículo delante de ti antes de entregártelo.",
+          "<strong>Transparencia total:</strong> Comprobamos el encendido, accesorios y estado estético para garantizar que te lleves un producto nuevo y en óptimas condiciones.",
+          "<strong>Conformidad mutua:</strong> Al ser revisados minuciosamente en el momento de la entrega, no aplicamos devoluciones posteriores, asegurándote cero sorpresas."
+        ]
+      },
+      {
+        question: "¿Qué tipo de artículos incluye el catálogo?",
+        points: [
+          "<strong>Moda y Calzado:</strong> Prendas de tendencia, zapatillas, sandalias y accesorios seleccionados.",
+          "<strong>Tecnología:</strong> Estaciones de energía EcoFlow, Smartwatches, audífonos, televisores Smart TV, bicicletas eléctricas e inversores probados en tienda."
+        ]
+      }
+    ]
   },
   {
-    question: "¿Qué tipo de productos ofrecen y qué garantía tienen?",
-    answer: "Contamos con una amplia variedad que incluye ropa de moda, calzado de calidad, bolsos, accesorios y equipos de tecnología seleccionados (como Estaciones de Energía EcoFlow, Smart Watches, audífonos, televisores Smart TV, bicicletas eléctricas e inversores). Para brindarte total tranquilidad y transparencia, en nuestra tienda física te probamos personalmente el equipo antes de entregártelo, demostrándote su óptimo funcionamiento y condición 100% nueva. Dado que cada artículo es revisado y verificado en el acto junto a ti, no manejamos reembolsos posteriores, asegurando así que cada cliente se lleve un producto probado y plenamente conforme."
-  },
-  {
-    question: "¿Dónde se encuentra la tienda física y cuál es su horario?",
-    answer: "Estamos ubicados en Avellaneda No. 260 entre San Esteban y San Martín, Camagüey. Nuestro horario de atención es de lunes a viernes de 8:30 AM a 4:30 PM, y los sábados de 8:30 AM a 2:00 PM."
-  },
-  {
-    question: "¿Hacen envíos a domicilio?",
-    answer: "Realizamos envíos a domicilio exclusivamente dentro del municipio de Camagüey. Nuestro equipo de mensajería entrega tu pedido de forma rápida y segura en la puerta de tu casa o trabajo."
+    categoryTitle: "Ubicación, Horarios y Pedidos",
+    items: [
+      {
+        question: "¿Dónde está la tienda física y cuáles son los horarios?",
+        points: [
+          "<strong>Ubicación:</strong> Calle <strong>Avellaneda No. 260</strong> (entre San Esteban y San Martín), Camagüey, Cuba.",
+          "<strong>Lunes a Viernes:</strong> Abierto de <strong>8:30 AM a 4:30 PM</strong>.",
+          "<strong>Sábados:</strong> Abierto de <strong>8:30 AM a 2:00 PM</strong>."
+        ]
+      },
+      {
+        question: "¿Cómo compro online y cómo son las entregas?",
+        points: [
+          "<strong>Compra sencilla:</strong> Agrega tus productos al carrito y envíanos tu orden por WhatsApp para confirmación inmediata.",
+          "<strong>Envíos locales:</strong> Mensajería directa en el <strong>municipio de Camagüey</strong> con entrega el <strong>mismo día</strong>.",
+          "<strong>Recogida en tienda:</strong> Puedes pedir online y recoger físicamente en nuestro local en Avellaneda No. 260."
+        ]
+      }
+    ]
   }
 ];
 ---
 
 <section class="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-  <div class="text-center mb-16 reveal-on-scroll">
+  <div class="text-center mb-14 reveal-on-scroll">
     <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
       Preguntas Frecuentes (FAQ)
     </h2>
-    <p class="text-amber-400 font-bold text-xs uppercase tracking-widest block mt-2">Resolviendo tus dudas</p>
+    <p class="text-amber-400 font-bold text-xs uppercase tracking-widest block mt-2">Garantía, calidad y operativa clara</p>
   </div>
 
-  <div class="space-y-4">
-    {faqs.map((faq, idx) => (
-      <details class={`glass-card rounded-2xl p-6 sm:p-8 border border-white/10 group transition-all duration-300 reveal-on-scroll reveal-delay-${idx + 1}`}>
-        <summary class="font-bold text-white text-base sm:text-lg cursor-pointer flex items-center justify-between select-none">
-          <span class="flex items-center gap-3">
-            <span class="text-amber-400 font-black">0{idx + 1}.</span>
-            <span>{faq.question}</span>
-          </span>
-          <span class="text-purple-400 group-open:rotate-180 transition-transform text-xl">↓</span>
-        </summary>
-        <p class="text-gray-300 text-sm sm:text-base mt-4 pl-7 leading-relaxed">
-          {faq.answer}
-        </p>
-      </details>
+  <div class="space-y-10">
+    {faqCategories.map((group, groupIdx) => (
+      <div class="space-y-4">
+        <h3 class="text-sm font-black uppercase tracking-wider text-amber-400/90 pl-1 border-l-2 border-amber-400 flex items-center gap-2">
+          <span>{group.categoryTitle}</span>
+        </h3>
+
+        <div class="space-y-3">
+          {group.items.map((faq, idx) => (
+            <details class={`glass-card rounded-2xl p-6 sm:p-7 border border-white/10 group transition-all duration-300 reveal-on-scroll reveal-delay-${(groupIdx * 2) + idx + 1}`}>
+              <summary class="font-bold text-white text-base sm:text-lg cursor-pointer flex items-center justify-between select-none">
+                <span class="flex items-center gap-3">
+                  <span class="text-amber-400 font-black font-mono">0{(groupIdx * 2) + idx + 1}.</span>
+                  <span>{faq.question}</span>
+                </span>
+                <span class="text-purple-400 group-open:rotate-180 transition-transform text-xl shrink-0 ml-2">↓</span>
+              </summary>
+              <ul class="text-gray-300 text-sm sm:text-base mt-4 pl-7 space-y-2.5 leading-relaxed">
+                {faq.points.map((p) => (
+                  <li class="flex items-start gap-2">
+                    <span class="text-amber-400 font-bold text-base leading-none mt-1">•</span>
+                    <span set:html={p} />
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </div>
+      </div>
     ))}
   </div>
 </section>

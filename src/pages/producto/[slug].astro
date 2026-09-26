@@ -35,6 +35,7 @@ const formatUSD = (n: number) => {
 };
 const savingsCUP = product.isOnSale ? (product.regularPriceCUP || 0) - (product.priceCUP || 0) : 0;
 const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.price || 0) : 0;
+const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? product.stockQuantity : 10;
 ---
 <Layout title={`${product.name} - Carmay Outfit`}>
   <Header />
@@ -44,7 +45,7 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
     <nav class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-400">
       <a href="/" class="hover:text-yellow-400 transition-colors inline-flex items-center justify-center min-w-[44px] min-h-[44px]">Inicio</a>
       <span class="text-slate-600">&rsaquo;</span>
-      <a href="/tienda/" class="hover:text-yellow-400 transition-colors inline-flex items-center justify-center min-w-[44px] min-h-[44px]">Tienda</a>
+      <a href="/tienda/" class="hover:text-yellow-400 transition-colors inline-flex items-center justify-center min-w-[44px] min-h-[44px]">Catálogo</a>
       <span class="text-slate-600">&rsaquo;</span>
       {product.categories[0] && (
         <>
@@ -232,17 +233,40 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
           </div>
         )}
 
-        <!-- Selector de Cantidad -->
+        <!-- Selector de Cantidad Interactivo con Validación de Stock Físico -->
         <div>
-          <label class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 block">Cantidad</label>
-          <div class="flex items-center gap-4">
-            <button id="qty-minus" class="w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-xl hover:border-amber-400/50 hover:text-amber-400 active:scale-90 transition-all duration-150 flex items-center justify-center cursor-pointer">
+          <div class="flex items-center justify-between mb-2">
+            <label for="qty-input" class="text-sm font-bold text-slate-300 uppercase tracking-wider block">Cantidad</label>
+            {product.stockQuantity && product.stockQuantity > 0 && (
+              <span class="text-xs text-amber-400 font-mono font-bold">
+                {product.stockQuantity === 1 ? '¡Solo 1 disponible!' : `${product.stockQuantity} disponibles en stock`}
+              </span>
+            )}
+          </div>
+          <div class="flex items-center gap-3">
+            <button id="qty-minus" type="button" class="w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-xl hover:border-amber-400/50 hover:text-amber-400 active:scale-90 transition-all duration-150 flex items-center justify-center cursor-pointer" aria-label="Restar una unidad">
               &minus;
             </button>
-            <span id="qty-value" class="text-xl font-bold text-white min-w-[40px] text-center font-mono">1</span>
-            <button id="qty-plus" class="w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-xl hover:border-amber-400/50 hover:text-amber-400 active:scale-90 transition-all duration-150 flex items-center justify-center cursor-pointer">
+            <input
+              type="number"
+              id="qty-input"
+              min="1"
+              max={maxPhysicalStock}
+              value="1"
+              data-max-stock={maxPhysicalStock}
+              class="w-20 min-w-[48px] h-12 min-h-[48px] rounded-xl border-2 border-white/15 bg-black/40 text-center font-mono font-bold text-xl text-white focus:outline-none focus:border-amber-400"
+              aria-label="Cantidad de unidades a comprar"
+            />
+            <button id="qty-plus" type="button" class="w-12 h-12 rounded-xl border-2 border-white/10 bg-white/5 text-white font-bold text-xl hover:border-amber-400/50 hover:text-amber-400 active:scale-90 transition-all duration-150 flex items-center justify-center cursor-pointer" aria-label="Sumar una unidad">
               +
             </button>
+          </div>
+          <!-- Aviso contextual si se supera el stock disponible -->
+          <div id="qty-stock-warning" class="hidden mt-2.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300 flex items-start gap-2 leading-relaxed">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-amber-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span>Solo disponemos de <strong>{maxPhysicalStock}</strong> unidades para entrega inmediata. ¿Necesitas más? <a href={`https://wa.me/REDACTED_PHONE_1?text=${encodeURIComponent(`Hola Carmay Outfit 👋, me interesa encargar más de ${maxPhysicalStock} unidades del producto *"${product.name}"*. ¿Podrían gestionármelo?`)}`} target="_blank" class="underline font-bold text-amber-200 hover:text-white">Encárgalas por WhatsApp</a>.</span>
           </div>
         </div>
 
@@ -267,7 +291,9 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
             {product.isInStock ? (
               <>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
+                  <circle cx="9" cy="20" r="1.5" />
+                  <circle cx="17" cy="20" r="1.5" />
                 </svg>
                 <span>Agregar al Carrito</span>
               </>
@@ -409,27 +435,45 @@ const savingsUSD = product.isOnSale ? (product.regularPrice || 0) - (product.pri
         });
       });
 
-      // Cantidad
-      const qtyValue = document.getElementById('qty-value');
+      // Cantidad interactiva con validación estricta de stock
+      const qtyInput = document.getElementById('qty-input') as HTMLInputElement | null;
       const qtyMinus = document.getElementById('qty-minus');
       const qtyPlus = document.getElementById('qty-plus');
+      const stockWarning = document.getElementById('qty-stock-warning');
+      const maxStockAttr = parseInt(qtyInput?.getAttribute('data-max-stock') || '10', 10);
+      const maxQty = !isNaN(maxStockAttr) && maxStockAttr > 0 ? maxStockAttr : 10;
       let qty = 1;
-      const maxQty = 10;
 
-      if (qtyMinus && qtyPlus && qtyValue) {
-        qtyMinus.addEventListener('click', () => {
-          if (qty > 1) {
-            qty--;
-            qtyValue.textContent = qty;
-          }
-        });
-        qtyPlus.addEventListener('click', () => {
-          if (qty < maxQty) {
-            qty++;
-            qtyValue.textContent = qty;
-          }
-        });
+      function updateQty(newQty: number) {
+        if (newQty > maxQty) {
+          qty = maxQty;
+          if (stockWarning) stockWarning.classList.remove('hidden');
+        } else {
+          qty = Math.max(1, newQty);
+          if (stockWarning) stockWarning.classList.add('hidden');
+        }
+
+        if (qtyInput) {
+          qtyInput.value = String(qty);
+        }
       }
+
+      qtyMinus?.addEventListener('click', () => {
+        updateQty(qty - 1);
+      });
+
+      qtyPlus?.addEventListener('click', () => {
+        updateQty(qty + 1);
+      });
+
+      qtyInput?.addEventListener('input', () => {
+        const val = parseInt(qtyInput.value, 10);
+        if (isNaN(val) || val < 1) {
+          updateQty(1);
+        } else {
+          updateQty(val);
+        }
+      });
 
       // Agregar al Carrito
       const addToCart = document.getElementById('add-to-cart');

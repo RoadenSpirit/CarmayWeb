@@ -1,6 +1,8 @@
 ---
 import CartDrawer from './CartDrawer.astro';
 import SubNavbar from './SubNavbar.astro';
+import SearchBar from './SearchBar.astro';
+import FloatingCartBtn from './FloatingCartBtn.astro';
 
 interface Props {
   showCategoryBar?: boolean;
@@ -27,72 +29,48 @@ const storeCategories = [
 
   <!-- ================= PISO 1: MENÚ PRINCIPAL (SIEMPRE FIJO) ================= -->
   <div id="header-main-nav" class="relative z-20">
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
+    <div class="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
       
       <!-- Izquierda: Logo -->
-      <div class="flex items-center">
+      <div class="flex items-center shrink-0">
         <a href="/" class="flex items-center group">
-          <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center group-hover:scale-105 transition-transform">
             <img src="/logo.png" alt="Carmay Outfit" class="w-full h-full object-contain filter drop-shadow-[0_2px_12px_rgba(234,179,8,0.35)]" />
           </div>
         </a>
       </div>
 
-      <!-- CENTRO ABSOLUTO EXACTO DE LA PANTALLA: Enlaces de Navegación entre páginas -->
-      <!-- Anclado matemáticamente a left-1/2 -translate-x-1/2 para no ser empujado jamás por el logo o botones -->
-      <nav class="hidden md:flex items-center gap-1.5 lg:gap-2 absolute left-1/2 -translate-x-1/2 p-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-md">
-        <a 
-          href="/" 
-          class="px-4 py-1.5 rounded-full text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
-        >
-          Inicio
-        </a>
-        <a 
-          href="/tienda/" 
-          class="px-4 py-1.5 rounded-full text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
-        >
-          Tienda
-        </a>
-        <a 
-          href="/contact" 
-          class="px-4 py-1.5 rounded-full text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
-        >
-          Contacto
-        </a>
-      </nav>
+      <!-- CENTRO: Buscador Integrado con Amplitud Total -->
+      <div class="flex-1 min-w-0 max-w-2xl px-1 sm:px-4">
+        <SearchBar />
+      </div>
 
-      <!-- Derecha: Botón Carrito + WhatsApp + Hamburguesa Móvil -->
-      <div class="flex items-center gap-3">
-        <!-- Ícono Carrito de Compras -->
-        <button id="header-cart-btn" class="relative flex items-center justify-center w-11 h-11 rounded-full border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:scale-105 transition-all shadow-[0_2px_12px_rgba(234,179,8,0.2)] cursor-pointer" aria-label="Ver carrito">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-          </svg>
-          <!-- Badge Contador -->
-          <span id="header-cart-count" class="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-black flex items-center justify-center shadow-lg border border-white/20">
-            0
-          </span>
-        </button>
+      <!-- Derecha: Enlaces Rápidos Desktop + Hamburguesa -->
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <!-- Enlaces en Desktop -->
+        <nav class="hidden lg:flex items-center gap-1.5 p-1 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-md">
+          <a 
+            href="/" 
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
+          >
+            Inicio
+          </a>
+          <a 
+            href="/tienda/" 
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
+          >
+            Catálogo
+          </a>
+          <a 
+            href="/contact" 
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
+          >
+            Contáctanos
+          </a>
+        </nav>
 
-        <!-- Píldora sutil: Atención al Cliente -->
-        <a 
-          href="https://wa.me/REDACTED_PHONE_1" 
-          target="_blank" 
-          class="inline-flex items-center justify-center gap-2 min-h-[44px] min-w-[44px] p-2 sm:px-4 sm:py-2 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-amber-400/40 text-slate-300 hover:text-white transition-all text-xs sm:text-sm font-medium shadow-sm hover:shadow-md"
-          title="Contactar con Atención al Cliente"
-          aria-label="Atención al Cliente por WhatsApp"
-        >
-          <!-- SVG Customer Support -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 18v-6a9 9 0 0118 0v6" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 16v1a2 2 0 01-2 2h-5" />
-          </svg>
-          <span class="hidden sm:inline whitespace-nowrap">Atención al cliente</span>
-        </a>
-
-        <!-- Botón Hamburguesa (solo móvil) -->
-        <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-11 h-11 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors" aria-label="Abrir menú">
+        <!-- Botón Hamburguesa -->
+        <button id="mobile-menu-btn" class="flex items-center justify-center w-11 h-11 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-amber-400/40 transition-all cursor-pointer" aria-label="Abrir menú de navegación">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -102,25 +80,32 @@ const storeCategories = [
     </div>
   </div>
 
-  <!-- ================= PISO 2: MENÚ DE CATEGORÍAS (SIEMPRE FIJO, EN TIENDA / CATÁLOGO) ================= -->
+  <!-- ================= BARRA LIGERA DE CATEGORÍAS (Acceso Rápido Fino y Moderno) ================= -->
   {showCategoryBar && (
-    <nav id="categorias-navbar" class="hidden md:block border-t border-white/[0.08] bg-white/[0.015] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] relative z-10">
+    <nav id="categorias-navbar" class="border-t border-white/[0.08] bg-white/[0.015] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] relative z-10 overflow-x-auto scrollbar-hide py-1">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-center gap-1.5 py-2">
-          {storeCategories.map((cat, i) => (
-            <div class="flex items-center">
-              {i > 0 && <div class="h-3.5 mx-1.5" style="width: 1px; background: linear-gradient(to bottom, transparent, rgba(234,179,8,0.3), transparent);"></div>}
-              <a
-                href={`/tienda/${cat.slug}/`}
-                class={`text-xs sm:text-sm font-bold tracking-wide transition-all px-3 py-1 rounded-lg ${
-                  cat.slug === activeCategory 
-                    ? 'text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 shadow-[0_0_12px_rgba(234,179,8,0.15)]' 
-                    : 'text-slate-300 hover:text-yellow-400 hover:bg-white/[0.04]'
-                }`}
-              >
-                {cat.name}
-              </a>
-            </div>
+        <div class="flex items-center justify-start sm:justify-center gap-2 py-1 min-w-max">
+          <a
+            href="/tienda/"
+            class={`text-xs font-bold tracking-wide transition-all min-h-[44px] inline-flex items-center px-4 py-2.5 rounded-full border ${
+              !activeCategory 
+                ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/40 shadow-[0_0_12px_rgba(234,179,8,0.15)]' 
+                : 'text-slate-300 border-white/10 hover:text-yellow-400 hover:bg-white/[0.04]'
+            }`}
+          >
+            Todos
+          </a>
+          {storeCategories.map((cat) => (
+            <a
+              href={`/tienda/${cat.slug}/`}
+              class={`text-xs font-bold tracking-wide transition-all min-h-[44px] inline-flex items-center px-4 py-2.5 rounded-full border whitespace-nowrap ${
+                cat.slug === activeCategory 
+                  ? 'text-yellow-400 bg-yellow-400/10 border-yellow-400/40 shadow-[0_0_12px_rgba(234,179,8,0.15)]' 
+                  : 'text-slate-300 border-white/10 hover:text-yellow-400 hover:bg-white/[0.04]'
+              }`}
+            >
+              {cat.name}
+            </a>
           ))}
         </div>
       </div>
@@ -149,9 +134,9 @@ const storeCategories = [
 
   <!-- Logo en drawer -->
   <div class="px-6 pb-6 border-b border-white/10">
-    <a href="/" class="flex items-center gap-3">
-      <img src="/logo.png" alt="Carmay Outfit" class="w-12 h-12 object-contain" />
-      <span class="text-lg font-extrabold text-white">CARMAY OUTFIT</span>
+    <a href="/" class="flex items-center gap-3.5">
+      <img src="/logo.png" alt="Carmay Outfit" class="w-16 h-16 object-contain drop-shadow-[0_2px_10px_rgba(234,179,8,0.3)]" />
+      <span class="text-xl font-black text-white tracking-tight">CARMAY OUTFIT</span>
     </a>
   </div>
 
@@ -165,9 +150,11 @@ const storeCategories = [
     </a>
     <a href="/tienda/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
+        <circle cx="9" cy="20" r="1.5" />
+        <circle cx="17" cy="20" r="1.5" />
       </svg>
-      Tienda (Todo el Catálogo)
+      Catálogo
     </a>
 
     <!-- SECCIÓN CATEGORÍAS DENTRO DEL MENÚ MÓVIL -->
@@ -213,7 +200,9 @@ const storeCategories = [
 
     <button id="mobile-drawer-cart-btn" class="flex items-center gap-3 px-4 py-3 rounded-xl text-amber-400 font-bold hover:bg-white/5 transition-colors w-full text-left cursor-pointer">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
+        <circle cx="9" cy="20" r="1.5" />
+        <circle cx="17" cy="20" r="1.5" />
       </svg>
       <span>Ver Mi Carrito</span>
       <span id="mobile-cart-badge" class="ml-auto bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full font-extrabold">0</span>
@@ -222,7 +211,7 @@ const storeCategories = [
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
       </svg>
-      Contacto
+      Contáctanos
     </a>
   </nav>
 
@@ -230,9 +219,9 @@ const storeCategories = [
   <div class="px-6 pb-6">
     <a href="https://wa.me/REDACTED_PHONE_1" target="_blank" class="flex items-center justify-center gap-2.5 w-full bg-white/[0.06] hover:bg-white/[0.1] text-slate-200 hover:text-white px-5 py-3 rounded-xl text-sm font-medium transition-all border border-white/10 shadow-sm">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3 18v-6a9 9 0 0118 0v6" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 16v1a2 2 0 01-2 2h-5" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a8 8 0 00-8 8v4a3 3 0 003 3h1v-7H6V10a6 6 0 1112 0v2h-2v7h1a3 3 0 003-3v-4a8 8 0 00-8-8z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18 16v1a3 3 0 01-3 3h-2" />
+        <circle cx="12" cy="20" r="1" fill="currentColor" />
       </svg>
       <span>Atención al cliente</span>
     </a>
@@ -242,6 +231,9 @@ const storeCategories = [
 <!-- Componente Panel Lateral Deslizante -->
 <CartDrawer />
 
+<!-- Botón Circular Flotante del Carrito (FAB) -->
+<FloatingCartBtn />
+
 <script>
   import { CartCRUD } from '../utils/cartStore';
 
@@ -250,6 +242,7 @@ const storeCategories = [
     const { totalUnits } = CartCRUD.getTotals();
     const countEl = document.getElementById('header-cart-count');
     const mobileCountEl = document.getElementById('mobile-cart-badge');
+    const floatingCountEl = document.getElementById('floating-cart-badge');
 
     function animateBadge(el: HTMLElement | null) {
       if (!el) return;
@@ -262,6 +255,7 @@ const storeCategories = [
 
     animateBadge(countEl);
     animateBadge(mobileCountEl);
+    animateBadge(floatingCountEl);
   }
 
   document.addEventListener('DOMContentLoaded', () => {

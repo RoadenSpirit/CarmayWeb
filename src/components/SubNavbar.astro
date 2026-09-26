@@ -1,376 +1,91 @@
 ---
-// SubNavbar: Buscador (izquierda) + Carrusel de valor (derecha)
-// Se integra dentro del <header> sticky para estar SIEMPRE visible al hacer scroll.
-// El índice de catálogo se lee de <script id="catalog-data"> inyectado por el Layout.
-// Carrusel migrado del PHP original (5 mensajes) con diseño neo-dark premium.
+// SubNavbar: Carrusel de mensajes de valor centrado (Piso 2)
+// Se pliega y expande al hacer scroll con CSS Grid Puro.
+// Tipografía aumentada para legibilidad móvil impecable.
 ---
 
 <div id="subnav" class="border-t border-white/[0.08] bg-white/[0.015] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
-  <div class="subnav-inner">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
-      <!-- En móvil (flex-col-reverse): El carrusel de mensajes arriba y el buscador siempre como ÚLTIMO elemento. En desktop (sm:flex-row): buscador izquierda, carrusel derecha -->
-      <div class="subnav-items flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
+    
+    <!-- Contenedor Centrado Absoluto del Carrusel -->
+    <div class="flex justify-center items-center w-full">
+      <div class="carousel-container relative overflow-hidden h-9 rounded-full border border-amber-400/25 bg-black/40 backdrop-blur-md px-4 shadow-[0_2px_12px_rgba(234,179,8,0.08)]">
+        
+        <!-- Grid wrapper donde todos los items comparten la misma celda determinando tamaño perfecto -->
+        <div class="carousel-grid h-full items-center">
 
-      <!-- ===== BUSCADOR (En móvil es el último elemento inferior por flex-col-reverse, en desktop 55% a la izquierda) ===== -->
-      <div class="flex-1 sm:flex-[3] min-w-0">
-        <div class="relative z-50">
-          <form id="subnav-search-form" class="flex items-center gap-2 w-full rounded-full border border-white/20 bg-black/35 backdrop-blur-md px-3.5 py-1 focus-within:border-amber-400/50 focus-within:bg-black/50 focus-within:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
-            <input
-              type="text"
-              id="subnav-search-input"
-              placeholder="Tenemos lo que necesitas, búscalo..."
-              class="flex-1 min-w-0 bg-transparent text-white placeholder-white/60 text-sm font-semibold focus:outline-none truncate py-3"
-              autocomplete="off"
-              aria-label="Buscar productos"
-            />
-            <button
-              type="button"
-              id="subnav-search-clear"
-              class="hidden flex shrink-0 w-11 h-11 items-center justify-center text-white/70 hover:text-white cursor-pointer transition-colors"
-              title="Limpiar"
-              aria-label="Limpiar búsqueda"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          <!-- 1. Envío a Domicilio -->
+          <div class="carousel-item flex items-center justify-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
+            <span class="w-6 h-6 rounded-full bg-sky-400/20 border border-sky-400/40 flex items-center justify-center text-sky-300 shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.6a1 1 0 01.9.6l1.4 2a1 1 0 01.1.7V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
               </svg>
-            </button>
-            <button
-              type="submit"
-              class="shrink-0 w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-all cursor-pointer"
-              title="Buscar"
-              aria-label="Buscar"
-            >
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
-          </form>
-
-          <!-- Panel desplegable de resultados -->
-          <div id="subnav-search-panel" class="hidden absolute left-0 w-full sm:w-[580px] md:w-[680px] lg:w-[760px] max-w-[95vw] top-full mt-3 bg-[#0c0e17] rounded-3xl border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-4 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-4"></div>
-        </div>
-      </div>
-
-      <!-- ===== CARRUSEL DE VALOR (Auto-ajustado milimétricamente al texto más largo con CSS Grid Overlap) ===== -->
-      <div class="flex-shrink-0 w-fit max-w-full flex justify-center sm:justify-end">
-        <div class="carousel-container relative overflow-hidden h-9 rounded-lg border border-white/15 bg-black/25 backdrop-blur-md px-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-          
-          <!-- Grid wrapper donde todos los items comparten la misma celda (1/1) determinando el tamaño exacto sin desperdicio -->
-          <div class="carousel-grid h-full items-center">
-
-            <!-- 1. Envío a Domicilio -->
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-sky-400/15 border border-sky-400/40 flex items-center justify-center text-sky-300 shrink-0">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M8 16h.01M12 12h.01M12 16h.01M16 12h.01M16 16h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </span>
-              <p class="font-bold text-xs sm:text-sm leading-tight whitespace-nowrap">Envío a Domicilio en Camagüey</p>
-            </div>
-
-            <!-- 2. WhatsApp 24/7 -->
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-emerald-400/15 border border-emerald-400/40 flex items-center justify-center text-emerald-300 shrink-0">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
-              </span>
-              <p class="font-bold text-xs sm:text-sm leading-tight whitespace-nowrap">WhatsApp: Respuesta Inmediata</p>
-            </div>
-
-            <!-- 3. Precios Imbatibles -->
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-purple-400/15 border border-purple-400/40 flex items-center justify-center text-purple-300 shrink-0">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </span>
-              <p class="font-bold text-xs sm:text-sm leading-tight whitespace-nowrap">Precios Imbatibles • CUP y USD</p>
-            </div>
-
-            <!-- 4. Catálogo Nuevo -->
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-amber-400/15 border border-amber-400/40 flex items-center justify-center text-amber-300 shrink-0">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                </svg>
-              </span>
-              <p class="font-bold text-xs sm:text-sm leading-tight whitespace-nowrap">Catálogo Actualizado Cada Semana</p>
-            </div>
-
-            <!-- 5. Ofertas y Rifas -->
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-rose-400/15 border border-rose-400/40 flex items-center justify-center text-rose-300 shrink-0">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                </svg>
-              </span>
-              <p class="font-bold text-xs sm:text-sm leading-tight whitespace-nowrap">Ofertas y Rifas Sorpresa</p>
-            </div>
+            </span>
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
+              Envíos el mismo día en <span class="text-amber-400">Camagüey</span>
+            </p>
           </div>
+
+          <!-- 2. WhatsApp Soporte Directo -->
+          <div class="carousel-item flex items-center justify-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
+            <span class="w-6 h-6 rounded-full bg-emerald-400/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+            </span>
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
+              Atención Directa: <span class="text-emerald-400">Respuesta Rápida por WhatsApp</span>
+            </p>
+          </div>
+
+          <!-- 3. Precios Transparentes CUP y USD -->
+          <div class="carousel-item flex items-center justify-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
+            <span class="w-6 h-6 rounded-full bg-purple-400/20 border border-purple-400/40 flex items-center justify-center text-purple-300 shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
+              Precios Claros en <span class="text-amber-400">CUP</span> y <span class="text-emerald-400">USD</span>
+            </p>
+          </div>
+
+          <!-- 4. Productos 100% Verificados -->
+          <div class="carousel-item flex items-center justify-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
+            <span class="w-6 h-6 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
+              Garantía: <span class="text-amber-300">Probamos el 100% de los Productos</span>
+            </p>
+          </div>
+
+          <!-- 5. Tienda Física Oficial -->
+          <div class="carousel-item flex items-center justify-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
+            <span class="w-6 h-6 rounded-full bg-rose-400/20 border border-rose-400/40 flex items-center justify-center text-rose-300 shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l1.5-5h15L21 9M4 9v11h16V9M4 9h16M9 20v-6h6v6" />
+              </svg>
+            </span>
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
+              Local en <span class="text-amber-400">Calle Avellaneda No. 260</span>
+            </p>
+          </div>
+
         </div>
       </div>
-
     </div>
+
   </div>
 </div>
 
 <script>
-  import { SearchEngine } from '../utils/searchEngine';
-
-  if (typeof window !== 'undefined') {
-    (window as any).SearchEngine = SearchEngine;
-    window.dispatchEvent(new CustomEvent('carmay-engine-ready'));
-  }
-
-  function initSubNavbar() {
-    const input = document.getElementById('subnav-search-input') as HTMLInputElement | null;
-    const clearBtn = document.getElementById('subnav-search-clear');
-    const panel = document.getElementById('subnav-search-panel');
-    const form = document.getElementById('subnav-search-form');
+  function initValueCarousel() {
     const items = Array.from(document.querySelectorAll('.carousel-item')) as HTMLElement[];
-
-    let engineInstance: SearchEngine | null = null;
-    let currentQuery = '';
     let intervalId: any = null;
-
-    function getEngine(): SearchEngine | null {
-      if (engineInstance) return engineInstance;
-      const dataEl = document.getElementById('catalog-data');
-      try {
-        const rawData = dataEl ? JSON.parse(dataEl.textContent || '[]') : [];
-        engineInstance = new SearchEngine(rawData);
-      } catch (e) {
-        console.error('Error indexando catálogo:', e);
-        engineInstance = new SearchEngine([]);
-      }
-      return engineInstance;
-    }
-
-    function getCatalogData(): any[] {
-      const dataEl = document.getElementById('catalog-data');
-      try {
-        return dataEl ? JSON.parse(dataEl.textContent || '[]') : [];
-      } catch (e) {
-        return [];
-      }
-    }
-
-    function createProductMiniCard(item: any): string {
-      const priceCUPFormatted = Number(item.priceCUP || 0).toLocaleString('en-US');
-      const priceUSD = Number(item.priceUSD || 0);
-      const priceUSDFormatted = priceUSD % 1 === 0 ? `$${priceUSD.toFixed(0)}` : `$${priceUSD.toFixed(2)}`;
-
-      return `
-        <a href="/producto/${item.slug}/" class="group relative rounded-2xl overflow-hidden flex flex-col justify-between bg-[#0f1120] border border-white/10 hover:border-amber-400/50 hover:shadow-[0_8px_24px_rgba(234,179,8,0.18)] p-3 transition-all duration-200">
-          <div class="aspect-square rounded-xl overflow-hidden bg-black/60 mb-2.5 relative">
-            <img 
-              src="${item.primaryImage}" 
-              alt="${item.name}" 
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-              loading="lazy" 
-            />
-            <span class="absolute top-2 right-2 bg-black/85 backdrop-blur-md text-amber-300 text-xs px-2 py-0.5 rounded-full border border-amber-400/30 font-bold uppercase tracking-wider">
-              ${item.category}
-            </span>
-          </div>
-          <div class="flex-1 flex flex-col justify-between">
-            <h5 class="font-bold text-white text-xs line-clamp-2 leading-snug group-hover:text-amber-300 transition-colors">
-              ${item.name}
-            </h5>
-            <div class="text-xs font-black text-orange-400 mt-2 flex items-center justify-between">
-              <span>${priceCUPFormatted} CUP</span>
-              <span class="text-slate-400 font-semibold text-xs">${priceUSDFormatted} USD</span>
-            </div>
-          </div>
-        </a>
-      `;
-    }
-
-    function renderSearch(query: string) {
-      if (!query || query.length < 2) {
-        if (panel) {
-          panel.innerHTML = '';
-          panel.classList.add('hidden');
-        }
-        return;
-      }
-      const se = getEngine();
-      const results = se ? se.search(query) : [];
-
-      if (results.length === 0) {
-        const catalog = getCatalogData();
-        const sampleRecommended = catalog.slice(0, 3);
-        const whatsappMsg = `Hola Carmay Outfit 👋, me interesa encargar el producto *"${query}"* que estuve buscando en su sitio web pero no encontré en el catálogo activo. ¿Tienen disponibilidad o fecha de llegada?`;
-
-        panel!.innerHTML = `
-          <div class="space-y-6 text-center py-2">
-            <div class="max-w-md mx-auto space-y-2.5">
-              <div class="w-14 h-14 rounded-full bg-purple-900/30 border border-purple-500/30 flex items-center justify-center mx-auto text-amber-400 shadow-inner">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <h4 class="text-base sm:text-lg font-extrabold text-white">
-                No encontramos coincidencias exactas para <span class="text-amber-300 font-black">"${query}"</span>
-              </h4>
-              <p class="text-xs text-slate-400 leading-relaxed">
-                Lo que buscas no está disponible en este momento en el catálogo, pero te sugerimos estos productos populares o puedes solicitarnos un encargo especial.
-              </p>
-              <div class="pt-2">
-                <a 
-                  href="https://wa.me/REDACTED_PHONE_1?text=${encodeURIComponent(whatsappMsg)}" 
-                  target="_blank"
-                  class="inline-flex items-center gap-2 min-h-[44px] px-5 py-3 rounded-xl bg-gradient-to-r from-purple-700 to-purple-900 hover:from-amber-500 hover:to-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-purple-900/40 hover:shadow-orange-500/30 border border-purple-500/40 hover:border-amber-400 transition-all cursor-pointer"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                  </svg>
-                  <span>Encargar por WhatsApp lo que buscas</span>
-                </a>
-              </div>
-            </div>
-
-            ${sampleRecommended.length > 0 ? `
-              <div class="pt-4 border-t border-white/[0.08] text-left">
-                <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-3 text-center sm:text-left inline-flex items-center gap-1.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z" />
-                  </svg>
-                  <span>Productos recomendados para ti</span>
-                </span>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  ${sampleRecommended.map(createProductMiniCard).join('')}
-                </div>
-              </div>
-            ` : ''}
-          </div>`;
-      } else {
-        const topResults = results.slice(0, 9);
-        const encodedQ = encodeURIComponent(query);
-        panel!.innerHTML = `
-          <div class="space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-              <h4 class="text-sm font-extrabold text-white">
-                Resultados para <span class="text-amber-300 font-black">"${query}"</span>
-              </h4>
-              <span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20 font-mono">
-                ${results.length} ${results.length === 1 ? 'coincidencia' : 'coincidencias'}
-              </span>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-              ${topResults.map(createProductMiniCard).join('')}
-            </div>
-
-            <div class="pt-3 border-t border-white/[0.08] text-center">
-              <a href="/tienda/?s=${encodedQ}" class="inline-flex items-center justify-center gap-2 w-full min-h-[44px] py-3.5 rounded-xl bg-gradient-to-r from-amber-500/15 via-amber-400/20 to-amber-500/15 hover:from-amber-500/30 hover:to-amber-500/30 border border-amber-400/30 text-amber-300 font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_2px_12px_rgba(234,179,8,0.1)]">
-                <span>Ver todos los ${results.length} productos en la tienda</span>
-                <span>→</span>
-              </a>
-            </div>
-          </div>`;
-      }
-      if (panel) panel.classList.remove('hidden');
-    }
-
-    let debounce: any = null;
-    if (input) {
-      // Inicializar con parámetro de URL si existe (?s= o ?q=)
-      const urlParams = new URLSearchParams(window.location.search);
-      const initialQuery = (urlParams.get('s') || urlParams.get('q') || '').trim();
-      if (initialQuery) {
-        input.value = initialQuery;
-        currentQuery = initialQuery;
-        if (clearBtn) clearBtn.classList.remove('hidden');
-      }
-
-      input.addEventListener('input', () => {
-        clearTimeout(debounce);
-        currentQuery = input.value.trim();
-        if (clearBtn) clearBtn.classList.toggle('hidden', currentQuery.length === 0);
-        debounce = setTimeout(() => {
-          renderSearch(currentQuery);
-          // Si estamos en catálogo o tienda, notificar para filtrado en vivo de las tarjetas
-          window.dispatchEvent(new CustomEvent('carmay-search', { detail: { query: currentQuery } }));
-        }, 140);
-      });
-    }
-
-    form?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const q = currentQuery.trim();
-      const isTienda = window.location.pathname.startsWith('/tienda');
-
-      if (!q) {
-        if (isTienda) {
-          window.dispatchEvent(new CustomEvent('carmay-search', { detail: { query: '' } }));
-        }
-        return;
-      }
-
-      if (isTienda) {
-        // En tienda: ocultar dropdown para ver el catálogo y sincronizar la URL sin recargar
-        if (panel) panel.classList.add('hidden');
-        const params = new URLSearchParams(window.location.search);
-        params.set('s', q);
-        window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
-        window.dispatchEvent(new CustomEvent('carmay-search', { detail: { query: q } }));
-
-        // Desplazarse suavemente al catálogo si está fuera de pantalla
-        const prodSection = document.getElementById('productos-section');
-        if (prodSection) {
-          const rect = prodSection.getBoundingClientRect();
-          if (rect.top > 200 || rect.top < -100) {
-            prodSection.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
-      } else {
-        // En cualquier otra página (Home, Contacto, Carrito): navegar a la tienda con el término
-        window.location.href = `/tienda/?s=${encodeURIComponent(q)}`;
-      }
-    });
-
-    clearBtn?.addEventListener('click', () => {
-      if (input) input.value = '';
-      currentQuery = '';
-      clearBtn.classList.add('hidden');
-      renderSearch('');
-      input?.focus();
-
-      window.dispatchEvent(new CustomEvent('carmay-search', { detail: { query: '' } }));
-
-      if (window.location.pathname.startsWith('/tienda')) {
-        const params = new URLSearchParams(window.location.search);
-        params.delete('s');
-        params.delete('q');
-        const newSearch = params.toString() ? `?${params.toString()}` : '';
-        window.history.replaceState({}, '', `${window.location.pathname}${newSearch}`);
-      }
-    });
-
-    document.addEventListener('click', (e) => {
-      const t = e.target as Node;
-      if (panel && !panel.contains(t) && !input?.contains(t)) {
-        panel.classList.add('hidden');
-      }
-    });
-
-    // ====== CARRUSEL DE VALOR (5 mensajes, auto-rotación) ======
-    function pauseCarousel() {
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = null;
-      }
-    }
-
-    function resumeCarousel() {
-      if (intervalId || items.length < 2) return;
-      intervalId = setInterval(() => {
-        const current = items.findIndex((el) => el.style.opacity === '1' || !el.style.opacity);
-        show((current + 1) % items.length);
-      }, 4500);
-    }
+    let currentIdx = 0;
 
     function show(n: number) {
       items.forEach((el, i) => {
@@ -382,11 +97,23 @@
       });
     }
 
+    function resumeCarousel() {
+      if (intervalId) clearInterval(intervalId);
+      intervalId = setInterval(() => {
+        currentIdx = (currentIdx + 1) % items.length;
+        show(currentIdx);
+      }, 4200);
+    }
+
+    function pauseCarousel() {
+      if (intervalId) clearInterval(intervalId);
+    }
+
     if (items.length > 1) {
       show(0);
       resumeCarousel();
 
-      const container = items[0].parentElement;
+      const container = items[0].closest('.carousel-container');
       if (container) {
         container.addEventListener('mouseenter', pauseCarousel);
         container.addEventListener('mouseleave', resumeCarousel);
@@ -397,17 +124,13 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSubNavbar);
+    document.addEventListener('DOMContentLoaded', initValueCarousel);
   } else {
-    initSubNavbar();
+    initValueCarousel();
   }
 </script>
 
 <style>
-  .scrollbar-hide::-webkit-scrollbar { display: none; }
-  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-  /* CSS Grid Overlap: Todos los items comparten la celda 1/1, forzando al padre a medir exactamente lo que mide el texto más largo */
   .carousel-grid {
     display: inline-grid;
     grid-template-columns: 1fr;

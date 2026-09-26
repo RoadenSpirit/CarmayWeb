@@ -12,7 +12,9 @@
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
+          <circle cx="9" cy="20" r="1.5" />
+          <circle cx="17" cy="20" r="1.5" />
         </svg>
       </div>
       <div>
@@ -72,9 +74,21 @@
       <span>Finalizar Pedido</span>
     </a>
 
+    <!-- Botón Secundario: Seguir Comprando (Cierra el drawer suavemente) -->
+    <button
+      type="button"
+      data-cart-close
+      class="w-full min-h-[44px] py-3 px-4 rounded-xl border border-white/10 hover:border-amber-400/40 bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      <span>Seguir Comprando</span>
+    </button>
+
     <!-- Vaciar Carrito -->
-    <div class="text-center">
-      <button id="cart-clear-btn" class="min-h-[44px] px-3 py-3 text-xs text-slate-500 hover:text-red-400 transition-colors font-medium cursor-pointer">
+    <div class="text-center pt-1">
+      <button id="cart-clear-btn" class="min-h-[44px] px-3 py-2 text-xs text-slate-500 hover:text-red-400 transition-colors font-medium cursor-pointer">
         Vaciar Carrito
       </button>
     </div>
