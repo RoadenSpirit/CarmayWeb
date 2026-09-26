@@ -181,6 +181,12 @@
             <div class="text-xs font-extrabold text-orange-400 mt-1">
               ${(item.priceCUP * item.quantity).toLocaleString('en-US')} CUP / ${(item.priceUSD * item.quantity) % 1 === 0 ? `$${(item.priceUSD * item.quantity).toFixed(0)}` : `$${(item.priceUSD * item.quantity).toFixed(2)}`} USD
             </div>
+
+            <!-- Enlace explícito para ver detalles de la ficha -->
+            <a href="/producto/${item.slug}/" class="inline-flex items-center gap-1 text-xs text-amber-400/90 hover:text-amber-300 font-bold mt-1 transition-colors">
+              <span>Ver ficha y detalles</span>
+              <span class="text-xs">&rarr;</span>
+            </a>
           </div>
 
           <!-- Fila de controles: Cantidad (CRUD) + Eliminar -->

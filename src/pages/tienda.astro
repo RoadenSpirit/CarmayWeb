@@ -146,8 +146,8 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
         />
       </div>
 
-      <!-- Grid de productos con Cascada Stagger -->
-      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <!-- Grid de productos estilo Pinterest / Temu: Alta densidad y márgenes optimizados -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
         {sortedCatalogProducts.map((product, idx) => (
           <ProductCard
             title={product.name}
@@ -171,7 +171,7 @@ const maxCatalogPriceCUP = roundUpToCleanThousands(rawMaxCUP);
         ))}
 
         <!-- Empty State amigable cuando nada coincide con los filtros -->
-        <div id="filter-empty-state" class="hidden col-span-2 sm:col-span-2 lg:col-span-4 py-16 px-4 text-center">
+        <div id="filter-empty-state" class="hidden col-span-2 sm:col-span-3 lg:col-span-4 xl:col-span-5 py-16 px-4 text-center">
           <div class="max-w-md mx-auto bg-[#0d0f1a] border border-white/[0.08] rounded-3xl p-8 sm:p-10 shadow-2xl space-y-4">
             <div class="w-16 h-16 rounded-2xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-center mx-auto text-2xl shadow-inner">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
