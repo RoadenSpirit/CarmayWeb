@@ -41,8 +41,8 @@
     </button>
   </form>
 
-  <!-- Panel desplegable de resultados original -->
-  <div id="subnav-search-panel" class="hidden absolute left-0 sm:left-1/2 sm:-translate-x-1/2 w-[92vw] sm:w-[580px] md:w-[680px] lg:w-[760px] max-w-[95vw] top-full mt-2 bg-[#0c0e17] rounded-3xl border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-4 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-4"></div>
+  <!-- Panel desplegable de resultados centrado con precisión geométrica -->
+  <div id="subnav-search-panel" class="hidden fixed left-1/2 -translate-x-1/2 top-[74px] sm:absolute sm:top-full sm:mt-2 w-[92vw] max-w-[480px] sm:w-[580px] md:w-[680px] lg:w-[760px] sm:max-w-[95vw] bg-[#0c0e17] rounded-3xl border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-4 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-4"></div>
 </div>
 
 <script>
@@ -193,8 +193,9 @@
         return;
       }
 
-      const displayResults = results.slice(0, 5);
+      const displayResults = results.slice(0, 8);
       const encodedQ = encodeURIComponent(query);
+      const catalogFilterUrl = `/tienda/?s=${encodedQ}#productos-section`;
 
       panel!.innerHTML = `
         <div class="space-y-3.5">
@@ -203,7 +204,7 @@
             <span class="text-xs font-bold text-slate-300">
               ${results.length} ${results.length === 1 ? 'resultado' : 'resultados'} ordenados por relevancia
             </span>
-            <a href="/tienda/?s=${encodedQ}" class="text-xs text-amber-400 hover:text-amber-300 font-extrabold underline-offset-4 hover:underline inline-flex items-center gap-1">
+            <a href="${catalogFilterUrl}" class="text-xs text-amber-400 hover:text-amber-300 font-extrabold underline-offset-4 hover:underline inline-flex items-center gap-1">
               <span>Explorar en Catálogo</span>
               <span>&rarr;</span>
             </a>
@@ -214,9 +215,9 @@
             ${displayResults.map((item: any) => createProductListItem(item)).join('')}
           </div>
 
-          <!-- Botón Destacado de Explorar Todo el Catálogo -->
+          <!-- Botón Destacado de Explorar Todo el Catálogo Filtrado -->
           <div class="pt-2 border-t border-white/10 text-center">
-            <a href="/tienda/?s=${encodedQ}" class="inline-flex items-center justify-center gap-2 w-full min-h-[44px] py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md">
+            <a href="${catalogFilterUrl}" class="inline-flex items-center justify-center gap-2 w-full min-h-[44px] py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md">
               <span>Explorar los ${results.length} productos en el Catálogo &rarr;</span>
             </a>
           </div>
@@ -259,7 +260,7 @@
       e.preventDefault();
       const q = input?.value.trim();
       if (q) {
-        window.location.href = `/tienda/?s=${encodeURIComponent(q)}`;
+        window.location.href = `/tienda/?s=${encodeURIComponent(q)}#productos-section`;
       }
     });
 
