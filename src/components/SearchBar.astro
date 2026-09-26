@@ -1,16 +1,16 @@
 ---
-// Buscador Central Interactivo (SearchBar.astro)
-// Integrado en el Piso 1 del Header sticky.
-// Consulta el catálogo global inyectado por Layout.astro (<script id="catalog-data">).
+// Buscador con Estilo Original Fino Restaurado (SearchBar.astro)
+// Proporciones ligeras, píldora translúcida bg-black/35 con borde blanco sutil
+// y panel flotante de autocompletado en rejilla.
 ---
 
-<div class="relative z-50 w-full max-w-xl mx-auto">
-  <form id="subnav-search-form" class="flex items-center gap-2 w-full rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-3.5 py-1 focus-within:border-amber-400/60 focus-within:bg-black/60 focus-within:shadow-[0_0_20px_rgba(234,179,8,0.2)] transition-all min-h-[48px]">
+<div class="relative z-50 w-full min-w-0">
+  <form id="subnav-search-form" class="flex items-center gap-1.5 sm:gap-2 w-full min-h-[44px] rounded-full border border-white/20 bg-black/35 backdrop-blur-md pl-3.5 pr-1 focus-within:border-amber-400/50 focus-within:bg-black/50 focus-within:shadow-[0_0_20px_rgba(234,179,8,0.15)] transition-all">
     <input
       type="text"
       id="subnav-search-input"
       placeholder="Tenemos lo que necesitas, búscalo..."
-      class="flex-1 min-w-0 bg-transparent text-white placeholder-white/60 text-xs sm:text-sm font-semibold focus:outline-none truncate py-3 min-h-[44px]"
+      class="flex-1 min-w-0 bg-transparent text-white placeholder-white/60 text-xs sm:text-sm font-semibold focus:outline-none truncate min-h-[44px] py-2.5"
       autocomplete="off"
       aria-label="Buscar productos"
     />
@@ -21,24 +21,28 @@
       title="Limpiar"
       aria-label="Limpiar búsqueda"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-      </svg>
+      <span class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </span>
     </button>
     <button
       type="submit"
-      class="shrink-0 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 flex items-center justify-center text-amber-300 transition-all cursor-pointer"
+      class="shrink-0 w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center text-white cursor-pointer transition-all"
       title="Buscar"
       aria-label="Buscar"
     >
-      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
+      <span class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </span>
     </button>
   </form>
 
-  <!-- Panel desplegable de resultados -->
-  <div id="subnav-search-panel" class="hidden absolute left-1/2 -translate-x-1/2 w-[92vw] sm:w-[580px] md:w-[680px] lg:w-[760px] max-w-[95vw] top-full mt-3 bg-[#0c0e17] rounded-3xl border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-4 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-4"></div>
+  <!-- Panel desplegable de resultados original -->
+  <div id="subnav-search-panel" class="hidden absolute left-0 sm:left-1/2 sm:-translate-x-1/2 w-[92vw] sm:w-[580px] md:w-[680px] lg:w-[760px] max-w-[95vw] top-full mt-2 bg-[#0c0e17] rounded-3xl border border-white/15 shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-4 sm:p-6 max-h-[75vh] overflow-y-auto z-50 scrollbar-hide space-y-4"></div>
 </div>
 
 <script>

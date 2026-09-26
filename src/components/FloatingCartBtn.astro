@@ -1,20 +1,14 @@
 ---
 // Botón Circular Flotante del Carrito (FloatingCartBtn.astro)
-// Se oculta inteligentemente al hacer scroll hacia abajo para no tapar contenido
-// y reaparece de forma fluida al detenerse o al hacer scroll hacia arriba.
+// Animación Peek-a-boo V43.1: En scroll se desplaza 35px a la derecha con opacidad 0.4.
+// Regresa suavemente a los 2 segundos o cuando el dedo/cursor se acerca a menos de 80px del borde.
+// Exclusivo para móvil (md:hidden), en desktop se usa el carrito de la cabecera.
 ---
 
-<div id="floating-cart-wrapper" class="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-[75] transition-all duration-300 ease-out transform translate-y-0 opacity-100">
-  <button
-    id="floating-cart-fab"
-    type="button"
-    class="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-300 text-slate-950 font-black shadow-[0_8px_30px_rgba(234,179,8,0.45)] hover:shadow-[0_12px_40px_rgba(234,179,8,0.65)] hover:scale-105 active:scale-95 transition-all duration-200 border-2 border-white/40 cursor-pointer"
-    aria-label="Ver carrito de compras"
-    title="Ver carrito de compras"
-    data-cart-open
-  >
+<div id="carmay-floating-cart" class="md:hidden" role="button" aria-label="Ver carrito de compras" tabindex="0">
+  <div class="carmay-fab-inner">
     <!-- Ícono Carrito Tradicional -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-7 sm:h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
       <circle cx="9" cy="20" r="1.5" />
       <circle cx="17" cy="20" r="1.5" />
@@ -23,22 +17,79 @@
     <!-- Badge Contador Reactivo -->
     <span
       id="floating-cart-badge"
-      class="absolute -top-1 -right-1 min-w-[22px] h-5.5 px-1.5 rounded-full bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-black flex items-center justify-center shadow-lg border-2 border-[#090b11] transition-transform duration-200"
+      class="absolute -top-1 -right-1 min-w-[22px] h-5.5 px-1.5 rounded-full bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-black flex items-center justify-center shadow-lg border-2 border-[#090b11] transition-transform duration-200 pointer-events-none"
     >
       0
     </span>
-  </button>
+  </div>
 </div>
+
+<style>
+  :root {
+    --carmay-purple: #6d1e68;
+    --carmay-bottom: 85px;
+    --carmay-hide-x: 35px;
+    --carmay-anim-speed: 0.35s;
+  }
+
+  /* 1. Botón Disparador Flotante (Solo Móvil) */
+  #carmay-floating-cart {
+    position: fixed;
+    bottom: var(--carmay-bottom);
+    right: 15px;
+    width: 58px;
+    height: 58px;
+    background: linear-gradient(135deg, #f59e0b, #eab308);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    z-index: 75;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: 0 4px 20px rgba(234, 179, 8, 0.45);
+    cursor: pointer;
+    user-select: none;
+    transition: opacity var(--carmay-anim-speed) ease, transform var(--carmay-anim-speed) cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #carmay-floating-cart:active {
+    transform: scale(0.92);
+  }
+
+  .carmay-fab-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* 2. Lógica Peek-a-boo de Ocultamiento Lateral (V43.1 Sagrada) */
+  #carmay-floating-cart.carmay-scrolling {
+    opacity: 0.4 !important;
+    transform: translateX(var(--carmay-hide-x)) !important;
+  }
+
+  /* En pantallas medianas y grandes, ocultar por completo */
+  @media (min-width: 769px) {
+    #carmay-floating-cart {
+      display: none !important;
+    }
+  }
+</style>
 
 <script>
   import { CartCRUD } from '../utils/cartStore';
 
-  function initFloatingCart() {
-    const wrapper = document.getElementById('floating-cart-wrapper');
+  function initPeekABooCart() {
+    const btn = document.getElementById('carmay-floating-cart');
     const badge = document.getElementById('floating-cart-badge');
-    const fab = document.getElementById('floating-cart-fab');
+    let scrollTimer: any = null;
 
-    // 1. Manejo reactivo del contador
+    // 1. Sincronización reactiva del contador
     function syncBadge() {
       const { totalUnits } = CartCRUD.getTotals();
       if (badge) {
@@ -51,49 +102,47 @@
     window.addEventListener('carmay-cart-changed', syncBadge);
     syncBadge();
 
-    // 2. Control de ocultación en scroll continuo (hide-on-scroll)
-    let lastScrollY = window.scrollY;
-    let scrollStopTimer: any = null;
-    let isHidden = false;
+    // 2. EFECTO PEEK-A-BOO (2 SEGUNDOS DE OCULTACIÓN LATERAL)
+    window.addEventListener('scroll', () => {
+      if (window.innerWidth <= 768 && btn) {
+        btn.classList.add('carmay-scrolling');
 
-    function handleScroll() {
-      const currentScrollY = window.scrollY;
-      const diff = currentScrollY - lastScrollY;
-
-      // Si scrollea hacia abajo con suficiente intención (> 60px del top)
-      if (diff > 8 && currentScrollY > 80 && !isHidden) {
-        wrapper?.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
-        isHidden = true;
-      } else if (diff < -8 && isHidden) {
-        // Al scrollear hacia arriba, reaparece de inmediato
-        wrapper?.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
-        isHidden = false;
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          btn.classList.remove('carmay-scrolling');
+        }, 2000);
       }
+    }, { passive: true });
 
-      lastScrollY = currentScrollY;
-
-      // Al detener el scroll durante 350ms, reaparece suavemente
-      clearTimeout(scrollStopTimer);
-      scrollStopTimer = setTimeout(() => {
-        if (isHidden) {
-          wrapper?.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
-          isHidden = false;
-        }
-      }, 350);
+    // 3. DETECTOR DE PROXIMIDAD (Si el dedo/ratón se acerca a < 80px del borde derecho)
+    function checkProximity(xPos: number) {
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 768 && screenWidth - xPos < 80 && btn) {
+        btn.classList.remove('carmay-scrolling');
+      }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mousemove', (e) => {
+      checkProximity(e.pageX);
+    }, { passive: true });
 
-    // 3. Abrir el drawer al hacer clic
-    fab?.addEventListener('click', (e) => {
+    window.addEventListener('touchstart', (e) => {
+      const touch = e.touches ? e.touches[0] : null;
+      if (touch) {
+        checkProximity(touch.pageX);
+      }
+    }, { passive: true });
+
+    // 4. Apertura del Carrito al pulsar
+    btn?.addEventListener('click', (e) => {
       e.preventDefault();
       window.dispatchEvent(new CustomEvent('open-carmay-cart'));
     });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFloatingCart);
+    document.addEventListener('DOMContentLoaded', initPeekABooCart);
   } else {
-    initFloatingCart();
+    initPeekABooCart();
   }
 </script>
