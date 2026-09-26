@@ -1,78 +1,85 @@
 ---
-// SubNavbar.astro: Responsive Asimétrico
-// Desktop (md+): Buscador a la izquierda + Carrusel de valor a la derecha.
-// Móvil (< md): Carrusel de valor centrado con tipografía destacada (el buscador móvil vive en Piso 1).
+// SubNavbar.astro: Carrusel de valor extendido con líneas suaves delimitantes
+// Sin contenedor rígido ni fondos pesados para aprovechar al máximo el espacio horizontal.
+// Desktop (md+): Buscador original a la izquierda + Carrusel extendido a la derecha.
+// Móvil (< md): Carrusel de valor a ancho completo centrado y delimitado por líneas suaves.
 import SearchBar from './SearchBar.astro';
 ---
 
-<div id="subnav" class="border-t border-white/[0.08] bg-white/[0.015] shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+<div id="subnav" class="border-t border-b border-white/[0.08] bg-black/25 backdrop-blur-sm relative">
+  <!-- Línea decorativa sutil con brillo tenue -->
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent pointer-events-none"></div>
 
-    <!-- ================= 1. VISTA DESKTOP (md:flex): Buscador a la izquierda + Carrusel a la derecha ================= -->
-    <div class="hidden md:flex items-center justify-between gap-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 sm:py-2">
+
+    <!-- ================= 1. VISTA DESKTOP (md:flex): Buscador a la izquierda + Carrusel extendido ================= -->
+    <div class="hidden md:flex items-center justify-between gap-6 lg:gap-8">
       
       <!-- Buscador Desktop -->
-      <div class="flex-1 max-w-xl">
+      <div class="w-full max-w-md lg:max-w-lg shrink-0">
         <SearchBar />
       </div>
 
-      <!-- Carrusel Desktop -->
-      <div class="flex-shrink-0">
-        <div class="carousel-container relative overflow-hidden h-9 rounded-full border border-amber-400/25 bg-black/40 backdrop-blur-md px-4 shadow-[0_2px_12px_rgba(234,179,8,0.08)]">
+      <!-- Separador visual tenue en desktop -->
+      <div class="h-6 w-px bg-white/10 shrink-0"></div>
+
+      <!-- Carrusel Desktop Extendido (Sin contenedor rígido, líneas abiertas que aprovechan el ancho) -->
+      <div class="flex-1 min-w-0 flex items-center justify-center lg:justify-end">
+        <div class="carousel-container relative overflow-hidden h-9 w-full flex items-center justify-center lg:justify-end">
           <div class="carousel-grid h-full items-center">
             
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-sky-400/20 border border-sky-400/40 flex items-center justify-center text-sky-300 shrink-0">
+            <div class="carousel-item flex items-center gap-2.5 text-white opacity-0 pointer-events-none transition-all duration-300">
+              <span class="w-6 h-6 rounded-full bg-sky-400/15 border border-sky-400/30 flex items-center justify-center text-sky-300 shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.6a1 1 0 01.9.6l1.4 2a1 1 0 01.1.7V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                 </svg>
               </span>
-              <p class="font-bold text-xs leading-tight whitespace-nowrap text-slate-100">
-                Envíos el mismo día en <span class="text-amber-400">Camagüey</span>
+              <p class="font-bold text-xs lg:text-sm leading-tight whitespace-nowrap text-slate-100">
+                Envíos garantizados el mismo día en <span class="text-amber-400 font-extrabold">Camagüey</span>
               </p>
             </div>
 
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-emerald-400/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 shrink-0">
+            <div class="carousel-item flex items-center gap-2.5 text-white opacity-0 pointer-events-none transition-all duration-300">
+              <span class="w-6 h-6 rounded-full bg-emerald-400/15 border border-emerald-400/30 flex items-center justify-center text-emerald-300 shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
               </span>
-              <p class="font-bold text-xs leading-tight whitespace-nowrap text-slate-100">
-                Atención Directa: <span class="text-emerald-400">WhatsApp Inmediato</span>
+              <p class="font-bold text-xs lg:text-sm leading-tight whitespace-nowrap text-slate-100">
+                Atención Directa: <span class="text-emerald-400 font-extrabold">Respuesta Inmediata por WhatsApp</span>
               </p>
             </div>
 
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-purple-400/20 border border-purple-400/40 flex items-center justify-center text-purple-300 shrink-0">
+            <div class="carousel-item flex items-center gap-2.5 text-white opacity-0 pointer-events-none transition-all duration-300">
+              <span class="w-6 h-6 rounded-full bg-purple-400/15 border border-purple-400/30 flex items-center justify-center text-purple-300 shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </span>
-              <p class="font-bold text-xs leading-tight whitespace-nowrap text-slate-100">
-                Precios Claros en <span class="text-amber-400">CUP</span> y <span class="text-emerald-400">USD</span>
+              <p class="font-bold text-xs lg:text-sm leading-tight whitespace-nowrap text-slate-100">
+                Precios Claros y Flexibles en <span class="text-amber-400 font-extrabold">CUP</span> y <span class="text-emerald-400 font-extrabold">USD</span>
               </p>
             </div>
 
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 shrink-0">
+            <div class="carousel-item flex items-center gap-2.5 text-white opacity-0 pointer-events-none transition-all duration-300">
+              <span class="w-6 h-6 rounded-full bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300 shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </span>
-              <p class="font-bold text-xs leading-tight whitespace-nowrap text-slate-100">
-                Garantía: <span class="text-amber-300">Probamos el 100% de Equipos</span>
+              <p class="font-bold text-xs lg:text-sm leading-tight whitespace-nowrap text-slate-100">
+                Garantía y Confianza: <span class="text-amber-300 font-extrabold">Probamos el 100% de Equipos</span>
               </p>
             </div>
 
-            <div class="carousel-item flex items-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
-              <span class="w-6 h-6 rounded-full bg-rose-400/20 border border-rose-400/40 flex items-center justify-center text-rose-300 shrink-0">
+            <div class="carousel-item flex items-center gap-2.5 text-white opacity-0 pointer-events-none transition-all duration-300">
+              <span class="w-6 h-6 rounded-full bg-rose-400/15 border border-rose-400/30 flex items-center justify-center text-rose-300 shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l1.5-5h15L21 9M4 9v11h16V9M4 9h16M9 20v-6h6v6" />
                 </svg>
               </span>
-              <p class="font-bold text-xs leading-tight whitespace-nowrap text-slate-100">
-                Tienda Física: <span class="text-amber-400">Calle Avellaneda No. 260</span>
+              <p class="font-bold text-xs lg:text-sm leading-tight whitespace-nowrap text-slate-100">
+                Visítanos en Tienda Física: <span class="text-amber-400 font-extrabold">Calle Avellaneda No. 260</span>
               </p>
             </div>
 
@@ -82,10 +89,10 @@ import SearchBar from './SearchBar.astro';
 
     </div>
 
-    <!-- ================= 2. VISTA MÓVIL (md:hidden): Carrusel Centrado con Tipografía Amplia ================= -->
-    <div class="md:hidden flex justify-center items-center w-full">
-      <div class="carousel-container relative overflow-hidden h-9 rounded-full border border-amber-400/25 bg-black/40 backdrop-blur-md px-3.5 shadow-[0_2px_12px_rgba(234,179,8,0.08)] max-w-full">
-        <div class="carousel-grid h-full items-center">
+    <!-- ================= 2. VISTA MÓVIL (md:hidden): Carrusel Extendido a Ancho Completo ================= -->
+    <div class="md:hidden w-full flex justify-center items-center py-1">
+      <div class="carousel-container relative overflow-hidden h-8 w-full flex items-center justify-center">
+        <div class="carousel-grid h-full items-center justify-center">
 
           <div class="carousel-item flex items-center justify-center gap-2 text-white opacity-0 pointer-events-none transition-all duration-300">
             <span class="w-5 h-5 rounded-full bg-sky-400/20 border border-sky-400/40 flex items-center justify-center text-sky-300 shrink-0">
@@ -93,7 +100,7 @@ import SearchBar from './SearchBar.astro';
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.6a1 1 0 01.9.6l1.4 2a1 1 0 01.1.7V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
               </svg>
             </span>
-            <p class="font-extrabold text-xs text-slate-100 leading-tight whitespace-nowrap">
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
               Envíos el mismo día en <span class="text-amber-400">Camagüey</span>
             </p>
           </div>
@@ -104,7 +111,7 @@ import SearchBar from './SearchBar.astro';
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
             </span>
-            <p class="font-extrabold text-xs text-slate-100 leading-tight whitespace-nowrap">
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
               Atención: <span class="text-emerald-400">WhatsApp Inmediato</span>
             </p>
           </div>
@@ -115,7 +122,7 @@ import SearchBar from './SearchBar.astro';
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </span>
-            <p class="font-extrabold text-xs text-slate-100 leading-tight whitespace-nowrap">
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
               Precios en <span class="text-amber-400">CUP</span> y <span class="text-emerald-400">USD</span>
             </p>
           </div>
@@ -126,7 +133,7 @@ import SearchBar from './SearchBar.astro';
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </span>
-            <p class="font-extrabold text-xs text-slate-100 leading-tight whitespace-nowrap">
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
               Garantía: <span class="text-amber-300">Probamos Todo en Tienda</span>
             </p>
           </div>
@@ -137,7 +144,7 @@ import SearchBar from './SearchBar.astro';
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l1.5-5h15L21 9M4 9v11h16V9M4 9h16M9 20v-6h6v6" />
               </svg>
             </span>
-            <p class="font-extrabold text-xs text-slate-100 leading-tight whitespace-nowrap">
+            <p class="font-extrabold text-xs sm:text-sm text-slate-100 leading-tight whitespace-nowrap">
               Tienda: <span class="text-amber-400">Avellaneda No. 260</span>
             </p>
           </div>
@@ -147,6 +154,9 @@ import SearchBar from './SearchBar.astro';
     </div>
 
   </div>
+
+  <!-- Línea decorativa sutil inferior -->
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none"></div>
 </div>
 
 <script>
@@ -203,13 +213,13 @@ import SearchBar from './SearchBar.astro';
     display: inline-grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    width: max-content;
+    width: 100%;
     max-width: 100%;
   }
 
   .carousel-item {
     grid-area: 1 / 1 / 2 / 2;
-    width: max-content;
+    width: 100%;
     max-width: 100%;
   }
 </style>

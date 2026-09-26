@@ -28,7 +28,7 @@
   :root {
     --carmay-purple: #6d1e68;
     --carmay-bottom: 85px;
-    --carmay-hide-x: 35px;
+    --carmay-hide-x: 95px;
     --carmay-anim-speed: 0.35s;
   }
 
@@ -67,10 +67,11 @@
     height: 100%;
   }
 
-  /* 2. Lógica Peek-a-boo de Ocultamiento Lateral (V43.1 Sagrada) */
+  /* 2. Ocultamiento Completo Hacia la Derecha en Scroll */
   #carmay-floating-cart.carmay-scrolling {
-    opacity: 0.4 !important;
-    transform: translateX(var(--carmay-hide-x)) !important;
+    opacity: 0 !important;
+    transform: translateX(var(--carmay-hide-x)) scale(0.85) !important;
+    pointer-events: none !important;
   }
 
   /* En pantallas medianas y grandes, ocultar por completo */
