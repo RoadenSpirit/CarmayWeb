@@ -109,35 +109,36 @@ A continuación se indexan las 57 intervenciones textuales originales para traza
 ## 3. Plan de Acción por Fases Secuenciales
 
 ### Nivel 1: Cambios Inmediatos (Nomenclatura, Iconos, Enlaces y Microcopia)
-- [ ] Renombrar "Tienda" y variantes a **"Catálogo"** en navegación, drawer, footer y breadcrumbs.
-- [ ] Sustituir íconos de bolsa por **carrito de compras tradicional (`shopping-cart`)** en `CartDrawer`, `ProductCard`, `producto/[slug]` y estados vacíos.
-- [ ] Sustituir el ícono de soporte por un vector con diadema y micrófono visible (`headset` de atención al cliente).
-- [ ] Incrementar el tamaño y jerarquía del logo en el interior del menú hamburguesa móvil.
-- [ ] Agregar enlace directo con apertura en nueva pestaña a Google Maps en la dirección de la tienda física (`contact.astro` y `StoreBanner.astro`).
+- [x] Renombrar "Tienda" y variantes a **"Catálogo"** en navegación, drawer, footer y breadcrumbs.
+- [x] Sustituir íconos de bolsa por **carrito de compras tradicional (`shopping-cart`)** en `CartDrawer`, `ProductCard`, `producto/[slug]` y estados vacíos.
+- [x] Sustituir el ícono de soporte por un vector con diadema y micrófono visible (`headset` de atención al cliente).
+- [x] Incrementar el tamaño y jerarquía del logo en el interior del menú hamburguesa móvil.
+- [x] Agregar enlace directo con apertura en nueva pestaña a Google Maps en la dirección de la tienda física (`contact.astro` y `StoreBanner.astro`).
 
 ### Nivel 2: Pulido Visual, Contraste de Precios y Ajustes de Layout
-- [ ] Diferenciar visualmente los precios: CUP en tono principal de contraste alto y USD en tono slate/esmeralda sutil.
-- [ ] Corregir desborde de precios en `ProductCard.astro` garantizando contención estricta en 320px–375px.
-- [ ] Nivelar la altura fija del listón de ahorro en las tarjetas de producto para evitar desalineación en la rejilla.
-- [ ] Calibrar el padding superior base (`body`/`main`) para evitar solapamientos con el header y eliminar cualquier hueco innecesario.
-- [ ] Ampliar el espaciado inferior (`padding-bottom`) en `/contact` para evitar compresión visual sobre el footer.
+- [x] Diferenciar visualmente los precios: CUP en tono principal de contraste alto (ámbar/oro) y USD en tono esmeralda divisa.
+- [x] Corregir desborde de precios en `ProductCard.astro` garantizando contención estricta sin truncar números.
+- [x] Nivelar la altura fija del listón de ahorro en las tarjetas de producto para evitar desalineación en la rejilla.
+- [x] Calibrar el padding superior base (`body`/`main`) para evitar solapamientos con el header y eliminar cualquier hueco innecesario.
+- [x] Ampliar el espaciado inferior (`padding-bottom`) en `/contact` para evitar compresión visual sobre el footer.
 
 ### Nivel 3: Experiencia de Usuario (UX) y Síntesis de Contenidos
-- [ ] Agregar botón explícito **"Seguir Comprando"** en el pie de `CartDrawer.astro`.
-- [ ] Generador de microcopia rotativa para stock en tarjetas ("¡Solo queda 1!", "Última oportunidad", "Disponible para entrega hoy").
-- [ ] Reestructurar `/contact`: unificar la tarjeta de la tienda física con su fotografía oficial, reduciendo duplicidad de textos.
-- [ ] Reestructurar FAQ: separar en bloques de *Garantía y Calidad* vs. *Envíos y Horarios*, con respuestas concisas en bullets y negritas.
+- [x] Agregar botón explícito **"Seguir Comprando"** y enlace conciso **"Ver más →"** en `CartDrawer.astro`.
+- [x] Generador de microcopia rotativa para stock en tarjetas ("¡Solo queda 1!", "Última oportunidad", "Disponible para entrega").
+- [x] Reestructurar `/contact`: unificar la tarjeta de la tienda física con su fotografía oficial, reduciendo duplicidad de textos.
+- [x] Reestructurar FAQ: lista continua tradicional de preguntas (una debajo de otra) con respuestas concisas en bullets y negritas.
 
-### Nivel 4: Rediseño Estructural del Header y Botón Flotante de Carrito
-- [ ] Reconfigurar `Header.astro` a 2 pisos:
-  - Piso 1: Logo + Buscador integrado + Botón de Menú Hamburguesa.
-  - Piso 2: Carrusel de valor centrado con tipografía más grande en móvil (`text-xs`/`text-sm font-bold`).
-  - Mudar Atención al Cliente al menú hamburguesa.
-- [ ] Implementar el **Botón Circular Flotante (FAB) del Carrito** con contador reactivo y animación `hide-on-scroll` suave.
-- [ ] Exponer barra ligera, moderna y estilizada de accesos directos a categorías con scroll horizontal suave.
+### Nivel 4: Rediseño Estructural del Header, Buscador y Botón Flotante
+- [x] Reconfigurar `Header.astro` asimétrico:
+  - Móvil: Piso 1 con Logo + Buscador restaurado + Menú Hamburguesa. Piso 2 con Carrusel centrado.
+  - Desktop: Piso 1 clásico con Logo + Enlaces centrados + Carrito en cabecera; SubNavbar con buscador y carrusel.
+- [x] Implementar el **Botón Circular Flotante (FAB) del Carrito** exclusivo en móvil con animación lateral Peek-a-boo V43.1 completa (`translateX(95px)` en scroll, timer de 2s y sensor de proximidad a 80px).
+- [x] Exponer barra ligera de categorías en móvil con scroll horizontal suave.
+- [x] Rediseñar el buscador con resultados en lista compacta horizontal, 8 ítems por relevancia y botón de explorar en catálogo con ancla `#productos-section`.
+- [x] Rediseñar catálogo estilo Pinterest / Temu: imagen protagonista `aspect-[4/5]`, títulos en 1 línea, precios en grid 2x2 llamativos y botón de agregar fino al final.
 
 ### Nivel 5: Mejoras de Producto y Registro de Roadmap
-- [ ] Selector interactivo de cantidad en `producto/[slug].astro` con tope validado por stock físico y opción de encargo por WhatsApp si se supera.
+- [x] Selector interactivo de cantidad en `producto/[slug].astro` con tope validado por stock físico y opción de encargo por WhatsApp si se supera.
 - [ ] *[Roadmap Futuro]* Implementación del recomendador semántico estricto.
 - [ ] *[Roadmap Futuro]* Selector de tallas y colores cuando la API exponga las variaciones.
 - [ ] *[Roadmap Futuro]* Estrategia de Tema Dual (Modo Claro / Modo Oscuro).
