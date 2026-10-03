@@ -20,93 +20,82 @@ const storeCategories = [
 ];
 ---
 
-<header class="sticky top-0 z-50 backdrop-blur-2xl backdrop-saturate-[180%] bg-[#0c0e17]/85 border-b border-white/[0.12] shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]">
+<header class="sticky top-0 z-50 backdrop-blur-2xl backdrop-saturate-[180%] bg-[#0c0e17]/90 border-b border-white/[0.12] shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]">
   <!-- Scroll progress bar -->
   <div id="scroll-progress" class="absolute top-0 left-0 h-[2px] bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 w-0 transition-all duration-75 z-50"></div>
 
   <!-- Línea inferior de acento amarillo -->
-  <div id="header-accent-line" class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent" style="transition: opacity 0.3s ease-out"></div>
+  <div id="header-accent-line" class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent pointer-events-none"></div>
 
-  <!-- ================= PISO 1: MENÚ PRINCIPAL (SIEMPRE FIJO) ================= -->
+  <!-- ================= PISO SUPERIOR: CARRUSEL DE VALOR ================= -->
+  <div id="header-top-value-bar" class="relative z-30">
+    <SubNavbar />
+  </div>
+
+  <!-- ================= PISO PRINCIPAL: LOGO + BUSCADOR + NAVEGACIÓN + ATENCIÓN AL CLIENTE ================= -->
   <div id="header-main-nav" class="relative z-20">
-    <div class="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
+    <div class="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3 sm:gap-4 lg:gap-6">
       
-      <!-- Izquierda: Logo -->
+      <!-- 1. Logo a la izquierda -->
       <div class="flex items-center shrink-0">
         <a href="/" class="flex items-center group">
-          <div class="w-14 h-14 sm:w-20 md:w-24 md:h-24 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center group-hover:scale-105 transition-transform">
             <img src="/logo.png" alt="Carmay Outfit" class="w-full h-full object-contain filter drop-shadow-[0_2px_12px_rgba(234,179,8,0.35)]" />
           </div>
         </a>
       </div>
 
-      <!-- MÓVIL: Buscador Fino en Cabecera (md:hidden) -->
-      <div class="flex-1 min-w-0 md:hidden px-1">
+      <!-- 2. Buscador Integrado (Central en Desktop y Móvil) -->
+      <div class="flex-1 max-w-xs sm:max-w-md lg:max-w-xl min-w-0">
         <SearchBar />
       </div>
 
-      <!-- DESKTOP: Enlaces Centrados Matemáticamente (hidden md:flex) -->
-      <nav class="hidden md:flex items-center gap-1.5 lg:gap-2 absolute left-1/2 -translate-x-1/2 p-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-md">
+      <!-- 3. Enlaces de Navegación en Desktop (hidden md:flex) -->
+      <nav class="hidden md:flex items-center gap-1 lg:gap-1.5 p-1 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-md shrink-0">
         <a 
           href="/" 
-          class="px-4 py-1.5 rounded-full text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
+          class="px-3.5 lg:px-4 py-1.5 rounded-full text-xs lg:text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
         >
           Inicio
         </a>
         <a 
           href="/tienda/" 
-          class="px-4 py-1.5 rounded-full text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
+          class="px-3.5 lg:px-4 py-1.5 rounded-full text-xs lg:text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
         >
           Catálogo
         </a>
         <a 
           href="/contact" 
-          class="px-4 py-1.5 rounded-full text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
+          class="px-3.5 lg:px-4 py-1.5 rounded-full text-xs lg:text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
         >
           Contáctanos
         </a>
       </nav>
 
-      <!-- Derecha: Acciones Desktop vs Móvil -->
-      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <!-- Acciones Desktop: Carrito en cabecera + WhatsApp -->
-        <div class="hidden md:flex items-center gap-3">
-          <!-- Ícono Carrito de Compras en Desktop -->
-          <button id="header-cart-btn" class="relative flex items-center justify-center w-11 h-11 rounded-full border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:scale-105 transition-all shadow-[0_2px_12px_rgba(234,179,8,0.2)] cursor-pointer" aria-label="Ver carrito">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
-              <circle cx="9" cy="20" r="1.5" />
-              <circle cx="17" cy="20" r="1.5" />
-            </svg>
-            <span id="header-cart-count" class="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-black flex items-center justify-center shadow-lg border border-white/20">
-              0
-            </span>
-          </button>
-
-          <!-- WhatsApp Soporte en Desktop -->
-          <a 
-            href="https://wa.me/REDACTED_PHONE_1" 
-            target="_blank" 
-            class="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 py-2 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-amber-400/40 text-slate-300 hover:text-white transition-all text-xs sm:text-sm font-medium shadow-sm hover:shadow-md"
-            title="Contactar con Atención al Cliente"
-            aria-label="Atención al Cliente por WhatsApp"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a8 8 0 00-8 8v4a3 3 0 003 3h1v-7H6V10a6 6 0 1112 0v2h-2v7h1a3 3 0 003-3v-4a8 8 0 00-8-8z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M18 16v1a3 3 0 01-3 3h-2" />
-              <circle cx="12" cy="20" r="1" fill="currentColor" />
-            </svg>
-            <span class="whitespace-nowrap">Atención al cliente</span>
-          </a>
-        </div>
-
-        <!-- En Móvil: Botón Hamburguesa -->
-        <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-11 h-11 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-amber-400/40 transition-all cursor-pointer" aria-label="Abrir menú de navegación">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      <!-- 4. Atención al Cliente en Desktop (hidden md:flex) -->
+      <div class="hidden md:flex items-center shrink-0">
+        <a 
+          href="https://wa.me/REDACTED_PHONE_1" 
+          target="_blank" 
+          class="inline-flex items-center justify-center gap-2 min-h-[44px] px-3.5 lg:px-4 py-2 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-amber-400/40 text-slate-300 hover:text-white transition-all text-xs lg:text-sm font-medium shadow-sm hover:shadow-md"
+          title="Contactar con Atención al Cliente"
+          aria-label="Atención al Cliente por WhatsApp"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a8 8 0 00-8 8v4a3 3 0 003 3h1v-7H6V10a6 6 0 1112 0v2h-2v7h1a3 3 0 003-3v-4a8 8 0 00-8-8z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18 16v1a3 3 0 01-3 3h-2" />
+            <circle cx="12" cy="20" r="1" fill="currentColor" />
           </svg>
-        </button>
+          <span class="whitespace-nowrap">Atención al cliente</span>
+        </a>
       </div>
+
+      <!-- 5. En Móvil: Botón Hamburguesa -->
+      <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-11 h-11 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-amber-400/40 transition-all cursor-pointer shrink-0" aria-label="Abrir menú de navegación">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
 
     </div>
   </div>
@@ -142,13 +131,6 @@ const storeCategories = [
       </div>
     </nav>
   )}
-
-  <!-- ================= PISO 3: MENÚ BUSCADOR + CARRUSEL (ÚLTIMO, COLAPSABLE AL SCROLL) ================= -->
-  <div id="subnav-collapsible" class="subnav-grid relative z-30">
-    <div class="subnav-grid-inner">
-      <SubNavbar />
-    </div>
-  </div>
 </header>
 
 <!-- Drawer Móvil -->
@@ -238,6 +220,7 @@ const storeCategories = [
       <span>Ver Mi Carrito</span>
       <span id="mobile-cart-badge" class="ml-auto bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full font-extrabold">0</span>
     </button>
+
     <a href="/contact" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -246,56 +229,53 @@ const storeCategories = [
     </a>
   </nav>
 
-  <!-- Botón WhatsApp / Atención al Cliente en drawer -->
-  <div class="px-6 pb-6">
-    <a href="https://wa.me/REDACTED_PHONE_1" target="_blank" class="flex items-center justify-center gap-2.5 w-full bg-white/[0.06] hover:bg-white/[0.1] text-slate-200 hover:text-white px-5 py-3 rounded-xl text-sm font-medium transition-all border border-white/10 shadow-sm">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a8 8 0 00-8 8v4a3 3 0 003 3h1v-7H6V10a6 6 0 1112 0v2h-2v7h1a3 3 0 003-3v-4a8 8 0 00-8-8z" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M18 16v1a3 3 0 01-3 3h-2" />
-        <circle cx="12" cy="20" r="1" fill="currentColor" />
-      </svg>
-      <span>Atención al cliente</span>
+  <!-- Info tienda en drawer -->
+  <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10 bg-[#090b12]">
+    <p class="text-xs text-slate-400 mb-1">Visítanos en:</p>
+    <a href="https://maps.google.com/?q=Avellaneda+260,+Camaguey,+Cuba" target="_blank" rel="noopener noreferrer" class="text-xs text-amber-400 hover:text-yellow-300 font-medium transition-colors block mb-2 underline-offset-4 hover:underline">
+      Avellaneda No. 260, Camagüey
     </a>
+    <p class="text-xs text-slate-400">WhatsApp: <a href="https://wa.me/REDACTED_PHONE_1" class="text-white hover:text-yellow-400">+REDACTED_PHONE_1</a></p>
   </div>
 </div>
 
-<!-- Componente Panel Lateral Deslizante -->
+<!-- Drawer del Carrito Lateral -->
 <CartDrawer />
 
-<!-- Botón Circular Flotante del Carrito (FAB) -->
+<!-- Botón Circular Flotante del Carrito (Accesible en todo momento de navegación) -->
 <FloatingCartBtn />
 
 <script>
   import { CartCRUD } from '../utils/cartStore';
 
-  // Manejo reactivo del badge del carrito
-  function updateBadge() {
-    const { totalUnits } = CartCRUD.getTotals();
-    const countEl = document.getElementById('header-cart-count');
-    const mobileCountEl = document.getElementById('mobile-cart-badge');
-    const floatingCountEl = document.getElementById('floating-cart-badge');
-
-    function animateBadge(el: HTMLElement | null) {
-      if (!el) return;
-      el.textContent = String(totalUnits);
-      el.classList.add('scale-125', 'brightness-125');
-      setTimeout(() => {
-        el.classList.remove('scale-125', 'brightness-125');
-      }, 250);
-    }
-
-    animateBadge(countEl);
-    animateBadge(mobileCountEl);
-    animateBadge(floatingCountEl);
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
-    const cartBtn = document.getElementById('header-cart-btn');
-    const mobileCartBtn = document.getElementById('mobile-drawer-cart-btn');
+    // Referencias DOM
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenuClose = document.getElementById('mobile-menu-close');
-    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
     const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileCartBtn = document.getElementById('mobile-drawer-cart-btn');
+    const mobileCartBadge = document.getElementById('mobile-cart-badge');
+    const scrollProgress = document.getElementById('scroll-progress');
+
+    // Barra de progreso de lectura en scroll
+    window.addEventListener('scroll', () => {
+      if (scrollProgress) {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalHeight > 0) {
+          const progress = (window.scrollY / totalHeight) * 100;
+          scrollProgress.style.width = `${progress}%`;
+        }
+      }
+    }, { passive: true });
+
+    // Sincronización del badge en el menú drawer móvil
+    function updateBadge() {
+      const { totalUnits } = CartCRUD.getTotals();
+      if (mobileCartBadge) {
+        mobileCartBadge.textContent = String(totalUnits);
+      }
+    }
 
     function openMobileMenu() {
       if (!mobileMenuDrawer || !mobileMenuOverlay) return;
@@ -337,10 +317,6 @@ const storeCategories = [
       if (e.key === 'Escape') closeMobileMenu();
     });
 
-    cartBtn?.addEventListener('click', () => {
-      window.dispatchEvent(new CustomEvent('open-carmay-cart'));
-    });
-
     mobileCartBtn?.addEventListener('click', () => {
       closeMobileMenu();
       setTimeout(() => {
@@ -350,135 +326,5 @@ const storeCategories = [
 
     window.addEventListener('carmay-cart-changed', updateBadge);
     updateBadge();
-
-    // ====== CONTROLADOR DE SCROLL ANTI-BUCLE CON HISTERESIS BLINDADA ======
-    // El Piso 1 (Menú Principal) y el Piso 2 (Categorías) permanecen SIEMPRE fijos.
-    // Solo el Piso 3 (SubNavbar) se oculta en scroll descendente y reaparece en scroll ascendente.
-    const subnavCollapsible = document.getElementById('subnav-collapsible');
-    let lastScrollY = window.scrollY || 0;
-    let downAccumulator = 0;
-    let upAccumulator = 0;
-    let isTransitioning = false;
-    let transitionTimer: any = null;
-    let ticking = false;
-
-    // Umbrales mayores que la altura del SubNavbar (52px) para absorber completamente
-    // el salto de scroll que produce el navegador al cambiar el tamaño del header.
-    const COLLAPSE_THRESHOLD = 70; // 70px continuos hacia abajo para colapsar
-    const EXPAND_THRESHOLD = 70;   // 70px continuos hacia arriba para expandir
-    const TOP_DEADZONE = 60;       // En los primeros 60px siempre permanece expandido
-
-    function lockTransition() {
-      isTransitioning = true;
-      if (subnavCollapsible) subnavCollapsible.classList.add('is-animating');
-      if (transitionTimer) clearTimeout(transitionTimer);
-      transitionTimer = setTimeout(() => {
-        isTransitioning = false;
-        if (subnavCollapsible) subnavCollapsible.classList.remove('is-animating');
-        lastScrollY = window.scrollY;
-        downAccumulator = 0;
-        upAccumulator = 0;
-      }, 360); // 340ms duración CSS + 20ms de margen seguro
-    }
-
-    function collapseSubnav() {
-      if (!subnavCollapsible || subnavCollapsible.classList.contains('is-collapsed')) return;
-      subnavCollapsible.classList.add('is-collapsed');
-      lockTransition();
-    }
-
-    function expandSubnav() {
-      if (!subnavCollapsible || !subnavCollapsible.classList.contains('is-collapsed')) return;
-      subnavCollapsible.classList.remove('is-collapsed');
-      lockTransition();
-    }
-
-    function updateNavScroll() {
-      const currentScrollY = window.scrollY;
-      const diff = currentScrollY - lastScrollY;
-
-      // 1. Si está en plena animación de colapso/expansión, ignorar para romper cualquier bucle
-      if (isTransitioning) {
-        lastScrollY = currentScrollY;
-        ticking = false;
-        return;
-      }
-
-      // 2. En la cabecera superior (primeros 60px): siempre expandido
-      if (currentScrollY <= TOP_DEADZONE) {
-        expandSubnav();
-        downAccumulator = 0;
-        upAccumulator = 0;
-        lastScrollY = currentScrollY;
-        ticking = false;
-        return;
-      }
-
-      // 3. Acumulación direccional estricta
-      if (diff > 0) {
-        // Movimiento hacia ABAJO
-        downAccumulator += diff;
-        upAccumulator = 0;
-        if (downAccumulator >= COLLAPSE_THRESHOLD) {
-          collapseSubnav();
-        }
-      } else if (diff < 0) {
-        // Movimiento hacia ARRIBA
-        upAccumulator += Math.abs(diff);
-        downAccumulator = 0;
-        if (upAccumulator >= EXPAND_THRESHOLD) {
-          expandSubnav();
-        }
-      }
-
-      lastScrollY = currentScrollY;
-      ticking = false;
-    }
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateNavScroll);
-        ticking = true;
-      }
-    }, { passive: true });
   });
 </script>
-
-<style>
-  /* Desactivar scroll anchoring en el header para que el navegador no mueva la página al cambiar de altura */
-  header {
-    overflow-anchor: none;
-  }
-
-  /* Plegado Puro y Uniforme con CSS Grid (Sin desgarros ni doble aceleración con translateY):
-     - grid-template-rows interpola linealmente el alto sin saltos
-     - opacity desvanece el contenido limpiamente
-     - subnav-grid-inner con overflow: hidden constante */
-  .subnav-grid {
-    display: grid;
-    grid-template-rows: 1fr;
-    opacity: 1;
-    transition: grid-template-rows 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 0.24s ease-out;
-  }
-
-  /* will-change solo durante la transición (nunca en reposo, para no consumir capas GPU) */
-  .subnav-grid.is-animating {
-    will-change: grid-template-rows, opacity;
-  }
-
-  .subnav-grid.is-collapsed {
-    grid-template-rows: 0fr;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .subnav-grid-inner {
-    min-height: 0;
-    overflow: visible;
-  }
-
-  .subnav-grid.is-collapsed .subnav-grid-inner {
-    overflow: hidden;
-  }
-</style>

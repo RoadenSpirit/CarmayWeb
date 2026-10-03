@@ -5,10 +5,10 @@
 // Exclusivo para móvil (md:hidden), en desktop se usa el carrito de la cabecera.
 ---
 
-<div id="carmay-floating-cart" class="md:hidden" role="button" aria-label="Ver carrito de compras" tabindex="0">
+<div id="carmay-floating-cart" role="button" aria-label="Ver carrito de compras" tabindex="0">
   <div class="carmay-fab-inner">
-    <!-- Ícono Carrito Tradicional -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3">
+    <!-- Ícono Carrito Tradicional Fino y Legible -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
       <circle cx="9" cy="20" r="1.5" />
       <circle cx="17" cy="20" r="1.5" />
@@ -32,7 +32,7 @@
     --carmay-anim-speed: 0.35s;
   }
 
-  /* 1. Botón Disparador Flotante (Solo Móvil) */
+  /* 1. Botón Disparador Flotante (Accesible en todo momento de navegación) */
   #carmay-floating-cart {
     position: fixed;
     bottom: var(--carmay-bottom);
@@ -48,10 +48,15 @@
     justify-content: center !important;
     padding: 0 !important;
     margin: 0 !important;
-    box-shadow: 0 4px 20px rgba(234, 179, 8, 0.45);
+    box-shadow: 0 4px 24px rgba(234, 179, 8, 0.45);
     cursor: pointer;
     user-select: none;
-    transition: opacity var(--carmay-anim-speed) ease, transform var(--carmay-anim-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity var(--carmay-anim-speed) ease, transform var(--carmay-anim-speed) cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+  }
+
+  #carmay-floating-cart:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 30px rgba(234, 179, 8, 0.6);
   }
 
   #carmay-floating-cart:active {
@@ -67,17 +72,20 @@
     height: 100%;
   }
 
-  /* 2. Ocultamiento Completo Hacia la Derecha en Scroll */
+  /* 2. Ocultamiento Completo Hacia la Derecha en Scroll (Solo en Móvil) */
   #carmay-floating-cart.carmay-scrolling {
     opacity: 0 !important;
     transform: translateX(var(--carmay-hide-x)) scale(0.85) !important;
     pointer-events: none !important;
   }
 
-  /* En pantallas medianas y grandes, ocultar por completo */
+  /* En pantallas medianas y grandes: Ubicado cómodamente en la esquina inferior */
   @media (min-width: 769px) {
     #carmay-floating-cart {
-      display: none !important;
+      bottom: 32px;
+      right: 32px;
+      width: 62px;
+      height: 62px;
     }
   }
 </style>
