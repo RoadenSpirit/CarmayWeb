@@ -25,7 +25,7 @@ const { title, subtitle, products } = Astro.props;
     </a>
   </div>
 
-  <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
+  <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 items-start">
     {products.map((product, idx) => (
       <div class={`reveal-card reveal-delay-${Math.min(idx + 1, 4)}`}>
         <ProductCard {...product} />
