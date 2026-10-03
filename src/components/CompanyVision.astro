@@ -1,30 +1,30 @@
 ---
+// CompanyVision.astro: Sección editorial de Visión y Empresa
+// Transición suave en degradado hacia el fondo negro, textos sintetizados y balanceados.
 ---
 
-<!-- Sección de Visión: Ancho completo de pantalla (full-bleed) con contenido centrado y márgenes elegantes -->
-<section class="py-20 sm:py-28 w-full relative overflow-hidden bg-gradient-to-r from-purple-950/90 via-[#161322] to-purple-950/80 border-y border-purple-800/30">
+<section class="py-16 sm:py-24 w-full relative overflow-hidden bg-gradient-to-b from-[#090b11] via-purple-950/30 to-[#090b11] border-y border-white/[0.06]">
   
-  <!-- Fondos decorativos difuminados con brillo morado -->
-  <div class="absolute -right-24 -bottom-24 w-[450px] h-[450px] bg-purple-600/15 rounded-full blur-3xl pointer-events-none z-0"></div>
-  <div class="absolute -left-24 -top-24 w-[450px] h-[450px] bg-purple-800/15 rounded-full blur-3xl pointer-events-none z-0"></div>
+  <!-- Fondos decorativos difuminados con brillo sutil -->
+  <div class="absolute -right-24 -bottom-24 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-3xl pointer-events-none z-0"></div>
+  <div class="absolute -left-24 -top-24 w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none z-0"></div>
 
   <!-- Contenedor centrado con margen interior cómodo -->
   <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-16 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-14 items-center">
       
-      <!-- Columna Izquierda: Logo centrado grande con reveal-blur-fade + Imagen con reveal-scale -->
+      <!-- Columna Izquierda: Logo centrado + Imagen de Tienda Física -->
       <div class="lg:col-span-5 flex flex-col items-center gap-6">
-        <!-- Logo centrado con entrada cinematográfica blur-fade -->
-        <div class="w-full flex justify-center py-2 reveal-blur-fade">
+        <div class="w-full flex justify-center py-1 reveal-blur-fade">
           <img 
             src="/logo.png" 
             alt="Carmay Outfit" 
-            class="w-48 h-48 sm:w-64 sm:h-64 object-contain filter drop-shadow-[0_4px_24px_rgba(234,179,8,0.45)]" 
+            class="w-40 h-40 sm:w-56 sm:h-56 object-contain filter drop-shadow-[0_4px_20px_rgba(234,179,8,0.35)]" 
           />
         </div>
 
-        <!-- Imagen Institucional limpia con reveal-scale -->
-        <div class="w-full relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] border border-white/15 reveal-scale reveal-delay-2">
+        <!-- Imagen Institucional limpia -->
+        <div class="w-full relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] border border-white/10 reveal-scale reveal-delay-2">
           <img 
             src="/tienda-fisica.png" 
             alt="Tienda Física Carmay Outfit en Camagüey" 
@@ -37,56 +37,58 @@
         </div>
       </div>
 
-      <!-- Columna Derecha: Contenido editorial y visión con reveal-fade-up y reveal-pop -->
-      <div class="lg:col-span-7 space-y-6 sm:space-y-8">
-        <!-- Encabezado / Título de la sección -->
+      <!-- Columna Derecha: Contenido editorial y visión sintetizada -->
+      <div class="lg:col-span-7 space-y-6 sm:space-y-7">
+        
+        <!-- Encabezado de la sección -->
         <div class="reveal-on-scroll">
-          <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-normal leading-tight" style="font-family: 'Outfit', sans-serif;">
-            Visión y Proyecciones de la Empresa
+          <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight" style="font-family: 'Outfit', sans-serif;">
+            Nuestra Visión y Compromiso
           </h2>
-          <span class="text-xs sm:text-sm font-semibold text-amber-400 tracking-wider uppercase block mt-2">
-            Sobre Nosotros
+          <span class="text-xs sm:text-sm font-bold text-amber-400 tracking-wider uppercase block mt-1.5">
+            Sobre Carmay Outfit
           </span>
         </div>
 
         <!-- Subtítulo de propuesta de valor -->
         <h3 class="text-lg sm:text-2xl font-bold text-amber-300/90 tracking-wide leading-snug reveal-on-scroll reveal-delay-1">
-          La tienda más completa de Camagüey
+          La tienda de moda y tecnología más completa de Camagüey
         </h3>
 
-        <p class="text-gray-200 text-base sm:text-lg lg:text-xl leading-relaxed font-normal reveal-on-scroll reveal-delay-2">
-          Somos una tienda camagüeyana pensada en resolver tus necesidades diarias de ropa, calzado y equipamiento con un catálogo variado para todos. Creemos que la innovación no debe tener fronteras, y estamos aquí para que tu día a día sea más cómodo y con estilo.
+        <!-- Párrafo sintetizado y balanceado -->
+        <p class="text-slate-200 text-sm sm:text-base lg:text-lg leading-relaxed font-normal reveal-on-scroll reveal-delay-2 text-pretty">
+          Somos una tienda camagüeyana pensada para resolver tus compras diarias con estilo, calidad revisada y facilidades de pago local. Creemos que la innovación no debe tener fronteras, y estamos aquí para que tu experiencia sea cómoda, segura y confiable.
         </p>
 
-        <!-- Bloque destacado sutil para la frase clave: reveal-blur-fade -->
-        <div class="relative overflow-hidden rounded-2xl p-5 sm:p-7 shadow-2xl border border-purple-500/40 bg-gradient-to-r from-purple-900/60 via-[#261536]/80 to-purple-950/70 backdrop-blur-md reveal-blur-fade reveal-delay-3">
-          <div class="absolute left-0 top-0 bottom-0 w-2 bg-[#6d1e68]"></div>
-          <div class="absolute -right-10 -top-10 w-36 h-36 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
-          <p class="relative z-10 text-white text-base sm:text-lg lg:text-xl leading-relaxed font-semibold italic tracking-wide sm:tracking-wider pl-3 drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
-            “Nuestra visión es seguir expandiendo nuestro alcance, conectando la calidad de nuestras prendas y calzado con las mejores facilidades de compra local.”
+        <!-- Bloque destacado sutil para la frase clave (con degradado tenue y sin morados pesados) -->
+        <div class="relative overflow-hidden rounded-2xl p-4 sm:p-6 shadow-xl border border-white/10 bg-white/[0.02] backdrop-blur-md reveal-blur-fade reveal-delay-3">
+          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-amber-400"></div>
+          <p class="relative z-10 text-white text-sm sm:text-base lg:text-lg leading-relaxed font-medium italic pl-3" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+            “Nuestra visión es conectar la calidad de cada prenda y equipo con la mejor atención presencial y entrega inmediata en Camagüey.”
           </p>
         </div>
 
-        <!-- Cifras métricas enriquecidas: reveal-pop -->
-        <div class="pt-4 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12 reveal-pop reveal-delay-4">
+        <!-- Cifras métricas enriquecidas -->
+        <div class="pt-2 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10 reveal-pop reveal-delay-4">
           <div class="space-y-1">
-            <span class="block text-3xl sm:text-4xl font-black text-amber-400" style="font-family: 'Outfit', sans-serif;">
+            <span class="block text-2xl sm:text-4xl font-black text-amber-400" style="font-family: 'Outfit', sans-serif;">
               +2 Años de experiencia
             </span>
-            <span class="text-xs sm:text-sm text-gray-300 font-medium block">
-              Compromiso y atención local en Camagüey
+            <span class="text-xs sm:text-sm text-slate-300 font-medium block">
+              Atención presencial en Calle Avellaneda No. 260
             </span>
           </div>
-          <div class="hidden sm:block w-px h-14 bg-white/20"></div>
+          <div class="hidden sm:block w-px h-12 bg-white/15"></div>
           <div class="space-y-1">
-            <span class="block text-3xl sm:text-4xl font-black text-purple-400" style="font-family: 'Outfit', sans-serif;">
-              100% Calidad en todos nuestros productos
+            <span class="block text-2xl sm:text-4xl font-black text-emerald-400" style="font-family: 'Outfit', sans-serif;">
+              100% Calidad Comprobada
             </span>
-            <span class="text-xs sm:text-sm text-gray-300 font-medium block">
-              Prendas, calzado y equipos revisados
+            <span class="text-xs sm:text-sm text-slate-300 font-medium block">
+              Probamos cada equipo antes de entregarlo
             </span>
           </div>
         </div>
+
       </div>
 
     </div>
