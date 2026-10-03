@@ -62,14 +62,14 @@ const categoryName = currentCategory ? currentCategory.name : category;
   <Header showCategoryBar={true} activeCategory={category} />
 
   <!-- ============= SECTION: PRODUCTOS FILTRADOS ============= -->
-  <section id="productos-section" class="pt-14 pb-10 sm:pt-20 sm:pb-14 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="productos-section" class="pt-6 pb-8 sm:pt-10 sm:pb-12 min-h-screen">
+    <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
     <!-- Header de sección con reveal -->
-    <div class="text-center mb-8 sm:mb-12 pb-8 border-b border-white/[0.06] reveal-on-scroll">
-      <h1 class="text-3xl sm:text-5xl font-black tracking-widest mb-4 text-white drop-shadow-[0_4px_20px_rgba(234,179,8,0.15)]">
+    <div class="text-center mb-4 sm:mb-6 pb-4 border-b border-white/[0.06] reveal-on-scroll">
+      <h1 class="text-2xl sm:text-4xl font-black tracking-widest mb-2 text-white drop-shadow-[0_4px_20px_rgba(234,179,8,0.15)]">
         {categoryName.toUpperCase()}
       </h1>
-      <p class="text-sm sm:text-base text-slate-300 max-w-xl mx-auto leading-relaxed">
+      <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
         Descubre nuestra colección curada de {categoryName.toLowerCase()} con stock en Camagüey.
       </p>
     </div>
