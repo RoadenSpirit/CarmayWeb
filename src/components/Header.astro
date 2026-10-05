@@ -35,21 +35,21 @@ const storeCategories = [
     <SubNavbar />
   </div>
 
-  <!-- ================= PISO PRINCIPAL: LOGO + MENÚ DE NAVEGACIÓN + BUSCADOR ================= -->
+  <!-- ================= PISO PRINCIPAL: LOGO (IZQ) + NAVEGACIÓN (CENTRO ABSOLUTO) + BUSCADOR (DER) ================= -->
   <div id="header-main-nav" class="relative z-20">
-    <div class="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3 sm:gap-4 lg:gap-6">
+    <div class="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
       
-      <!-- 1. Logo a la izquierda -->
+      <!-- 1. Logo orientado a la esquina izquierda (+20% de tamaño sin desbordar el alto) -->
       <div class="flex items-center shrink-0">
-        <a href="/" class="flex items-center group">
-          <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center group-hover:scale-105 transition-transform">
+        <a href="/" class="flex items-center group py-0.5">
+          <div class="w-[66px] h-[66px] sm:w-[74px] sm:h-[74px] md:w-[76px] md:h-[76px] flex items-center justify-center group-hover:scale-105 transition-transform">
             <img src="/logo.png" alt="Carmay Outfit" class="w-full h-full object-contain filter drop-shadow-[0_2px_12px_rgba(234,179,8,0.35)]" />
           </div>
         </a>
       </div>
 
-      <!-- 2. Menú de Navegación en Desktop (Logo + Menú + Buscador) -->
-      <nav class="hidden md:flex items-center gap-1.5 lg:gap-2 p-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-md shrink-0">
+      <!-- 2. Menú de Navegación en el CENTRO ABSOLUTO de la pantalla (Desktop) -->
+      <nav class="hidden md:flex items-center gap-1.5 lg:gap-2 p-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-md absolute left-1/2 -translate-x-1/2 z-30">
         <a 
           href="/" 
           class="px-4 py-1.5 rounded-full text-xs lg:text-sm font-bold text-slate-200 hover:text-amber-300 hover:bg-white/[0.06] transition-all"
@@ -70,8 +70,8 @@ const storeCategories = [
         </a>
       </nav>
 
-      <!-- 3. Buscador Integrado (A la derecha en desktop; central en móvil) -->
-      <div class="flex-1 md:max-w-xs lg:max-w-sm min-w-0">
+      <!-- 3. Buscador Orientado a la Esquina Derecha en Desktop (Central en Móvil) -->
+      <div class="flex-1 md:flex-initial md:w-72 lg:w-80 min-w-0 md:ml-auto">
         <SearchBar />
       </div>
 
