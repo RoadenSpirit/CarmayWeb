@@ -20,7 +20,10 @@ const storeCategories = [
 ];
 ---
 
-<header class="sticky top-0 z-50 backdrop-blur-2xl backdrop-saturate-[180%] bg-[#0c0e17]/90 border-b border-white/[0.12] shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]">
+<header 
+  id="main-header" 
+  class="sticky top-0 z-50 backdrop-blur-2xl backdrop-saturate-[180%] bg-[#0c0e17]/90 border-b border-white/[0.12] shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]"
+>
   <!-- Scroll progress bar -->
   <div id="scroll-progress" class="absolute top-0 left-0 h-[2px] bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-600 w-0 transition-all duration-75 z-50"></div>
 
@@ -308,5 +311,79 @@ const storeCategories = [
 
     window.addEventListener('carmay-cart-changed', updateBadge);
     updateBadge();
+
+    // ====== SMART STICKY HEADER (HEADROOM PATTERN CON TRANSFORM GPU) ======
+    // Principio: NUNCA mutar la altura del header (0 reflows, 0 vibración).
+    // Se anima exclusivamente transform: translateY(-100%) en la GPU.
+    const headerEl = document.getElementById('main-header');
+    let lastScrollY = window.scrollY || 0;
+    let isHeaderHidden = false;
+    let scrollTicking = false;
+    const SCROLL_THRESHOLD = 90; // No ocultar en la zona superior de la pantalla
+    const SCROLL_TOLERANCE = 8;  // Ignorar micro-vibraciones menores a 8px
+
+    function updateStickyHeader() {
+      const currentScrollY = window.scrollY || 0;
+      const scrollDiff = currentScrollY - lastScrollY;
+
+      // Si el menú móvil está abierto, mantener siempre visible
+      if (mobileMenuDrawer && !mobileMenuDrawer.classList.contains('translate-x-full')) {
+        headerEl?.classList.remove('is-hidden');
+        isHeaderHidden = false;
+        lastScrollY = currentScrollY;
+        scrollTicking = false;
+        return;
+      }
+
+      // 1. Cerca del inicio de la página: SIEMPRE visible
+      if (currentScrollY <= SCROLL_THRESHOLD) {
+        if (isHeaderHidden) {
+          headerEl?.classList.remove('is-hidden');
+          isHeaderHidden = false;
+        }
+        lastScrollY = currentScrollY;
+        scrollTicking = false;
+        return;
+      }
+
+      // 2. Si el movimiento es muy pequeño, ignorar
+      if (Math.abs(scrollDiff) < SCROLL_TOLERANCE) {
+        scrollTicking = false;
+        return;
+      }
+
+      // 3. Scroll hacia abajo: ocultar suavemente hacia arriba
+      if (scrollDiff > 0 && !isHeaderHidden) {
+        headerEl?.classList.add('is-hidden');
+        isHeaderHidden = true;
+      }
+      // 4. Scroll hacia arriba: reaparecer de inmediato
+      else if (scrollDiff < 0 && isHeaderHidden) {
+        headerEl?.classList.remove('is-hidden');
+        isHeaderHidden = false;
+      }
+
+      lastScrollY = currentScrollY;
+      scrollTicking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        window.requestAnimationFrame(updateStickyHeader);
+        scrollTicking = true;
+      }
+    }, { passive: true });
   });
 </script>
+
+<style>
+  /* Animación Sticky Acelerada por Hardware (0 Layout Shifts / 0 Vibración) */
+  #main-header {
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+
+  #main-header.is-hidden {
+    transform: translateY(-100%);
+  }
+</style>
