@@ -35,7 +35,7 @@ const storeCategories = [
     <SubNavbar />
   </div>
 
-  <!-- ================= PISO PRINCIPAL: LOGO + BUSCADOR + NAVEGACIÓN + ATENCIÓN AL CLIENTE ================= -->
+  <!-- ================= PISO PRINCIPAL: LOGO + MENÚ DE NAVEGACIÓN + BUSCADOR ================= -->
   <div id="header-main-nav" class="relative z-20">
     <div class="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3 sm:gap-4 lg:gap-6">
       
@@ -48,12 +48,7 @@ const storeCategories = [
         </a>
       </div>
 
-      <!-- 2. Buscador Integrado (Central en Desktop y Móvil) -->
-      <div class="flex-1 max-w-xs sm:max-w-md lg:max-w-xl min-w-0">
-        <SearchBar />
-      </div>
-
-      <!-- 3. Enlaces de Navegación en Desktop (hidden md:flex) -->
+      <!-- 2. Menú de Navegación en Desktop (Logo + Menú + Buscador) -->
       <nav class="hidden md:flex items-center gap-1.5 lg:gap-2 p-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] shadow-[0_4px_24px_rgba(0,0,0,0.35)] backdrop-blur-md shrink-0">
         <a 
           href="/" 
@@ -74,6 +69,11 @@ const storeCategories = [
           Contáctanos
         </a>
       </nav>
+
+      <!-- 3. Buscador Integrado (A la derecha en desktop; central en móvil) -->
+      <div class="flex-1 md:max-w-xs lg:max-w-sm min-w-0">
+        <SearchBar />
+      </div>
 
       <!-- 4. En Móvil: Botón Hamburguesa -->
       <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center w-11 h-11 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-amber-400/40 transition-all cursor-pointer shrink-0" aria-label="Abrir menú de navegación">
