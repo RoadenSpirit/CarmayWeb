@@ -1,42 +1,43 @@
 ---
 const values = [
   {
-    icon: `<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`,
+    icon: `<svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`,
     title: "Envíos Rápidos",
-    description: "Coordinación inmediata de entregas y recogida en tienda."
+    description: "Entrega el mismo día y recogida en tienda."
   },
   {
-    icon: `<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>`,
-    title: "Pago Local Flexible",
-    description: "Efectivo en tienda, transferencia CUP o USD."
+    icon: `<svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>`,
+    title: "Pago Flexible",
+    description: "Efectivo en tienda, pagos en CUP y USD."
   },
   {
-    icon: `<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>`,
-    title: "Garantía de Calidad",
-    description: "Productos rigurosamente seleccionados para ti."
+    icon: `<svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>`,
+    title: "Calidad Probada",
+    description: "100% de equipos verificados en tienda."
   },
   {
-    icon: `<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>`,
-    title: "Atención por WhatsApp",
-    description: "Asesoría directa para dudas y coordinaciones."
+    icon: `<svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>`,
+    title: "Atención Directa",
+    description: "Asesoría inmediata por WhatsApp."
   }
 ];
 ---
 
-<section class="py-14 sm:py-20 relative overflow-hidden bg-gradient-to-b from-[#090b11] via-[#10101c] to-[#090b11]">
+<section class="py-8 sm:py-16 relative overflow-hidden bg-gradient-to-b from-[#090b11] via-[#10101c] to-[#090b11]">
   <!-- Halo difuminado abstracto ambiental (se funde suavemente sin líneas físicas) -->
   <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] bg-purple-700/10 rounded-full blur-[140px]"></div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
+    <!-- Cuadrícula 2x2 en móvil (sin scroll excesivo) y 4 columnas en desktop -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
       {values.map((item, idx) => (
-        <div class={`glass-card glass-card-hover p-6 rounded-2xl flex items-start gap-4 transition-all duration-300 reveal-slide-right reveal-delay-${idx + 1}`}>
+        <div class={`glass-card glass-card-hover p-3.5 sm:p-5 lg:p-6 rounded-2xl flex flex-col sm:flex-row items-start gap-2.5 sm:gap-4 transition-all duration-300 reveal-slide-right reveal-delay-${idx + 1}`}>
           <!-- Icono con micro-aparición pop diferenciada -->
-          <div class="w-12 h-12 rounded-xl bg-purple-900/40 border border-purple-700/50 flex items-center justify-center shrink-0 reveal-pop" set:html={item.icon}>
+          <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-purple-900/40 border border-purple-700/50 flex items-center justify-center shrink-0 reveal-pop" set:html={item.icon}>
           </div>
-          <div>
-            <h3 class="font-bold text-white text-base sm:text-lg mb-1.5">{item.title}</h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">{item.description}</p>
+          <div class="min-w-0">
+            <h3 class="font-bold text-white text-xs sm:text-base lg:text-lg mb-0.5 sm:mb-1 truncate">{item.title}</h3>
+            <p class="text-[11px] sm:text-xs lg:text-sm text-slate-300 leading-snug font-normal">{item.description}</p>
           </div>
         </div>
       ))}
