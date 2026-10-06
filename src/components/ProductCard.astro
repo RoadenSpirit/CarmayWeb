@@ -1,4 +1,6 @@
 ---
+import ProductPricing from './ProductPricing.astro';
+
 interface Props {
   title: string;
   price: string;
@@ -163,7 +165,7 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
 
     </div>
 
-    <!-- ================= 2. CUERPO DE LA CARD: TÍTULO PROMINENTE + PRECIOS CON IGUALDAD ESTRICTA ================= -->
+    <!-- ================= 2. CUERPO DE LA CARD: TÍTULO PROMINENTE + PRECIOS CANÓNICOS ================= -->
     <div class="p-2.5 sm:p-3 md:p-3.5">
       
       <!-- Título de Producto Truncado a 1 Línea con Elipsis (Legible y Generoso en PC) -->
@@ -171,29 +173,16 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
         {title}
       </h3>
 
-      <!-- Fila de Precios Duales: IGUALDAD ESTRICTA DE TAMAÑO ENTRE CUP Y USD (text-sm sm:text-base md:text-lg lg:text-xl) -->
-      <div class="mt-2 flex items-baseline justify-between gap-x-3.5 sm:gap-x-5 gap-y-1.5 flex-wrap">
-        
-        <!-- Bloque Precio CUP (Moneda local principal) -->
-        <div class="flex items-baseline gap-2 shrink-0">
-          <span class="text-sm sm:text-base md:text-lg lg:text-xl font-black text-amber-300 font-mono tracking-tight whitespace-nowrap">
-            {priceCUP > 0 ? formatCUP(priceCUP) : formatUSD(priceUSD)}
-          </span>
-          <!-- Precio Regular Tachado si aplica (Legible >= 12px) -->
-          {onSale && (regularPriceCUP || regularPriceUSD) && (
-            <span class="text-xs sm:text-sm text-slate-400/90 font-mono line-through whitespace-nowrap">
-              {priceCUP > 0 && regularPriceCUP ? formatCUP(regularPriceCUP) : formatUSD(regularPriceUSD!)}
-            </span>
-          )}
-        </div>
-
-        <!-- Bloque Precio USD: EXACTAMENTE EL MISMO TAMAÑO QUE CUP (text-sm sm:text-base md:text-lg lg:text-xl) -->
-        {priceCUP > 0 && priceUSD > 0 && (
-          <span class="text-sm sm:text-base md:text-lg lg:text-xl font-black text-emerald-400 font-mono tracking-tight shrink-0 ml-auto pl-1 whitespace-nowrap">
-            {formatUSD(priceUSD)}
-          </span>
-        )}
-      </div>
+      <!-- Estructura Canónica Modular de Precios:
+           1. Primero precio CUP, luego precio USD con idéntico tamaño
+           2. Debajo precios antiguos tachados si tiene rebaja -->
+      <ProductPricing 
+        priceCUP={priceCUP}
+        priceUSD={priceUSD}
+        regularPriceCUP={regularPriceCUP}
+        regularPriceUSD={regularPriceUSD}
+        onSale={onSale}
+      />
 
     </div>
   </a>
