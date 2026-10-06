@@ -97,25 +97,25 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
         loading="lazy"
       />
       
-      <!-- Insignias Superiores Flotantes sobre la Imagen -->
-      <div class="absolute top-2 left-2 z-20 flex flex-col gap-1 items-start pointer-events-none">
+      <!-- Insignias Superiores Flotantes sobre la Imagen (Legibilidad >= 12px) -->
+      <div class="absolute top-2.5 left-2.5 z-20 flex flex-col gap-1 items-start pointer-events-none">
         {onSale && discountPercent > 0 && (
-          <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider bg-rose-600 text-white shadow-md">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-600 text-white shadow-md">
             -{discountPercent}%
           </span>
         )}
         {isTrending && (
-          <span class="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-rose-600 text-white text-[10px] sm:text-[11px] font-black uppercase px-2 py-0.5 rounded-full shadow-md tracking-wider">
+          <span class="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-rose-600 text-white text-xs font-black uppercase px-2 py-0.5 rounded-full shadow-md tracking-wider">
             <span>Trending</span>
           </span>
         )}
         {isSingleLeft && (
-          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider bg-amber-500 text-slate-950 shadow-md">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-amber-500 text-slate-950 shadow-md">
             ¡Última!
           </span>
         )}
         {isSoldOut && (
-          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-purple-950/90 text-amber-300 border border-purple-500/40 shadow-md">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-950/90 text-amber-300 border border-purple-500/40 shadow-md">
             Agotado
           </span>
         )}
@@ -163,32 +163,33 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
 
     </div>
 
-    <!-- ================= 2. CUERPO DE LA CARD: TÍTULO 1 LÍNEA + PRECIOS COMPACTOS ================= -->
-    <div class="p-2 sm:p-2.5">
+    <!-- ================= 2. CUERPO DE LA CARD: TÍTULO PROMINENTE + PRECIOS CON IGUALDAD ESTRICTA ================= -->
+    <div class="p-2.5 sm:p-3 md:p-3.5">
       
-      <!-- Título de Producto Truncado a 1 Línea con Elipsis (Estilo Temu) -->
-      <h3 class="font-bold text-white group-hover:text-amber-300 transition-colors duration-200 truncate text-xs sm:text-sm leading-tight block w-full" title={title}>
+      <!-- Título de Producto Truncado a 1 Línea con Elipsis (Legible y Generoso en PC) -->
+      <h3 class="font-bold text-white group-hover:text-amber-300 transition-colors duration-200 truncate text-sm sm:text-base lg:text-[17px] leading-snug block w-full" title={title}>
         {title}
       </h3>
 
-      <!-- Fila de Precios Duales con Márgenes Dinámicos y Separación Holgada Garantizada -->
-      <div class="mt-1.5 flex items-baseline justify-between gap-x-3 sm:gap-x-4 gap-y-1 flex-wrap">
-        <div class="flex items-baseline gap-1.5 shrink-0">
-          <!-- Precio CUP Principal -->
-          <span class="text-xs sm:text-sm font-black text-amber-300 font-mono tracking-tight whitespace-nowrap">
+      <!-- Fila de Precios Duales: IGUALDAD ESTRICTA DE TAMAÑO ENTRE CUP Y USD (text-sm sm:text-base md:text-lg lg:text-xl) -->
+      <div class="mt-2 flex items-baseline justify-between gap-x-3.5 sm:gap-x-5 gap-y-1.5 flex-wrap">
+        
+        <!-- Bloque Precio CUP (Moneda local principal) -->
+        <div class="flex items-baseline gap-2 shrink-0">
+          <span class="text-sm sm:text-base md:text-lg lg:text-xl font-black text-amber-300 font-mono tracking-tight whitespace-nowrap">
             {priceCUP > 0 ? formatCUP(priceCUP) : formatUSD(priceUSD)}
           </span>
-          <!-- Precio Tachado si está en oferta -->
+          <!-- Precio Regular Tachado si aplica (Legible >= 12px) -->
           {onSale && (regularPriceCUP || regularPriceUSD) && (
-            <span class="text-[10px] sm:text-xs text-slate-500 font-mono line-through whitespace-nowrap">
+            <span class="text-xs sm:text-sm text-slate-400/90 font-mono line-through whitespace-nowrap">
               {priceCUP > 0 && regularPriceCUP ? formatCUP(regularPriceCUP) : formatUSD(regularPriceUSD!)}
             </span>
           )}
         </div>
 
-        <!-- Precio USD en Verde Esmeralda con Margen Dinámico Mínimo -->
+        <!-- Bloque Precio USD: EXACTAMENTE EL MISMO TAMAÑO QUE CUP (text-sm sm:text-base md:text-lg lg:text-xl) -->
         {priceCUP > 0 && priceUSD > 0 && (
-          <span class="text-[11px] sm:text-xs font-extrabold text-emerald-400 font-mono tracking-tight shrink-0 ml-auto pl-1 whitespace-nowrap">
+          <span class="text-sm sm:text-base md:text-lg lg:text-xl font-black text-emerald-400 font-mono tracking-tight shrink-0 ml-auto pl-1 whitespace-nowrap">
             {formatUSD(priceUSD)}
           </span>
         )}
