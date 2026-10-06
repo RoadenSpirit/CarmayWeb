@@ -20,6 +20,7 @@ interface Props {
   stockQuantity?: number | null;
   isInStock?: boolean;
   revealDelayClass?: string;
+  uniformHeight?: boolean;
 }
 
 const {
@@ -40,6 +41,7 @@ const {
   stockQuantity = null,
   isInStock = true,
   revealDelayClass = '',
+  uniformHeight = false,
 } = Astro.props;
 
 const onSale = regularPriceUSD !== undefined && regularPriceUSD > priceUSD;
@@ -66,6 +68,7 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
     transition-all duration-300
     cursor-pointer
     break-inside-avoid mb-2 sm:mb-2.5
+    ${uniformHeight ? 'h-full justify-between' : 'justify-start'}
     ${revealDelayClass ? `reveal-card ${revealDelayClass}` : ''}
     ${isSoldOut ? 'opacity-85 hover:opacity-100' : ''}`}
   data-product-slug={slug}
@@ -87,16 +90,16 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
   <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-amber-500/25 z-10"></div>
 
   <!-- ENLACE MAESTRO: Toda la card redirige a los detalles del producto -->
-  <a href={permalink} class="card-details-link block w-full" aria-label={`Ver detalles de ${title}`}>
+  <a href={permalink} class={`card-details-link ${uniformHeight ? 'h-full flex flex-col justify-between' : 'block w-full'}`} aria-label={`Ver detalles de ${title}`}>
     
-    <!-- ================= 1. FOTO PROTAGONISTA ADAPTATIVA (SIN ESPACIO FANTASMA) ================= -->
-    <div class="relative overflow-hidden w-full bg-[#0a0c15]">
+    <!-- ================= 1. FOTO PROTAGONISTA (Uniforme en Index, Adaptativa en Catálogo) ================= -->
+    <div class={`relative overflow-hidden w-full bg-[#0a0c15] ${uniformHeight ? 'aspect-square shrink-0' : ''}`}>
       <img 
         src={image} 
         alt={title} 
         width="600"
         height="600"
-        class="w-full h-auto max-h-[380px] object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out block"
+        class={`group-hover:scale-105 transition-transform duration-500 ease-out block ${uniformHeight ? 'w-full h-full object-cover object-center' : 'w-full h-auto max-h-[380px] object-cover object-center'}`}
         loading="lazy"
       />
       

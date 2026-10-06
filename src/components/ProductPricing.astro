@@ -1,8 +1,8 @@
 ---
-// ProductPricing.astro: Componente atómico y modular para la visualización de precios.
-// REGLA INMUTABLE:
-// 1. Fila Activa: Primero precio CUP, luego precio USD con ESTRICTA IGUALDAD de tamaño y peso.
-// 2. Fila Inferior: Si tiene rebaja, los precios antiguos tachados aparecen debajo de los precios activos.
+// ProductPricing.astro: Componente modular de precios con estructura en píldora uniforme
+// 1. Fila 1: Precio CUP arriba orientado a la izquierda (+ precio regular tachado si cabe)
+// 2. Fila 2: Precio USD abajo orientado a la izquierda con IDÉNTICO tamaño (+ precio regular tachado si cabe)
+// 3. Píldora que ocupa todo el ancho de la tarjeta para máxima uniformidad
 interface Props {
   priceCUP: number;
   priceUSD: number;
@@ -21,42 +21,40 @@ const {
 
 const formatCUP = (n: number) => `$${n.toLocaleString('en-US')} CUP`;
 const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.toFixed(2)} USD`;
-
-const hasRegularPrices = Boolean(
-  onSale && (
-    (regularPriceCUP && regularPriceCUP > priceCUP) ||
-    (regularPriceUSD && regularPriceUSD > priceUSD)
-  )
-);
 ---
 
-<div class="product-pricing-block mt-2 select-none">
-  <!-- ================= FILA 1: PRECIOS ACTIVOS (PRIMERO CUP, LUEGO USD) ================= -->
-  <!-- Estricta igualdad de jerarquía visual y tamaño: text-sm sm:text-base md:text-lg lg:text-xl font-black -->
-  <div class="flex items-baseline justify-between gap-x-3.5 sm:gap-x-5 gap-y-1 flex-wrap w-full">
-    
-    <!-- 1. Primero Precio CUP (Moneda local principal) -->
-    <span class="text-sm sm:text-base md:text-lg lg:text-xl font-black text-amber-300 font-mono tracking-tight whitespace-nowrap">
+<div class="product-pricing-block mt-2 w-full rounded-xl bg-white/[0.03] border border-white/[0.07] p-2 sm:p-2.5 flex flex-col justify-center gap-1 select-none overflow-hidden">
+  
+  <!-- ================= FILA 1: PRECIO CUP ARRIBA (Orientado a la izquierda) ================= -->
+  <div class="flex items-baseline justify-between min-w-0 w-full overflow-hidden">
+    <!-- Precio CUP Activo (Inmutable, nunca cortado) -->
+    <span class="text-sm sm:text-base font-black text-amber-300 font-mono tracking-tight whitespace-nowrap shrink-0">
       {priceCUP > 0 ? formatCUP(priceCUP) : formatUSD(priceUSD)}
     </span>
 
-    <!-- 2. Luego Precio USD (Exactamente el mismo tamaño y jerarquía que CUP) -->
-    {priceCUP > 0 && priceUSD > 0 && (
-      <span class="text-sm sm:text-base md:text-lg lg:text-xl font-black text-emerald-400 font-mono tracking-tight whitespace-nowrap ml-auto">
-        {formatUSD(priceUSD)}
+    <!-- Precio regular tachado si hay rebaja (Colapsa elegantemente si el espacio es reducido) -->
+    {onSale && regularPriceCUP && regularPriceCUP > priceCUP && (
+      <span class="text-[11px] sm:text-xs font-mono text-slate-400/80 line-through truncate ml-2 shrink min-w-0 text-right" title={`Antes: ${formatCUP(regularPriceCUP)}`}>
+        {formatCUP(regularPriceCUP)}
       </span>
     )}
   </div>
 
-  <!-- ================= FILA 2: PRECIOS ANTIGUOS TACHADOS (DEBAJO, SOLO SI TIENE REBAJA) ================= -->
-  {hasRegularPrices && (
-    <div class="mt-1 flex items-baseline gap-2 text-xs sm:text-sm font-mono text-slate-400/90 line-through">
-      {regularPriceCUP && regularPriceCUP > priceCUP && (
-        <span>{formatCUP(regularPriceCUP)}</span>
-      )}
-      {regularPriceUSD && regularPriceUSD > priceUSD && (
-        <span>{formatUSD(regularPriceUSD)}</span>
+  <!-- ================= FILA 2: PRECIO USD ABAJO (Orientado a la izquierda con IDÉNTICO tamaño) ================= -->
+  {priceCUP > 0 && priceUSD > 0 && (
+    <div class="flex items-baseline justify-between min-w-0 w-full pt-1 border-t border-white/[0.04] overflow-hidden">
+      <!-- Precio USD Activo (Exactamente el mismo tamaño font-black y jerarquía que CUP) -->
+      <span class="text-sm sm:text-base font-black text-emerald-400 font-mono tracking-tight whitespace-nowrap shrink-0">
+        {formatUSD(priceUSD)}
+      </span>
+
+      <!-- Precio regular USD tachado si hay rebaja (Colapsa elegantemente si el espacio es reducido) -->
+      {onSale && regularPriceUSD && regularPriceUSD > priceUSD && (
+        <span class="text-[11px] sm:text-xs font-mono text-slate-400/80 line-through truncate ml-2 shrink min-w-0 text-right" title={`Antes: ${formatUSD(regularPriceUSD)}`}>
+          {formatUSD(regularPriceUSD)}
+        </span>
       )}
     </div>
   )}
+
 </div>
