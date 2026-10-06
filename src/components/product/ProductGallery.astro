@@ -1,0 +1,66 @@
+---
+// ProductGallery.astro: Galería de imágenes principal con badges y miniaturas interactivas
+interface Props {
+  name: string;
+  primaryImage: string;
+  images: string[];
+  hasMultipleImages: boolean;
+  isOnSale?: boolean;
+  discountPercent?: number;
+}
+
+const {
+  name,
+  primaryImage,
+  images,
+  hasMultipleImages,
+  isOnSale = false,
+  discountPercent = 0,
+} = Astro.props;
+---
+
+<div class="flex flex-col gap-4 reveal-scale">
+  <!-- Imagen Principal -->
+  <div class="relative rounded-3xl overflow-hidden border border-white/[0.08] bg-[#0f1120]/80 backdrop-blur-sm shadow-[0_8px_32px_rgba(255,255,255,0.06),0_2px_60px_rgba(0,0,0,0.6)] group">
+    <!-- Badges sobre imagen -->
+    <div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
+      {isOnSale && discountPercent > 0 && (
+        <span class="inline-flex items-center gap-1 bg-red-600/90 text-white text-xs font-black uppercase px-3 py-1.5 rounded-full shadow-[0_4px_15px_rgba(220,38,38,0.3)]">
+          -{discountPercent}% OFF
+        </span>
+      )}
+    </div>
+
+    <!-- Imagen grande con micro-zoom en hover -->
+    <img
+      id="main-image"
+      src={primaryImage}
+      alt={name}
+      width="800"
+      height="800"
+      class="w-full aspect-square object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+    />
+  </div>
+
+  <!-- Miniaturas (solo si hay más de 1 imagen) -->
+  {hasMultipleImages && (
+    <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide reveal-on-scroll reveal-delay-1">
+      {images.map((img, i) => (
+        <button
+          data-thumb={img}
+          class={`thumb-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 active:scale-95 ${i === 0 ? 'border-amber-400 shadow-[0_0_15px_rgba(234,179,8,0.3)]' : 'border-white/10 hover:border-amber-400/50'}`}
+          aria-label={`Ver imagen ${i + 1} de ${name}`}
+        >
+          <img
+            src={img}
+            alt={`${name} ${i + 1}`}
+            width="80"
+            height="80"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </button>
+      ))}
+    </div>
+  )}
+</div>

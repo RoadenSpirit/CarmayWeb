@@ -1,0 +1,114 @@
+---
+// ContactStoreInfo.astro: Sección modular de tienda física, dirección oficial en Avellaneda y horarios
+---
+
+<section id="tienda-fisica" class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
+  <div class="rounded-3xl p-6 sm:p-10 bg-gradient-to-br from-[#121524] to-[#0c0e18] border border-white/[0.1] shadow-2xl reveal-on-scroll">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      
+      <!-- Columna Izquierda: Información de Local y Horarios (5 cols) -->
+      <div class="lg:col-span-5 flex flex-col justify-between gap-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 w-fit">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M12 9h.01M15 9h.01M9 13h.01M12 13h.01M15 13h.01M10 21v-4h4v4" />
+          </svg>
+          <span>Local Comercial</span>
+        </div>
+
+        <div>
+          <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight mb-2" style="font-family: 'Outfit', sans-serif;">
+            Visita Nuestra Tienda
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Prueba personalmente cada prenda, calzado o comprueba el funcionamiento y calidad de los equipos de tecnología.
+          </p>
+        </div>
+
+        <!-- Bloque Dirección Oficial con acceso a Google Maps -->
+        <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-1.5">
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-400 inline-flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            Ubicación en Camagüey
+          </span>
+          <p class="text-sm sm:text-base font-semibold text-white leading-snug">
+            <a 
+              href="https://maps.google.com/?q=Avellaneda+260,+Camaguey,+Cuba" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="hover:text-amber-400 transition-colors underline-offset-4 hover:underline"
+              title="Abrir ubicación en Google Maps"
+            >
+              Calle Avellaneda No. 260 entre San Esteban y San Martín, Camagüey, Cuba.
+            </a>
+          </p>
+          <span class="text-xs text-slate-400 block pt-0.5">Frente a la parada principal comercial</span>
+        </div>
+
+        <!-- Bloque Horario Comercial Oficial -->
+        <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-400 inline-flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2" />
+            </svg>
+            Horario Oficial
+          </span>
+          <div class="text-xs sm:text-sm text-slate-200 space-y-1">
+            <p class="flex justify-between border-b border-white/5 pb-1">
+              <span>Lunes a Viernes:</span>
+              <strong class="text-white">8:30 AM – 4:30 PM</strong>
+            </p>
+            <p class="flex justify-between border-b border-white/5 pb-1">
+              <span>Sábados:</span>
+              <strong class="text-white">8:30 AM – 2:00 PM</strong>
+            </p>
+            <p class="flex justify-between text-slate-400 pt-0.5">
+              <span>Domingos:</span>
+              <span class="italic text-purple-300">Cerrado (Atención Online)</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Botón Abrir en Google Maps -->
+        <a 
+          href="https://maps.google.com/?q=Avellaneda+260,+Camaguey,+Cuba" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="w-full min-h-[48px] py-3.5 px-6 rounded-2xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 hover:border-amber-400/50 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm hover:shadow-md"
+        >
+          <span>Ver Local en Google Maps</span>
+          <span class="text-amber-400">&nearr;</span>
+        </a>
+      </div>
+
+      <!-- Columna Derecha: Fotografía de Fachada y Recogida en Local (7 cols) -->
+      <div class="lg:col-span-7">
+        <div class="relative rounded-3xl overflow-hidden border border-white/15 shadow-2xl aspect-[16/10] group">
+          <img 
+            src="/tienda-fisica.png" 
+            alt="Fachada Tienda Carmay Outfit en Avellaneda 260, Camagüey" 
+            width="800" 
+            height="500" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+          
+          <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 p-4 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-between">
+            <div>
+              <p class="text-xs text-amber-400 font-bold uppercase tracking-wider">Recogida Gratuita</p>
+              <h4 class="text-white font-black text-sm sm:text-base">Prueba tu prenda antes de pagar</h4>
+            </div>
+            <span class="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center shrink-0">
+              ✓
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

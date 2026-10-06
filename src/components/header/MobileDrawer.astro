@@ -1,0 +1,112 @@
+---
+// MobileDrawer.astro: Menú lateral móvil deslizante con navegación y categorías
+---
+
+<!-- Overlay del Drawer Móvil -->
+<div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300"></div>
+
+<!-- Contenedor del Drawer Móvil -->
+<div id="mobile-menu-drawer" class="fixed top-0 right-0 h-full w-72 bg-[#0e1019]/95 backdrop-blur-2xl border-l border-white/10 z-[70] transform translate-x-full transition-transform duration-300 ease-out">
+  <!-- Botón Cerrar -->
+  <div class="flex items-center justify-end p-5">
+    <button id="mobile-menu-close" class="flex items-center justify-center w-11 h-11 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer" aria-label="Cerrar menú">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Logo en drawer -->
+  <div class="px-6 pb-6 border-b border-white/10">
+    <a href="/" class="flex items-center gap-3.5">
+      <img src="/logo-clean.png" alt="Carmay Outfit" class="h-14 w-auto object-contain drop-shadow-[0_2px_10px_rgba(234,179,8,0.3)]" />
+      <span class="text-xl font-black text-white tracking-tight">CARMAY OUTFIT</span>
+    </a>
+  </div>
+
+  <!-- Enlaces de navegación -->
+  <nav class="flex flex-col p-6 gap-2 overflow-y-auto max-h-[calc(100vh-180px)] scrollbar-hide">
+    <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+      Inicio
+    </a>
+    <a href="/tienda/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
+        <circle cx="9" cy="20" r="1.5" />
+        <circle cx="17" cy="20" r="1.5" />
+      </svg>
+      Catálogo
+    </a>
+
+    <!-- SECCIÓN CATEGORÍAS DENTRO DEL MENÚ MÓVIL -->
+    <div class="my-2 pt-3 pb-1 border-t border-b border-white/10">
+      <span class="text-xs font-black uppercase tracking-widest text-amber-400/90 px-4 mb-2 block">
+        Categorías
+      </span>
+      <div class="flex flex-col gap-1 pl-2">
+        <a href="/tienda/zapatos/" class="flex items-center gap-2.5 px-3 py-3 min-h-[44px] rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 14h13a3 3 0 003-3c0-1.5-2-2.5-4-3L9 6C7 6 5 7 4 9v5zm0 0v3a1 1 0 001 1h12a1 1 0 001-1v-2M4 14c1.5 0 3 .5 4 1.5" />
+          </svg>
+          <span>Calzado</span>
+        </a>
+        <a href="/tienda/ropa/" class="flex items-center gap-2.5 px-3 py-3 min-h-[44px] rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l5 3 5 2-2 4h-2v9H6v-9H4l-2-4 5-2 5-3z" />
+          </svg>
+          <span>Ropa</span>
+        </a>
+        <a href="/tienda/jackets/" class="flex items-center gap-2.5 px-3 py-3 min-h-[44px] rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 7a6 6 0 0112 0v2l2 2v10H4V11l2-2V7zM9 7V5a3 3 0 016 0v2" />
+          </svg>
+          <span>Bolsos y Mochilas</span>
+        </a>
+        <a href="/tienda/tecnologia/" class="flex items-center gap-2.5 px-3 py-3 min-h-[44px] rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+          <span>Tecnología</span>
+        </a>
+        <a href="/tienda/accesorios/" class="flex items-center gap-2.5 px-3 py-3 min-h-[44px] rounded-lg text-sm font-semibold text-slate-300 hover:text-amber-300 hover:bg-white/5 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="7" cy="13" r="3.5" />
+            <circle cx="17" cy="13" r="3.5" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 12.5h3M3.5 11l1.5-2h3M14 9h3l1.5 2M10.5 13H7" />
+          </svg>
+          <span>Accesorios</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Botón del Carrito en el Menú Móvil -->
+    <button id="mobile-drawer-cart-btn" class="flex items-center gap-3 px-4 py-3 rounded-xl text-amber-400 font-bold hover:bg-white/5 transition-colors w-full text-left cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l2.4 12.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 7H6" />
+        <circle cx="9" cy="20" r="1.5" />
+        <circle cx="17" cy="20" r="1.5" />
+      </svg>
+      <span>Ver Mi Carrito</span>
+      <span id="mobile-cart-badge" class="ml-auto bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full font-extrabold">0</span>
+    </button>
+
+    <a href="/contact" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold hover:bg-white/5 hover:text-yellow-400 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      Contáctanos
+    </a>
+  </nav>
+
+  <!-- Info tienda en drawer -->
+  <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10 bg-[#090b12]">
+    <p class="text-xs text-slate-400 mb-1">Visítanos en:</p>
+    <a href="https://maps.google.com/?q=Avellaneda+260,+Camaguey,+Cuba" target="_blank" rel="noopener noreferrer" class="text-xs text-amber-400 hover:text-yellow-300 font-medium transition-colors block mb-2 underline-offset-4 hover:underline">
+      Avellaneda No. 260, Camagüey
+    </a>
+    <p class="text-xs text-slate-400">WhatsApp: <a href="https://wa.me/REDACTED_PHONE_1" class="text-white hover:text-yellow-400">+REDACTED_PHONE_1</a></p>
+  </div>
+</div>

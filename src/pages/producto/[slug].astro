@@ -2,6 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import ProductGallery from '../../components/product/ProductGallery.astro';
+import ProductStockStatus from '../../components/product/ProductStockStatus.astro';
+import ProductTrustBadges from '../../components/product/ProductTrustBadges.astro';
 import { woo } from '../../api';
 import type { ProductData } from '../../api/models/Product.js';
 
@@ -61,51 +64,15 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
   <section class="pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
-      <!-- ============= COLUMNA IZQUIERDA: GALERÍA DE IMÁGENES ============= -->
-      <div class="flex flex-col gap-4 reveal-scale">
-        <!-- Imagen Principal -->
-        <div class="relative rounded-3xl overflow-hidden border border-white/[0.08] bg-[#0f1120]/80 backdrop-blur-sm shadow-[0_8px_32px_rgba(255,255,255,0.06),0_2px_60px_rgba(0,0,0,0.6)] group">
-          <!-- Badges sobre imagen -->
-          <div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
-            {product.isOnSale && (
-              <span class="inline-flex items-center gap-1 bg-red-600/90 text-white text-xs font-black uppercase px-3 py-1.5 rounded-full shadow-[0_4px_15px_rgba(220,38,38,0.3)]">
-                -{product.discountPercent}% OFF
-              </span>
-            )}
-          </div>
-
-          <!-- Imagen grande con micro-zoom en hover -->
-          <img
-            id="main-image"
-            src={product.primaryImage}
-            alt={product.name}
-            width="800"
-            height="800"
-            class="w-full aspect-square object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-          />
-        </div>
-
-        <!-- Miniaturas (solo si hay más de 1 imagen) -->
-        {product.hasMultipleImages && (
-          <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide reveal-on-scroll reveal-delay-1">
-            {product.images.map((img, i) => (
-              <button
-                data-thumb={img}
-                class={`thumb-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 active:scale-95 ${i === 0 ? 'border-amber-400 shadow-[0_0_15px_rgba(234,179,8,0.3)]' : 'border-white/10 hover:border-amber-400/50'}`}
-              >
-                <img
-                  src={img}
-                  alt={`${product.name} ${i + 1}`}
-                  width="80"
-                  height="80"
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+      <!-- ============= COLUMNA IZQUIERDA: GALERÍA DE IMÁGENES (Módulo Atómico) ============= -->
+      <ProductGallery 
+        name={product.name}
+        primaryImage={product.primaryImage}
+        images={product.images}
+        hasMultipleImages={product.hasMultipleImages}
+        isOnSale={product.isOnSale}
+        discountPercent={product.discountPercent}
+      />
 
       <!-- ============= COLUMNA DERECHA: INFORMACIÓN DEL PRODUCTO ============= -->
       <div class="flex flex-col gap-6 reveal-on-scroll reveal-delay-1">
@@ -182,22 +149,12 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
           )}
         </div>
 
-        <!-- Stock Status -->
-        <div class="flex items-center gap-2">
-          {product.isInStock ? (
-            <>
-              <span class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]"></span>
-              <span class="text-green-400 font-semibold text-sm">
-                {product.isLowStock ? `¡Últimas ${product.stockQuantity} unidades!` : 'En Stock'}
-              </span>
-            </>
-          ) : (
-            <>
-              <span class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.4)]"></span>
-              <span class="text-red-400 font-semibold text-sm">Agotado</span>
-            </>
-          )}
-        </div>
+        <!-- Stock Status (Módulo Atómico) -->
+        <ProductStockStatus 
+          isInStock={product.isInStock}
+          isLowStock={product.isLowStock}
+          stockQuantity={product.stockQuantity}
+        />
 
         <!-- Selector de Color (solo si hay opciones) -->
         {product.colorOptions.length > 0 && (
@@ -303,34 +260,8 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
           </span>
         </button>
 
-        <!-- Sellos de Confianza -->
-        <div class="grid grid-cols-3 gap-3 pt-4 border-t border-white/[0.06]">
-          <div class="flex flex-col items-center text-center gap-2">
-            <span class="text-amber-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0zM13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.6a1 1 0 01.9.6l1.4 2a1 1 0 01.1.7V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
-              </svg>
-            </span>
-            <span class="text-xs text-slate-400 leading-tight">Envíos a<br/>Camagüey</span>
-          </div>
-          <div class="flex flex-col items-center text-center gap-2">
-            <span class="text-amber-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l1.5-5h15L21 9M4 9v11h16V9M4 9h16M9 20v-6h6v6" />
-              </svg>
-            </span>
-            <span class="text-xs text-slate-400 leading-tight">Recogida en<br/>Avellaneda 260</span>
-          </div>
-          <div class="flex flex-col items-center text-center gap-2">
-            <span class="text-amber-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="5" width="20" height="14" rx="3" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2 10h20M6 15h4" />
-              </svg>
-            </span>
-            <span class="text-xs text-slate-400 leading-tight">Pagos en<br/>CUP y USD</span>
-          </div>
-        </div>
+        <!-- Sellos de Confianza (Módulo Atómico) -->
+        <ProductTrustBadges />
       </div>
     </div>
   </section>
