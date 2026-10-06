@@ -39,12 +39,18 @@ const storeCategories = [
   <div id="header-main-nav" class="relative z-20">
     <div class="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
       
-      <!-- 1. Logo orientado a la esquina izquierda (+20% de tamaño sin desbordar el alto) -->
+      <!-- 1. Logo orientado a la esquina izquierda (ampliado, nítido y de gran presencia sin bordes vacíos) -->
       <div class="flex items-center shrink-0">
-        <a href="/" class="flex items-center group py-0.5">
-          <div class="w-[66px] h-[66px] sm:w-[74px] sm:h-[74px] md:w-[76px] md:h-[76px] flex items-center justify-center group-hover:scale-105 transition-transform">
-            <img src="/logo.png" alt="Carmay Outfit" class="w-full h-full object-contain filter drop-shadow-[0_2px_12px_rgba(234,179,8,0.35)]" />
-          </div>
+        <a href="/" class="flex items-center group py-1" aria-label="Carmay Outfit - Ir al Inicio">
+          <img 
+            src="/logo-clean.png" 
+            alt="Carmay Outfit" 
+            width="305" 
+            height="238" 
+            class="h-12 sm:h-14 md:h-[66px] w-auto object-contain group-hover:scale-105 transition-transform duration-200" 
+            loading="eager"
+            fetchpriority="high"
+          />
         </a>
       </div>
 
@@ -133,7 +139,7 @@ const storeCategories = [
   <!-- Logo en drawer -->
   <div class="px-6 pb-6 border-b border-white/10">
     <a href="/" class="flex items-center gap-3.5">
-      <img src="/logo.png" alt="Carmay Outfit" class="w-16 h-16 object-contain drop-shadow-[0_2px_10px_rgba(234,179,8,0.3)]" />
+      <img src="/logo-clean.png" alt="Carmay Outfit" class="h-14 w-auto object-contain drop-shadow-[0_2px_10px_rgba(234,179,8,0.3)]" />
       <span class="text-xl font-black text-white tracking-tight">CARMAY OUTFIT</span>
     </a>
   </div>

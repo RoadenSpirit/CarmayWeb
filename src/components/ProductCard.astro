@@ -171,24 +171,24 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
         {title}
       </h3>
 
-      <!-- Fila de Precios Duales Inmediata y Compacta (Sin cajas pesadas) -->
-      <div class="mt-1 flex items-baseline justify-between gap-1 flex-wrap">
-        <div class="flex items-baseline gap-1">
+      <!-- Fila de Precios Duales con Márgenes Dinámicos y Separación Holgada Garantizada -->
+      <div class="mt-1.5 flex items-baseline justify-between gap-x-3 sm:gap-x-4 gap-y-1 flex-wrap">
+        <div class="flex items-baseline gap-1.5 shrink-0">
           <!-- Precio CUP Principal -->
-          <span class="text-xs sm:text-sm font-black text-amber-300 font-mono tracking-tight">
+          <span class="text-xs sm:text-sm font-black text-amber-300 font-mono tracking-tight whitespace-nowrap">
             {priceCUP > 0 ? formatCUP(priceCUP) : formatUSD(priceUSD)}
           </span>
           <!-- Precio Tachado si está en oferta -->
           {onSale && (regularPriceCUP || regularPriceUSD) && (
-            <span class="text-[10px] sm:text-xs text-slate-500 font-mono line-through">
+            <span class="text-[10px] sm:text-xs text-slate-500 font-mono line-through whitespace-nowrap">
               {priceCUP > 0 && regularPriceCUP ? formatCUP(regularPriceCUP) : formatUSD(regularPriceUSD!)}
             </span>
           )}
         </div>
 
-        <!-- Precio USD en Verde Esmeralda -->
+        <!-- Precio USD en Verde Esmeralda con Margen Dinámico Mínimo -->
         {priceCUP > 0 && priceUSD > 0 && (
-          <span class="text-[10px] sm:text-xs font-extrabold text-emerald-400 font-mono tracking-tight">
+          <span class="text-[11px] sm:text-xs font-extrabold text-emerald-400 font-mono tracking-tight shrink-0 ml-auto pl-1 whitespace-nowrap">
             {formatUSD(priceUSD)}
           </span>
         )}
