@@ -156,15 +156,24 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
           stockQuantity={product.stockQuantity}
         />
 
-        <!-- Selector de Color (solo si hay opciones) -->
+        <!-- Selector de Color (Opcional, solo si hay opciones) -->
         {product.colorOptions.length > 0 && (
           <div>
-            <label class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 block">Color</label>
-            <div class="flex flex-wrap gap-3">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-bold text-slate-300 uppercase tracking-wider">
+                Color <span class="text-xs font-normal text-slate-400 normal-case">(opcional)</span>
+              </label>
+              <span id="selected-color-label" class="text-xs font-mono font-bold text-amber-400"></span>
+            </div>
+            <div class="flex flex-wrap gap-2.5">
               {product.colorOptions.map((color, i) => (
                 <button
+                  type="button"
                   data-color={color}
-                  class={`color-btn px-4 py-2 rounded-xl border-2 font-semibold text-sm transition-all duration-200 ${i === 0 ? 'border-amber-400 bg-amber-400/10 text-amber-400 shadow-[0_0_15px_rgba(234,179,8,0.2)]' : 'border-white/10 bg-white/5 text-slate-300 hover:border-amber-400/50 hover:text-amber-400'}`}
+                  data-selected="false"
+                  data-color-index={i}
+                  class="color-btn px-4 py-2 rounded-xl border-2 border-white/10 bg-white/5 text-slate-300 hover:border-amber-400/50 hover:text-amber-400 font-semibold text-sm transition-all duration-200 cursor-pointer select-none"
+                  aria-label={`Seleccionar color ${color}`}
                 >
                   {color}
                 </button>
@@ -173,15 +182,23 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
           </div>
         )}
 
-        <!-- Selector de Talla (solo si hay opciones) -->
+        <!-- Selector de Talla (Opcional, solo si hay opciones) -->
         {product.sizeOptions.length > 0 && (
           <div>
-            <label class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3 block">Talla</label>
-            <div class="flex flex-wrap gap-3">
-              {product.sizeOptions.map((size, i) => (
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm font-bold text-slate-300 uppercase tracking-wider">
+                Talla <span class="text-xs font-normal text-slate-400 normal-case">(opcional)</span>
+              </label>
+              <span id="selected-size-label" class="text-xs font-mono font-bold text-amber-400"></span>
+            </div>
+            <div class="flex flex-wrap gap-2.5">
+              {product.sizeOptions.map((size) => (
                 <button
+                  type="button"
                   data-size={size}
-                  class={`size-btn px-4 py-2 rounded-xl border-2 font-semibold text-sm transition-all duration-200 ${i === 0 ? 'border-amber-400 bg-amber-400/10 text-amber-400 shadow-[0_0_15px_rgba(234,179,8,0.2)]' : 'border-white/10 bg-white/5 text-slate-300 hover:border-amber-400/50 hover:text-amber-400'}`}
+                  data-selected="false"
+                  class="size-btn px-4 py-2 rounded-xl border-2 border-white/10 bg-white/5 text-slate-300 hover:border-amber-400/50 hover:text-amber-400 font-semibold text-sm transition-all duration-200 cursor-pointer select-none"
+                  aria-label={`Seleccionar talla ${size}`}
                 >
                   {size}
                 </button>
@@ -335,47 +352,83 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
         });
       });
 
-      // Selectores de color con sincronización reactiva a la imagen
+      // Selectores de color con toggle interactivo y sincronización a imagen
       const colorBtns = document.querySelectorAll('.color-btn');
+      const selectedColorLabel = document.getElementById('selected-color-label');
       colorBtns.forEach((btn, index) => {
         btn.addEventListener('click', () => {
+          const isAlreadySelected = btn.getAttribute('data-selected') === 'true';
+
+          // Deseleccionar todos los botones de color
           colorBtns.forEach(b => {
+            b.setAttribute('data-selected', 'false');
             b.classList.remove('border-amber-400', 'bg-amber-400/10', 'text-amber-400', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
             b.classList.add('border-white/10', 'bg-white/5', 'text-slate-300');
           });
-          btn.classList.remove('border-white/10', 'bg-white/5', 'text-slate-300');
-          btn.classList.add('border-amber-400', 'bg-amber-400/10', 'text-amber-400', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
 
-          // Si el producto dispone de varias imágenes para representar colores, cambiar a la imagen correspondiente
-          if (thumbBtns && thumbBtns.length > index) {
-            thumbBtns[index].click();
+          if (!isAlreadySelected) {
+            // Seleccionar este color
+            btn.setAttribute('data-selected', 'true');
+            btn.classList.remove('border-white/10', 'bg-white/5', 'text-slate-300');
+            btn.classList.add('border-amber-400', 'bg-amber-400/10', 'text-amber-400', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
+            if (selectedColorLabel) {
+              selectedColorLabel.textContent = btn.getAttribute('data-color') || '';
+            }
+
+            // Si el producto dispone de varias imágenes para representar variantes, cambiar a la imagen correspondiente
+            if (thumbBtns && thumbBtns.length > index) {
+              thumbBtns[index].click();
+            }
+          } else {
+            // Si ya estaba seleccionado, queda deseleccionado (vuelve a default)
+            if (selectedColorLabel) {
+              selectedColorLabel.textContent = '';
+            }
           }
         });
       });
 
-      // Selectores de talla
+      // Selectores de talla con toggle interactivo
       const sizeBtns = document.querySelectorAll('.size-btn');
+      const selectedSizeLabel = document.getElementById('selected-size-label');
       sizeBtns.forEach((btn) => {
         btn.addEventListener('click', () => {
+          const isAlreadySelected = btn.getAttribute('data-selected') === 'true';
+
+          // Deseleccionar todos los botones de talla
           sizeBtns.forEach(b => {
+            b.setAttribute('data-selected', 'false');
             b.classList.remove('border-amber-400', 'bg-amber-400/10', 'text-amber-400', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
             b.classList.add('border-white/10', 'bg-white/5', 'text-slate-300');
           });
-          btn.classList.remove('border-white/10', 'bg-white/5', 'text-slate-300');
-          btn.classList.add('border-amber-400', 'bg-amber-400/10', 'text-amber-400', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
+
+          if (!isAlreadySelected) {
+            // Seleccionar esta talla
+            btn.setAttribute('data-selected', 'true');
+            btn.classList.remove('border-white/10', 'bg-white/5', 'text-slate-300');
+            btn.classList.add('border-amber-400', 'bg-amber-400/10', 'text-amber-400', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
+            if (selectedSizeLabel) {
+              selectedSizeLabel.textContent = `Talla ${btn.getAttribute('data-size') || ''}`;
+            }
+          } else {
+            // Si ya estaba seleccionado, queda deseleccionado (vuelve a default)
+            if (selectedSizeLabel) {
+              selectedSizeLabel.textContent = '';
+            }
+          }
         });
       });
 
       // Cantidad interactiva con validación estricta de stock
-      const qtyInput = document.getElementById('qty-input') as HTMLInputElement | null;
+      const qtyInput = document.getElementById('qty-input');
       const qtyMinus = document.getElementById('qty-minus');
       const qtyPlus = document.getElementById('qty-plus');
       const stockWarning = document.getElementById('qty-stock-warning');
-      const maxStockAttr = parseInt(qtyInput?.getAttribute('data-max-stock') || '10', 10);
+      const maxStockAttr = parseInt(qtyInput ? (qtyInput.getAttribute('data-max-stock') || '10') : '10', 10);
       const maxQty = !isNaN(maxStockAttr) && maxStockAttr > 0 ? maxStockAttr : 10;
       let qty = 1;
 
-      function updateQty(newQty: number) {
+      function updateQty(newQty) {
         if (newQty > maxQty) {
           qty = maxQty;
           if (stockWarning) stockWarning.classList.remove('hidden');
@@ -413,8 +466,11 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
         addToCart.addEventListener('click', () => {
           try {
             const rawProduct = JSON.parse(addToCart.getAttribute('data-product') || '{}');
-            const selectedColor = document.querySelector('.color-btn[class*="border-amber-400"]')?.getAttribute('data-color');
-            const selectedSize = document.querySelector('.size-btn[class*="border-amber-400"]')?.getAttribute('data-size');
+            const activeColorBtn = document.querySelector('.color-btn[data-selected="true"]');
+            const activeSizeBtn = document.querySelector('.size-btn[data-selected="true"]');
+            
+            const selectedColor = activeColorBtn ? activeColorBtn.getAttribute('data-color') : undefined;
+            const selectedSize = activeSizeBtn ? activeSizeBtn.getAttribute('data-size') : undefined;
 
             if (window.CarmayCart) {
               window.CarmayCart.create({

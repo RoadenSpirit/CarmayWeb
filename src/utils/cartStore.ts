@@ -36,8 +36,11 @@ export const CartCRUD = {
   /** CREATE / ADD: Agrega un nuevo ítem o incrementa la cantidad si ya existe. */
   create(item: Omit<CartItem, 'id'> & { id?: string }): CartItem[] {
     const items = CartCRUD.read();
-    const cleanColor = (item.color || 'default').toLowerCase().trim();
-    const cleanSize = (item.size || 'default').toLowerCase().trim();
+    const validColor = item.color && item.color.trim() !== '' ? item.color.trim() : undefined;
+    const validSize = item.size && item.size.trim() !== '' ? item.size.trim() : undefined;
+
+    const cleanColor = (validColor || 'default').toLowerCase();
+    const cleanSize = (validSize || 'default').toLowerCase();
     const itemId = item.id || `${item.slug}-${cleanColor}-${cleanSize}`;
 
     const existingIndex = items.findIndex((i) => i.id === itemId);
@@ -48,6 +51,8 @@ export const CartCRUD = {
       items.push({
         ...item,
         id: itemId,
+        color: validColor,
+        size: validSize,
         quantity: item.quantity || 1,
       });
     }
