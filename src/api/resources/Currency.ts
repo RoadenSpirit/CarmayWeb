@@ -22,7 +22,7 @@ export class Currency {
 
     // 1. Verificar si se inyectó explícitamente en el entorno de ejecución
     const envRate = Number.parseInt(process.env.WC_CUP_EXCHANGE_RATE ?? '', 10);
-    if (Number.isFinite(envRate) && envRate > 0 && envRate !== wooConfig.cupExchangeRate) {
+    if (Number.isFinite(envRate) && envRate > 0) {
       console.log(`[Currency] Tasa CUP provista por variable de entorno: ${envRate} CUP/USD`);
       this.cachedCupRate = envRate;
       return this.cachedCupRate;
