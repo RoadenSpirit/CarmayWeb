@@ -103,13 +103,14 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
         loading="lazy"
       />
       
-      <!-- Insignias Superiores Flotantes sobre la Imagen (Módulo Atómico) -->
+      <!-- Insignias Superiores Flotantes sobre la Imagen (Píldora Única Exclusiva) -->
       <ProductBadge 
         onSale={onSale}
         discountPercent={discountPercent}
         isTrending={isTrending}
-        isSingleLeft={isSingleLeft}
+        stockQuantity={qty}
         isSoldOut={isSoldOut}
+        slug={slug}
       />
 
       <!-- BOTÓN CIRCULAR FLOTANTE EN LA ESQUINA: Carrito con símbolo "+" o Encargo WhatsApp -->

@@ -1,41 +1,72 @@
 ---
-// ProductBadge.astro: Insignias flotantes sobre la imagen (Rebaja, Tendencia, Última unidad, Agotado)
+// ProductBadge.astro: Píldora única con exclusión mutua estricta y microcopia variada
 interface Props {
   onSale?: boolean;
   discountPercent?: number;
   isTrending?: boolean;
-  isSingleLeft?: boolean;
+  stockQuantity?: number | null;
   isSoldOut?: boolean;
+  slug?: string;
 }
 
 const {
   onSale = false,
   discountPercent = 0,
   isTrending = false,
-  isSingleLeft = false,
+  stockQuantity = null,
   isSoldOut = false,
+  slug = '',
 } = Astro.props;
+
+// Función de hash simple para variar textos de forma determinista y estable por producto
+const hash = slug.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+const singleLeftPhrases = [
+  "¡Última!",
+  "Solo queda 1",
+  "Única disponible",
+  "¡Solo 1!"
+];
+
+const lowStockPhrases = [
+  stockQuantity ? `¡Quedan ${stockQuantity}!` : "Pocas unidades",
+  "Pocas existencias",
+  "Casi agotado",
+  "Stock limitado"
+];
+
+const singleLeftText = singleLeftPhrases[hash % singleLeftPhrases.length];
+const lowStockText = lowStockPhrases[hash % lowStockPhrases.length];
+
+const isSingle = stockQuantity === 1;
+const isLow = stockQuantity === 2 || stockQuantity === 3;
 ---
 
-<div class="absolute top-2.5 left-2.5 z-20 flex flex-col gap-1 items-start pointer-events-none select-none">
-  {onSale && discountPercent > 0 && (
-    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-600 text-white shadow-md">
-      -{discountPercent}%
-    </span>
-  )}
-  {isTrending && (
-    <span class="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-rose-600 text-white text-xs font-black uppercase px-2 py-0.5 rounded-full shadow-md tracking-wider">
-      <span>Trending</span>
-    </span>
-  )}
-  {isSingleLeft && (
-    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-amber-500 text-slate-950 shadow-md">
-      ¡Última!
-    </span>
-  )}
-  {isSoldOut && (
+<div class="absolute top-2.5 left-2.5 z-20 flex flex-col items-start pointer-events-none select-none">
+  {isSoldOut ? (
+    <!-- 1. Prioridad Máxima: Agotado -->
     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-950/90 text-amber-300 border border-purple-500/40 shadow-md">
       Agotado
     </span>
-  )}
+  ) : isSingle ? (
+    <!-- 2. Es la última unidad (Microcopia variada y acotada) -->
+    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-amber-500 text-slate-950 shadow-md">
+      {singleLeftText}
+    </span>
+  ) : isLow ? (
+    <!-- 3. Pocas existencias (2 o 3 unidades) -->
+    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-950/80 text-amber-300 border border-amber-500/40 shadow-md">
+      {lowStockText}
+    </span>
+  ) : onSale && discountPercent > 0 ? (
+    <!-- 4. Tiene descuento activo -->
+    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-600 text-white shadow-md">
+      -{discountPercent}%
+    </span>
+  ) : isTrending ? (
+    <!-- 5. Es tendencia de catálogo -->
+    <span class="inline-flex items-center gap-1 bg-gradient-to-r from-amber-500 to-rose-600 text-white text-xs font-black uppercase px-2 py-0.5 rounded-full shadow-md tracking-wider">
+      <span>Trending</span>
+    </span>
+  ) : null}
 </div>
