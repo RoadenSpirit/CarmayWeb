@@ -335,9 +335,9 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
         });
       });
 
-      // Selectores de color
+      // Selectores de color con sincronización reactiva a la imagen
       const colorBtns = document.querySelectorAll('.color-btn');
-      colorBtns.forEach((btn) => {
+      colorBtns.forEach((btn, index) => {
         btn.addEventListener('click', () => {
           colorBtns.forEach(b => {
             b.classList.remove('border-amber-400', 'bg-amber-400/10', 'text-amber-400', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
@@ -345,6 +345,11 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
           });
           btn.classList.remove('border-white/10', 'bg-white/5', 'text-slate-300');
           btn.classList.add('border-amber-400', 'bg-amber-400/10', 'text-amber-400', 'shadow-[0_0_15px_rgba(234,179,8,0.2)]');
+
+          // Si el producto dispone de varias imágenes para representar colores, cambiar a la imagen correspondiente
+          if (thumbBtns && thumbBtns.length > index) {
+            thumbBtns[index].click();
+          }
         });
       });
 
