@@ -1,51 +1,36 @@
 ---
-// FAQ.astro: Preguntas frecuentes con estructura continua clásica (una debajo de otra)
+// FAQ.astro: Preguntas frecuentes con respuestas directas en una sola oración concisa y amena
 const faqs = [
   {
     question: "¿Qué garantía tienen los productos que compro?",
-    points: [
-      "<strong>Probamos el 100% de los productos:</strong> En nuestra tienda física verificamos personalmente cada artículo delante de ti antes de entregártelo.",
-      "<strong>Transparencia total:</strong> Comprobamos el encendido, accesorios y estado estético para garantizar que te lleves un producto nuevo y en óptimas condiciones.",
-      "<strong>Conformidad mutua:</strong> Al ser revisados minuciosamente en el momento de la entrega, no aplicamos devoluciones posteriores, asegurándote cero sorpresas."
-    ]
+    answer: "En la tienda la única garantía que ofrecemos es que los equipos son nuevos en su caja y se prueban junto a ti al momento de la compra, por lo que no se aceptan devoluciones posteriores."
   },
   {
     question: "¿Qué tipo de artículos incluye el catálogo?",
-    points: [
-      "<strong>Moda y Calzado:</strong> Prendas de tendencia, zapatillas, sandalias y accesorios seleccionados.",
-      "<strong>Tecnología:</strong> Estaciones de energía EcoFlow, Smartwatches, audífonos, televisores Smart TV, bicicletas eléctricas e inversores probados en tienda."
-    ]
+    answer: "Reunimos desde lo último en moda, calzado y accesorios de tendencia hasta tecnología de vanguardia como estaciones EcoFlow, Smart TVs y motos eléctricas probadas en tienda."
   },
   {
     question: "¿Dónde está la tienda física y cuáles son los horarios?",
-    points: [
-      "<strong>Ubicación:</strong> Calle <strong>Avellaneda No. 260</strong> (entre San Esteban y San Martín), Camagüey, Cuba.",
-      "<strong>Lunes a Viernes:</strong> Abierto de <strong>8:30 AM a 4:30 PM</strong>.",
-      "<strong>Sábados:</strong> Abierto de <strong>8:30 AM a 2:00 PM</strong>."
-    ]
+    answer: "Te esperamos en Calle Avellaneda No. 260 entre San Esteban y San Martín, de lunes a viernes de 8:30 AM a 4:30 PM y sábados de 8:30 AM a 2:00 PM."
   },
   {
     question: "¿Cómo compro online y cómo son las entregas?",
-    points: [
-      "<strong>Compra sencilla:</strong> Agrega tus productos al carrito y envíanos tu orden por WhatsApp para confirmación inmediata.",
-      "<strong>Envíos locales:</strong> Mensajería directa en el <strong>municipio de Camagüey</strong> con entrega el <strong>mismo día</strong>.",
-      "<strong>Recogida en tienda:</strong> Puedes pedir online y recoger físicamente en nuestro local en Avellaneda No. 260."
-    ]
+    answer: "Eliges tus productos en la web, confirmas tu pedido por WhatsApp y te lo entregamos el mismo día directo a la puerta de tu casa en Camagüey o lo recoges en nuestro local."
   }
 ];
 ---
 
-<section class="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-  <div class="text-center mb-14 reveal-on-scroll">
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-      Preguntas Frecuentes (FAQ)
+<section class="py-16 sm:py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="text-center mb-10 sm:mb-12 reveal-on-scroll">
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight" style="font-family: 'Outfit', sans-serif;">
+      Preguntas Frecuentes
     </h2>
-    <p class="text-amber-400 font-bold text-xs sm:text-sm uppercase tracking-widest block mt-2">Resolviendo tus dudas con total claridad</p>
+    <p class="text-amber-400 font-bold text-xs sm:text-sm uppercase tracking-widest block mt-2">Respuestas claras y al grano</p>
   </div>
 
-  <div class="space-y-4">
+  <div class="space-y-3.5">
     {faqs.map((faq, idx) => (
-      <details class={`glass-card rounded-2xl p-6 sm:p-7 border border-white/10 group transition-all duration-300 reveal-on-scroll reveal-delay-${idx + 1}`}>
+      <details class={`glass-card rounded-2xl p-5 sm:p-6 border border-white/10 group transition-all duration-300 reveal-on-scroll reveal-delay-${idx + 1}`}>
         <summary class="font-bold text-white text-base sm:text-lg cursor-pointer flex items-center justify-between select-none">
           <span class="flex items-center gap-3">
             <span class="text-amber-400 font-black font-mono">0{idx + 1}.</span>
@@ -53,14 +38,9 @@ const faqs = [
           </span>
           <span class="text-purple-400 group-open:rotate-180 transition-transform text-xl shrink-0 ml-2">↓</span>
         </summary>
-        <ul class="text-slate-200 text-sm sm:text-base mt-4 pl-7 space-y-2.5 leading-relaxed">
-          {faq.points.map((p) => (
-            <li class="flex items-start gap-2">
-              <span class="text-amber-400 font-bold text-base leading-none mt-1">•</span>
-              <span set:html={p} />
-            </li>
-          ))}
-        </ul>
+        <p class="text-slate-200 text-sm sm:text-base mt-3 pl-8 leading-relaxed font-normal">
+          {faq.answer}
+        </p>
       </details>
     ))}
   </div>

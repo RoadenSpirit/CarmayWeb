@@ -32,9 +32,9 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
       {priceCUP > 0 ? formatCUP(priceCUP) : formatUSD(priceUSD)}
     </span>
 
-    <!-- Precio regular tachado si hay rebaja (Colapsa elegantemente si el espacio es reducido) -->
+    <!-- Precio regular tachado si hay rebaja (Solo se muestra entero si hay espacio; en móvil estrecho desaparece para no cortarse) -->
     {onSale && regularPriceCUP && regularPriceCUP > priceCUP && (
-      <span class="text-[11px] sm:text-xs font-mono text-slate-400/80 line-through truncate ml-2 shrink min-w-0 text-right" title={`Antes: ${formatCUP(regularPriceCUP)}`}>
+      <span class="hidden sm:inline-block text-xs font-mono text-slate-400/80 line-through whitespace-nowrap ml-2 text-right" title={`Antes: ${formatCUP(regularPriceCUP)}`}>
         {formatCUP(regularPriceCUP)}
       </span>
     )}
@@ -48,9 +48,9 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
         {formatUSD(priceUSD)}
       </span>
 
-      <!-- Precio regular USD tachado si hay rebaja (Colapsa elegantemente si el espacio es reducido) -->
+      <!-- Precio regular USD tachado si hay rebaja (Solo se muestra entero si hay espacio; en móvil estrecho desaparece para no cortarse) -->
       {onSale && regularPriceUSD && regularPriceUSD > priceUSD && (
-        <span class="text-[11px] sm:text-xs font-mono text-slate-400/80 line-through truncate ml-2 shrink min-w-0 text-right" title={`Antes: ${formatUSD(regularPriceUSD)}`}>
+        <span class="hidden sm:inline-block text-xs font-mono text-slate-400/80 line-through whitespace-nowrap ml-2 text-right" title={`Antes: ${formatUSD(regularPriceUSD)}`}>
           {formatUSD(regularPriceUSD)}
         </span>
       )}
