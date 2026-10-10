@@ -1,5 +1,6 @@
 ---
 import { woo } from '../api';
+import QuickBuyModal from '../components/product/QuickBuyModal.astro';
 
 interface Props {
   title: string;
@@ -51,6 +52,9 @@ const catalogJson = JSON.stringify(searchableData);
     <!-- Grid overlay sutil -->
     <div class="fixed inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none opacity-40"></div>
     <slot />
+
+    <!-- Modal Global de Compra Rápida Directa -->
+    <QuickBuyModal />
 
     <!-- Índice global del catálogo para el buscador (SubNavbar) -->
     <script id="catalog-data" type="application/json" set:html={catalogJson}></script>

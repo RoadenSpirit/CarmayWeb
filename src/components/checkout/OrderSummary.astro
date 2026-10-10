@@ -39,41 +39,16 @@
     </div>
   </div>
 
-  <!-- Selector de Método de Pago -->
-  <div class="pt-2">
-    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">
-      Método de Pago
-    </label>
-    
-    <!-- Opciones para CUP -->
-    <div id="payment-options-cup" class="space-y-2">
-      <label class="flex items-center gap-3 p-3.5 min-h-[44px] rounded-xl bg-white/[0.03] border border-white/[0.08] cursor-pointer hover:border-amber-400/40 transition-all">
-        <input type="radio" name="payment-method" value="Efectivo en CUP" checked class="text-amber-500 focus:ring-amber-400 accent-amber-500 cursor-pointer" />
-        <div>
-          <span class="font-extrabold text-white text-xs block">Efectivo en CUP</span>
-          <span class="text-xs text-slate-400 block">Pago contra entrega en moneda nacional</span>
-        </div>
-      </label>
+  <!-- Nota de Coordinación de Pago (Sin métodos explícitos) -->
+  <div class="pt-2 p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center gap-3">
+    <div class="w-8 h-8 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 shrink-0">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
     </div>
-
-    <!-- Opciones para USD -->
-    <div id="payment-options-usd" class="space-y-2 hidden">
-      <label class="flex items-center gap-3 p-3.5 min-h-[44px] rounded-xl bg-white/[0.03] border border-white/[0.08] cursor-pointer hover:border-amber-400/40 transition-all">
-        <input type="radio" name="payment-method" value="Zelle" class="text-amber-500 focus:ring-amber-400 accent-amber-500 cursor-pointer" />
-        <div>
-          <span class="font-extrabold text-white text-xs block">Zelle (Solo USD)</span>
-          <span class="text-xs text-slate-400 block">Transferencia rápida Zelle en USD</span>
-        </div>
-      </label>
-
-      <label class="flex items-center gap-3 p-3.5 min-h-[44px] rounded-xl bg-white/[0.03] border border-white/[0.08] cursor-pointer hover:border-amber-400/40 transition-all">
-        <input type="radio" name="payment-method" value="Efectivo en USD" class="text-amber-500 focus:ring-amber-400 accent-amber-500 cursor-pointer" />
-        <div>
-          <span class="font-extrabold text-white text-xs block">Efectivo en USD</span>
-          <span class="text-xs text-slate-400 block">Pago directo en efectivo billete USD</span>
-        </div>
-      </label>
-    </div>
+    <p class="text-xs text-slate-300 leading-snug">
+      Las opciones de pago se coordinan directamente al confirmar tu pedido.
+    </p>
   </div>
 
   <!-- Desglose de Totales -->
@@ -112,6 +87,6 @@
   </button>
   
   <p class="text-[11px] text-slate-400 text-center leading-relaxed">
-    Al pulsar, se abrirá WhatsApp con el resumen de tu orden listo para enviar a nuestro equipo.
+    Al confirmar, nuestro sistema enviará el resumen de tu orden directo a tu WhatsApp.
   </p>
 </div>
