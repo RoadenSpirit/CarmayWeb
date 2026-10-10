@@ -27,8 +27,8 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
   
   <!-- ================= FILA 1: PRECIO CUP ARRIBA (Orientado a la izquierda) ================= -->
   <div class="flex items-baseline justify-between min-w-0 w-full overflow-hidden">
-    <!-- Precio CUP Activo (Inmutable, nunca cortado) -->
-    <span class="text-sm sm:text-base font-black text-amber-300 font-mono tracking-tight whitespace-nowrap shrink-0">
+    <!-- Precio CUP Activo (Inmutable, naranja rgb(249 115 22) para máxima distinción visual) -->
+    <span class="text-sm sm:text-base font-black text-[#f97316] font-mono tracking-tight whitespace-nowrap shrink-0">
       {priceCUP > 0 ? formatCUP(priceCUP) : formatUSD(priceUSD)}
     </span>
 
