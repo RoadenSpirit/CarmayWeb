@@ -153,90 +153,99 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
         slug={slug}
       />
 
-      <!-- BOTONES DE ACCIÓN: COMPRA RÁPIDA ("Comprar") + AGREGAR AL CARRITO ("+") -->
-      <div class="absolute bottom-2 right-2 z-30 flex items-center gap-1.5">
+      <!-- BOTÓN CIRCULAR FLOTANTE EN LA ESQUINA DE LA FOTO: Carrito con símbolo "+" o Encargo WhatsApp -->
+      <div class="absolute bottom-2 right-2 z-30">
         {isSoldOut ? (
           <button
             type="button"
             data-order-out-of-stock={title}
-            class="out-of-stock-btn h-9 sm:h-10 px-3.5 rounded-full bg-purple-950/90 hover:bg-purple-900 border border-purple-500/60 hover:border-amber-400 text-amber-300 flex items-center gap-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.6)] active:scale-95 transition-all cursor-pointer select-none text-xs font-bold"
+            class="out-of-stock-btn w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-purple-950/90 hover:bg-purple-900 border border-purple-500/60 hover:border-amber-400 text-amber-300 flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.6)] active:scale-90 transition-all cursor-pointer"
             title="Encargar este producto por WhatsApp"
             aria-label={`Encargar ${title} por WhatsApp`}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
             </svg>
-            <span>Encargar</span>
           </button>
         ) : (
-          <>
-            <!-- Botón Primario: Comprar Ahora (Abre Modal de Compra Rápida) -->
-            <button
-              type="button"
-              data-quick-buy={JSON.stringify({
-                productId: 0,
-                slug: slug,
-                name: title,
-                image: image,
-                priceUSD: priceUSD,
-                priceCUP: priceCUP,
-                stockQuantity: qty,
-                colors: cardColors,
-                sizes: cardSizes,
-              })}
-              class="quick-buy-btn h-8 sm:h-9 px-3 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 active:scale-95 text-slate-950 font-black text-xs uppercase tracking-wider shadow-[0_4px_14px_rgba(234,179,8,0.4)] hover:shadow-[0_6px_20px_rgba(234,179,8,0.55)] flex items-center gap-1.5 transition-all cursor-pointer select-none"
-              title={`Comprar ${title} directamente`}
-              aria-label={`Comprar ${title} directamente`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <span>Comprar</span>
-            </button>
-
-            <!-- Botón Secundario: Agregar al Carrito General (+) -->
-            <button
-              type="button"
-              data-quick-add={JSON.stringify({
-                productId: 0,
-                slug: slug,
-                name: title,
-                image: image,
-                priceUSD: priceUSD,
-                priceCUP: priceCUP,
-              })}
-              class="quick-add-btn w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 backdrop-blur-md hover:bg-black border border-white/20 hover:border-amber-400 text-white hover:text-amber-300 shadow-md hover:scale-105 active:scale-90 flex items-center justify-center transition-all cursor-pointer"
-              title="Agregar al carrito"
-              aria-label={`Agregar ${title} al carrito`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-              </svg>
-            </button>
-          </>
+          <button
+            type="button"
+            data-quick-add={JSON.stringify({
+              productId: 0,
+              slug: slug,
+              name: title,
+              image: image,
+              priceUSD: priceUSD,
+              priceCUP: priceCUP,
+            })}
+            class="quick-add-btn w-9 h-9 sm:w-10 sm:h-10 min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] rounded-full bg-gradient-to-tr from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 active:from-amber-600 active:to-yellow-500 text-slate-950 font-black shadow-[0_4px_16px_rgba(234,179,8,0.45)] hover:scale-105 active:scale-90 flex items-center justify-center transition-all cursor-pointer"
+            title="Agregar al carrito"
+            aria-label={`Agregar ${title} al carrito`}
+          >
+            <!-- SVG de Carrito Estilizado y Fino con Símbolo "+" -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2.2l.4 2M5.6 5H21l-1.6 8.5H7.5L5.6 5z" />
+              <circle cx="9.5" cy="19.5" r="1.5" />
+              <circle cx="17.5" cy="19.5" r="1.5" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12.5 7.5v3.5m-1.75-1.75h3.5" stroke-width="2" />
+            </svg>
+          </button>
         )}
       </div>
 
     </div>
 
-    <!-- ================= 2. CUERPO DE LA CARD: TÍTULO PROMINENTE + PRECIOS CANÓNICOS ================= -->
-    <div class="p-2.5 sm:p-3 md:p-3.5">
+    <!-- ================= 2. CUERPO DE LA CARD: TÍTULO PROMINENTE + PRECIOS CANÓNICOS + BOTÓN COMPRAR ================= -->
+    <div class="p-2.5 sm:p-3 md:p-3.5 flex flex-col flex-1 justify-between gap-2.5">
       
-      <!-- Título de Producto Truncado a 1 Línea con Elipsis (Legible y Generoso en PC) -->
-      <h3 class="font-bold text-white group-hover:text-amber-300 transition-colors duration-200 truncate text-sm sm:text-base lg:text-[17px] leading-snug block w-full" title={title}>
-        {title}
-      </h3>
+      <div>
+        <!-- Título de Producto Truncado a 1 Línea con Elipsis (Legible y Generoso en PC) -->
+        <h3 class="font-bold text-white group-hover:text-amber-300 transition-colors duration-200 truncate text-sm sm:text-base lg:text-[17px] leading-snug block w-full" title={title}>
+          {title}
+        </h3>
 
-      <!-- Estructura Canónica Modular de Precios:
-           1. Primero precio CUP, luego precio USD con idéntico tamaño
-           2. Debajo precios antiguos tachados si tiene rebaja -->
-      <ProductPricing 
-        priceCUP={priceCUP}
-        priceUSD={priceUSD}
-        regularPriceCUP={regularPriceCUP}
-        regularPriceUSD={regularPriceUSD}
-        onSale={onSale}
-      />
+        <!-- Estructura Canónica Modular de Precios:
+             1. Primero precio CUP, luego precio USD con idéntico tamaño
+             2. Debajo precios antiguos tachados si tiene rebaja -->
+        <ProductPricing 
+          priceCUP={priceCUP}
+          priceUSD={priceUSD}
+          regularPriceCUP={regularPriceCUP}
+          regularPriceUSD={regularPriceUSD}
+          onSale={onSale}
+        />
+      </div>
+
+      <!-- BOTÓN GRANDE DE COMPRA RÁPIDA AL PIE DE LA CARD -->
+      {isSoldOut ? (
+        <button
+          type="button"
+          data-order-out-of-stock={title}
+          class="out-of-stock-btn w-full mt-1 py-2.5 px-3 rounded-xl bg-purple-950/70 hover:bg-purple-900 border border-purple-500/50 hover:border-amber-400 text-amber-300 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer select-none"
+        >
+          <span>Encargar por WhatsApp</span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          data-quick-buy={JSON.stringify({
+            productId: 0,
+            slug: slug,
+            name: title,
+            image: image,
+            priceUSD: priceUSD,
+            priceCUP: priceCUP,
+            stockQuantity: qty,
+            colors: cardColors,
+            sizes: cardSizes,
+          })}
+          class="quick-buy-btn w-full mt-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:via-yellow-400 hover:to-yellow-300 text-slate-950 font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_4px_14px_rgba(234,179,8,0.3)] hover:shadow-[0_6px_20px_rgba(234,179,8,0.45)] transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98] select-none"
+          title={`Comprar ${title} directamente`}
+          aria-label={`Comprar ${title} directamente`}
+        >
+          <span>Comprar Ahora</span>
+        </button>
+      )}
 
     </div>
   </a>
