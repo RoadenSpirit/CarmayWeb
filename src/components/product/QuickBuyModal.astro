@@ -333,14 +333,14 @@
         const API_KEY = 'REDACTED_BAILEYS_API_KEY';
 
         // 1. Enviar ticket automáticamente al WhatsApp del cliente
-        await fetch(API_URL, {
+        const res1 = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY },
           body: JSON.stringify({ chatId: fullClientPhone, message: customerMsg }),
         });
 
         // 2. Notificar inmediatamente a la administración (+REDACTED_PHONE_1)
-        await fetch(API_URL, {
+        const res2 = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY },
           body: JSON.stringify({
@@ -349,9 +349,13 @@
           }),
         });
 
-        // Mostrar pantalla de confirmación exitosa dentro del mismo modal
-        if (mainView) mainView.classList.add('hidden');
-        if (successView) successView.classList.remove('hidden');
+        if (res1.ok || res2.ok) {
+          // Mostrar pantalla de confirmación exitosa dentro del mismo modal
+          if (mainView) mainView.classList.add('hidden');
+          if (successView) successView.classList.remove('hidden');
+        } else {
+          throw new Error('Error en el envío del mensaje');
+        }
       } catch (err) {
         console.error('Error enviando orden rápida por Baileys API:', err);
         if (errorBox) {
