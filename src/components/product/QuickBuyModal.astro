@@ -26,13 +26,13 @@
       </svg>
     </button>
 
-    <!-- 1. Imagen Protagonista -->
-    <div class="w-full aspect-square max-h-56 rounded-2xl overflow-hidden bg-black/60 border border-white/10 mb-4 flex items-center justify-center">
+    <!-- 1. Imagen Protagonista (Respeta 100% su relación de aspecto original) -->
+    <div class="w-full h-56 sm:h-60 rounded-2xl overflow-hidden bg-[#080a12] border border-white/10 mb-4 flex items-center justify-center p-2">
       <img
         id="qb-image"
         src=""
         alt=""
-        class="w-full h-full object-cover object-center"
+        class="max-h-full max-w-full w-auto h-auto object-contain rounded-xl drop-shadow-lg"
       />
     </div>
 
@@ -88,20 +88,17 @@
         <span>Comprar Ahora</span>
       </button>
 
-      <!-- Botón Secundario Sutil: Agregar al Carrito -->
-      <button
-        type="button"
-        id="qb-add-cart-btn"
-        class="w-full py-2.5 px-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/10 text-slate-300 hover:text-white font-semibold text-xs tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer select-none"
+      <!-- Botón Secundario Sutil: Ver Más Detalles -->
+      <a
+        id="qb-view-more-link"
+        href="#"
+        class="w-full py-2.5 px-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/10 text-slate-300 hover:text-white font-semibold text-xs tracking-wider transition-all flex items-center justify-center gap-1.5 select-none"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-current" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2.2l.4 2M5.6 5H21l-1.6 8.5H7.5L5.6 5z" />
-          <circle cx="9.5" cy="19.5" r="1.5" />
-          <circle cx="17.5" cy="19.5" r="1.5" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12.5 7.5v3.5m-1.75-1.75h3.5" stroke-width="2" />
+        <span>Ver Más Detalles</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-slate-400 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
         </svg>
-        <span>Agregar al Carrito</span>
-      </button>
+      </a>
     </div>
   </div>
 </div>
@@ -122,7 +119,7 @@
     const qtyPlus = document.getElementById('qb-qty-plus');
 
     const buyNowBtn = document.getElementById('qb-buy-now-btn');
-    const addCartBtn = document.getElementById('qb-add-cart-btn');
+    const viewMoreLink = document.getElementById('qb-view-more-link');
 
     let currentProduct = null;
     let currentQty = 1;
@@ -152,6 +149,9 @@
       }
       if (titleEl) {
         titleEl.textContent = data.name || '';
+      }
+      if (viewMoreLink && data.slug) {
+        viewMoreLink.href = `/producto/${data.slug}/`;
       }
 
       updatePrices();
@@ -235,24 +235,8 @@
       closeModal();
     });
 
-    // 2. Acción: Opción secundaria agregar al carrito
-    addCartBtn?.addEventListener('click', () => {
-      if (!currentProduct) return;
-
-      if (window.CarmayCart) {
-        window.CarmayCart.create({
-          productId: currentProduct.productId || 0,
-          slug: currentProduct.slug,
-          name: currentProduct.name,
-          image: currentProduct.image,
-          priceUSD: currentProduct.priceUSD,
-          priceCUP: currentProduct.priceCUP,
-          quantity: currentQty,
-        });
-
-        // Abrir drawer del carrito
-        window.dispatchEvent(new CustomEvent('open-carmay-cart'));
-      }
+    // 2. Acción: Enlace a detalles del producto
+    viewMoreLink?.addEventListener('click', () => {
       closeModal();
     });
   });
