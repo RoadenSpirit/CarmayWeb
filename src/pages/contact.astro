@@ -421,7 +421,7 @@ const contactChannels = [
             `"${message}"`;
 
           try {
-            await fetch('https://ia.carmayn8n.cloud/api/wa/send', {
+            const res = await fetch('https://ia.carmayn8n.cloud/api/wa/send', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -433,11 +433,15 @@ const contactChannels = [
               }),
             });
 
-            if (alertBox) {
-              alertBox.className = 'p-4 rounded-xl text-xs font-bold text-center bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 block';
-              alertBox.textContent = '¡Mensaje enviado con éxito! Ha sido recibido directamente por la administración.';
+            if (res.ok) {
+              if (alertBox) {
+                alertBox.className = 'p-4 rounded-xl text-xs font-bold text-center bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 block';
+                alertBox.textContent = '¡Mensaje enviado con éxito! Ha sido recibido directamente por la administración.';
+              }
+              form.reset();
+            } else {
+              throw new Error('Respuesta no exitosa de la API');
             }
-            form.reset();
           } catch (err) {
             console.error('Error enviando mensaje al admin:', err);
             if (alertBox) {
