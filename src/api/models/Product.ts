@@ -265,12 +265,39 @@ export class Product {
     return this.raw.tags ?? [];
   }
 
-  get categoryName(): string {
-    return this.categories[0]?.name ?? '';
+  get categorySlug(): string {
+    const rawSlug = this.categories[0]?.slug ?? '';
+    const VALID_CATEGORY_SLUGS = ['zapatos', 'ropa', 'jackets', 'tecnologia', 'accesorios'];
+    if (VALID_CATEGORY_SLUGS.includes(rawSlug)) {
+      return rawSlug;
+    }
+    // Detección automática para productos huérfanos o sin categorizar de WooCommerce
+    const title = this.name.toLowerCase();
+    if (
+      title.includes('camara') ||
+      title.includes('cámara') ||
+      title.includes('timbre') ||
+      title.includes('inversor') ||
+      title.includes('panel') ||
+      title.includes('solar') ||
+      title.includes('bateria') ||
+      title.includes('batería')
+    ) {
+      return 'tecnologia';
+    }
+    return '';
   }
 
-  get categorySlug(): string {
-    return this.categories[0]?.slug ?? '';
+  get categoryName(): string {
+    const slug = this.categorySlug;
+    const names: Record<string, string> = {
+      zapatos: 'Calzado',
+      ropa: 'Ropa',
+      jackets: 'Bolsos y Mochilas',
+      tecnologia: 'Tecnología',
+      accesorios: 'Accesorios',
+    };
+    return names[slug] || this.categories[0]?.name || '';
   }
 
   // ----------------------------------------------------------
