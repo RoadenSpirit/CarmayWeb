@@ -14,3 +14,6 @@ dist/
 # Logs
 npm-debug.log*
 *.log
+
+# Copia de seguridad local de imágenes sin procesar
+public_backup/
