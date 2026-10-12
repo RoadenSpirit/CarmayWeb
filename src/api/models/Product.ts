@@ -265,27 +265,18 @@ export class Product {
     return this.raw.tags ?? [];
   }
 
+  /** Slugs oficiales de categorías permitidas en la web */
+  public static readonly VALID_CATEGORY_SLUGS = ['zapatos', 'ropa', 'jackets', 'tecnologia', 'accesorios'];
+
+  /** True si el producto tiene una categoría oficial válida asignada (descarta productos huérfanos o 'sin-categorizar') */
+  get hasValidCategory(): boolean {
+    const rawSlug = this.categories[0]?.slug ?? '';
+    return Product.VALID_CATEGORY_SLUGS.includes(rawSlug);
+  }
+
   get categorySlug(): string {
     const rawSlug = this.categories[0]?.slug ?? '';
-    const VALID_CATEGORY_SLUGS = ['zapatos', 'ropa', 'jackets', 'tecnologia', 'accesorios'];
-    if (VALID_CATEGORY_SLUGS.includes(rawSlug)) {
-      return rawSlug;
-    }
-    // Detección automática para productos huérfanos o sin categorizar de WooCommerce
-    const title = this.name.toLowerCase();
-    if (
-      title.includes('camara') ||
-      title.includes('cámara') ||
-      title.includes('timbre') ||
-      title.includes('inversor') ||
-      title.includes('panel') ||
-      title.includes('solar') ||
-      title.includes('bateria') ||
-      title.includes('batería')
-    ) {
-      return 'tecnologia';
-    }
-    return '';
+    return Product.VALID_CATEGORY_SLUGS.includes(rawSlug) ? rawSlug : '';
   }
 
   get categoryName(): string {
@@ -297,7 +288,7 @@ export class Product {
       tecnologia: 'Tecnología',
       accesorios: 'Accesorios',
     };
-    return names[slug] || this.categories[0]?.name || '';
+    return names[slug] || '';
   }
 
   // ----------------------------------------------------------

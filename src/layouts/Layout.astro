@@ -16,9 +16,9 @@ const allProducts = await woo.products
   .getAll()
   .catch(() => []);
 
-// Optimización: solo los campos estrictamente necesarios para la búsqueda rápida
+// Optimización: solo productos con imagen real y categoría válida para la búsqueda rápida
 const searchableData = allProducts
-  .filter((p) => p.hasRealImage)
+  .filter((p) => p.hasRealImage && p.hasValidCategory)
   .map((p) => ({
     name: p.name,
     slug: p.slug,

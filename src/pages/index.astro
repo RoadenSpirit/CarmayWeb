@@ -20,13 +20,13 @@ const [bestSellersRaw, offersRaw] = await Promise.all([
   withFallback(woo.products.getOnSale(4)),
 ]);
 
-// Se muestran solo productos con imagen real; los "más vendidos" deben tener ventas.
+// Se muestran solo productos con imagen real y categoría válida
 const bestSellers = bestSellersRaw
-  .filter((product) => product.totalSales > 0 && product.hasRealImage)
+  .filter((product) => product.totalSales > 0 && product.hasRealImage && product.hasValidCategory)
   .map((product) => product.toCard());
 
 const specialOffers = offersRaw
-  .filter((product) => product.isInStock && product.hasRealImage)
+  .filter((product) => product.isInStock && product.hasRealImage && product.hasValidCategory)
   .map((product) => product.toCard());
 ---
 

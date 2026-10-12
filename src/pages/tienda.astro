@@ -38,7 +38,7 @@ const storeCategories = [
 
 // Obtener catálogo completo para el motor de búsqueda y catálogo
 const allRawProducts = await woo.products.getAll();
-const validProducts = allRawProducts.filter(p => p.hasRealImage);
+const validProducts = allRawProducts.filter(p => p.hasRealImage && p.hasValidCategory);
 
 // Ordenamiento multicriterio precalculado en build:
 // Combina alta demanda (ventas) + ofertas activas + escasez (bajo stock) + tendencias.

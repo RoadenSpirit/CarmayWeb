@@ -12,11 +12,11 @@ interface Props {
   product: ProductData;
 }
 
-// Generar paths estáticos para cada producto
+// Generar paths estáticos para cada producto con categoría oficial válida
 export async function getStaticPaths() {
   const products = await woo.products.getAll();
   return products
-    .filter(p => p.hasRealImage)
+    .filter(p => p.hasRealImage && p.hasValidCategory)
     .map((product) => ({
       params: { slug: product.slug },
       props: { product: product.toJSON() },
