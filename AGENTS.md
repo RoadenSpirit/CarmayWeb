@@ -132,3 +132,24 @@ Para activar la herramienta sobre cualquier componente problemático:
 ## 5. Activos Pendientes de Fotografía Oficial (Backlog Estratégico)
 - **Fotografía Oficial de la Tienda Física:** Pendiente sustituir o complementar los recursos actuales (`tienda-fisica.png`, `envio-garantizado.jpg`) cuando el cliente suministre las imágenes reales en alta resolución de la fachada e interior en Avellaneda 260.
 - **Fotografía Real de Categorías:** Pendiente reemplazar los enlaces remotos temporales de Unsplash en `Categories.astro` y `tienda.astro` por las fotos oficiales de stock de Carmay Outfit (`/categorias/calzado.jpg`, `/categorias/ropa.jpg`, `/categorias/bolsos.jpg`, `/categorias/tecnologia.jpg`, `/categorias/accesorios.jpg`).
+
+---
+
+## 6. Regla Inmutable de Exclusión de Productos Huérfanos y Alerta en n8n
+
+### Principio de Cero Productos Sin Categoría en la Web
+**BAJO NINGÚN CONCEPTO un producto sin categoría oficial válida puede llegar al catálogo, buscador, fichas de producto ni a la compilación estática.**
+
+1. **Categorías Oficiales Válidas Exclusivas:**
+   - `zapatos` (Calzado)
+   - `ropa` (Ropa)
+   - `jackets` (Bolsos y Mochilas)
+   - `tecnologia` (Tecnología)
+   - `accesorios` (Accesorios)
+2. **Filtrado en Build (CarmayWeb SSG):**
+   - Propiedad `Product.hasValidCategory` en `src/api/models/Product.ts`.
+   - Se aplica en `[slug].astro` (`getStaticPaths`), `tienda.astro` (catálogo), `Layout.astro` (buscador) e `index.astro` (showcases).
+   - Cualquier producto huérfano es automáticamente excluido del build.
+3. **Flujo de Ingesta en n8n (`bWC0jPNJYQ7d0D7H`):**
+   - El nodo `Normalizar Datos` descarta cualquier producto del Sheet cuya columna `CATEGORÍA` esté vacía o no coincida con las 5 categorías oficiales.
+   - El nodo `Detectar Huérfanos` escanea el Sheet y, si detecta ítems huérfanos, activa automáticamente el nodo `Enviar Alerta WhatsApp Admin` (HTTP Request a `http://baileys-sales-api:3000/send`) notificando la lista al Administrador (`+REDACTED_PHONE_1`).
