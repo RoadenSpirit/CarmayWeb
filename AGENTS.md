@@ -126,3 +126,9 @@ Para activar la herramienta sobre cualquier componente problemático:
   - Control de concurrencia con candado `flock` sobre `/tmp/carmay-deploy.lock` para descartar ejecuciones simultáneas redundantes.
   - Limpieza automática de la caché `.wc-cache` para forzar la lectura de precios y stock actualizados en WooCommerce.
   - Registro de auditoría y timestamps en `/tmp/carmay-deploy.log`.
+
+---
+
+## 5. Activos Pendientes de Fotografía Oficial (Backlog Estratégico)
+- **Fotografía Oficial de la Tienda Física:** Pendiente sustituir o complementar los recursos actuales (`tienda-fisica.png`, `envio-garantizado.jpg`) cuando el cliente suministre las imágenes reales en alta resolución de la fachada e interior en Avellaneda 260.
+- **Fotografía Real de Categorías:** Pendiente reemplazar los enlaces remotos temporales de Unsplash en `Categories.astro` y `tienda.astro` por las fotos oficiales de stock de Carmay Outfit (`/categorias/calzado.jpg`, `/categorias/ropa.jpg`, `/categorias/bolsos.jpg`, `/categorias/tecnologia.jpg`, `/categorias/accesorios.jpg`).

@@ -50,10 +50,10 @@ const isLow = stockQuantity === 2 || stockQuantity === 3;
     </span>
   ) : (
     <>
-      <!-- 1. Gancho de Descuento (Rojo de alto impacto) -->
+      <!-- 1. Gancho de Descuento (Rojo de alto impacto con explicación explícita) -->
       {onSale && discountPercent > 0 && (
         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-rose-600 text-white shadow-md">
-          -{discountPercent}%
+          Descuento {discountPercent}%
         </span>
       )}
 
