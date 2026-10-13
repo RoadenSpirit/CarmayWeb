@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import CatalogFilterBar from '../../components/CatalogFilterBar.astro';
+import InfiniteScroll from '../../components/InfiniteScroll.astro';
 import { woo } from '../../api';
 import { sortProductsByCuratedScore } from '../../utils/productRanking';
 
@@ -83,8 +84,8 @@ const categoryName = currentCategory ? currentCategory.name : category;
       />
     </div>
 
-      <!-- Grid de productos estilo Temu: Waterfall / Masonry de 2 columnas en móvil y 5 en desktop, sin espacios fantasma -->
-      <div class="columns-2 sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5 [column-gap:8px] sm:[column-gap:10px] lg:[column-gap:12px] w-full">
+      <!-- Grid de productos estilo Temu: Waterfall / Masonry con Paginación Infinita y Carga Inicial Ultraligera -->
+      <div id="category-products-grid" class="columns-2 sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5 [column-gap:8px] sm:[column-gap:10px] lg:[column-gap:12px] w-full">
         {sortedProducts.map((product, idx) => (
           <ProductCard
             title={product.name}
@@ -104,9 +105,14 @@ const categoryName = currentCategory ? currentCategory.name : category;
             isInStock={product.isInStock}
             permalink={`/producto/${product.slug}/`}
             revealDelayClass={`reveal-delay-${(idx % 4) + 1}`}
+            class={idx >= 20 ? 'infinite-hidden' : ''}
+            batchIndex={Math.floor(idx / 20)}
           />
         ))}
       </div>
+
+      <!-- Sentinela y Controlador de Paginación Infinita por Scroll -->
+      <InfiniteScroll batchSize={20} />
 
       <!-- Empty State amigable cuando nada coincide con los filtros (fuera del flujo de columnas) -->
       <div id="filter-empty-state" class="hidden py-16 px-4 text-center w-full">
@@ -133,17 +139,12 @@ const categoryName = currentCategory ? currentCategory.name : category;
           </div>
         </div>
       </div>
-                Ver todos los productos
-              </button>
-            </div>
-          </div>
-        </div>
 
-        {sortedProducts.length === 0 && (
-          <p class="col-span-2 sm:col-span-4 text-center text-slate-400 py-12">
-            No hay productos disponibles en esta categoría.
-          </p>
-        )}
+      {sortedProducts.length === 0 && (
+        <p class="col-span-2 sm:col-span-4 text-center text-slate-400 py-12">
+          No hay productos disponibles en esta categoría.
+        </p>
+      )}
       </div>
     </div>
   </section>

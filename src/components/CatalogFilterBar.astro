@@ -386,6 +386,14 @@ const {
       const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
       window.history.replaceState({}, '', newUrl);
 
+      // Notificar al controlador de InfiniteScroll
+      const hasActiveFilters = Boolean(searchFilter && searchFilter.length >= 2) || filterSale || filterTrending || minPrice > defaultSliderMin || maxPrice < defaultSliderMax;
+      if (hasActiveFilters) {
+        window.dispatchEvent(new CustomEvent('catalog-filters-active'));
+      } else {
+        window.dispatchEvent(new CustomEvent('catalog-filters-reset'));
+      }
+
       updateUI();
     }
 

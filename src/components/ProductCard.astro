@@ -21,6 +21,8 @@ interface Props {
   isInStock?: boolean;
   revealDelayClass?: string;
   uniformHeight?: boolean;
+  class?: string;
+  batchIndex?: number;
 }
 
 const {
@@ -42,6 +44,8 @@ const {
   isInStock = true,
   revealDelayClass = '',
   uniformHeight = false,
+  class: className = '',
+  batchIndex = 0,
 } = Astro.props;
 
 const onSale = regularPriceUSD !== undefined && regularPriceUSD > priceUSD;
@@ -110,7 +114,8 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
     break-inside-avoid mb-2 sm:mb-2.5
     ${uniformHeight ? 'h-full justify-between' : 'justify-start'}
     ${revealDelayClass ? `reveal-card ${revealDelayClass}` : ''}
-    ${isSoldOut ? 'opacity-85 hover:opacity-100' : ''}`}
+    ${isSoldOut ? 'opacity-85 hover:opacity-100' : ''}
+    ${className}`}
   data-product-slug={slug}
   data-permalink={permalink}
   data-price-usd={priceUSD}
@@ -119,6 +124,7 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
   data-on-sale={onSale ? 'true' : 'false'}
   data-trending={isTrending ? 'true' : 'false'}
   data-in-stock={isAvailable ? 'true' : 'false'}
+  data-batch-index={batchIndex}
 >
   
   <!-- Línea superior de acento (solo en oferta) -->

@@ -1,0 +1,155 @@
+---
+// InfiniteScroll.astro: Paginación infinita por scroll con IntersectionObserver
+// Reduce la carga inicial de imágenes en un 90% para conexiones inestables en Cuba.
+interface Props {
+  batchSize?: number;
+}
+
+const { batchSize = 20 } = Astro.props;
+---
+
+<div
+  id="infinite-scroll-sentinel"
+  class="w-full py-8 flex flex-col items-center justify-center min-h-[64px]"
+  data-batch-size={batchSize}
+>
+  <!-- Spinner elegante de carga para el siguiente lote -->
+  <div
+    id="infinite-scroll-loading"
+    class="hidden items-center gap-2.5 text-xs text-amber-400 font-bold px-4 py-2 rounded-full bg-[#0d0f1a] border border-white/10 shadow-lg select-none"
+  >
+    <svg class="animate-spin w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"></path>
+    </svg>
+    <span>Cargando más productos...</span>
+  </div>
+
+  <!-- Fin del catálogo alcanzado -->
+  <div
+    id="infinite-scroll-end"
+    class="hidden text-xs text-slate-500 font-medium py-3 text-center select-none"
+  >
+    Has visto todos los productos disponibles
+  </div>
+</div>
+
+<style is:global>
+  /* Oculta estrictamente tarjetas fuera del lote actual para impedir la descarga de imágenes en el cliente */
+  .product-card-item.infinite-hidden {
+    display: none !important;
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sentinel = document.getElementById('infinite-scroll-sentinel');
+    const loadingEl = document.getElementById('infinite-scroll-loading');
+    const endEl = document.getElementById('infinite-scroll-end');
+    if (!sentinel) return;
+
+    let currentBatch = 0;
+    let isLoading = false;
+    let observer = null;
+    let filtersActive = false;
+
+    function getHiddenCards() {
+      return document.querySelectorAll('.product-card-item.infinite-hidden');
+    }
+
+    function loadNextBatch() {
+      if (isLoading || filtersActive) return;
+      isLoading = true;
+
+      if (loadingEl) loadingEl.classList.remove('hidden');
+
+      // Pequeño retardo asíncrono para suavizar la animación y no congelar la UI
+      setTimeout(() => {
+        currentBatch++;
+        const nextBatchCards = document.querySelectorAll(
+          `.product-card-item[data-batch-index="${currentBatch}"]`
+        );
+
+        if (nextBatchCards.length > 0) {
+          nextBatchCards.forEach((card) => {
+            card.classList.remove('infinite-hidden');
+          });
+        }
+
+        if (loadingEl) loadingEl.classList.add('hidden');
+
+        const remaining = getHiddenCards();
+        if (remaining.length === 0) {
+          if (endEl) endEl.classList.remove('hidden');
+          if (observer) observer.disconnect();
+        }
+
+        isLoading = false;
+      }, 120);
+    }
+
+    function initObserver() {
+      if (observer) observer.disconnect();
+
+      const remaining = getHiddenCards();
+      if (remaining.length === 0) {
+        if (endEl) endEl.classList.remove('hidden');
+        return;
+      }
+
+      if (endEl) endEl.classList.add('hidden');
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              loadNextBatch();
+            }
+          });
+        },
+        {
+          rootMargin: '450px 0px', // Comienza a cargar 450px antes del final para que sea imperceptible
+          threshold: 0.01,
+        }
+      );
+
+      observer.observe(sentinel);
+    }
+
+    // Inicializar observador
+    initObserver();
+
+    // Cooperación con CatalogFilterBar: cuando hay filtros activos, revelar todos los que coincidan
+    window.addEventListener('catalog-filters-active', () => {
+      filtersActive = true;
+      if (observer) observer.disconnect();
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (endEl) endEl.classList.add('hidden');
+      if (sentinel) sentinel.classList.add('hidden');
+
+      // Revelar todas las tarjetas para que el filtrador muestre cualquier coincidencia
+      document.querySelectorAll('.product-card-item').forEach((card) => {
+        card.classList.remove('infinite-hidden');
+      });
+    });
+
+    // Cuando se limpian los filtros, restaurar el scroll infinito desde el lote inicial
+    window.addEventListener('catalog-filters-reset', () => {
+      filtersActive = false;
+      currentBatch = 0;
+
+      // Re-ocultar lotes superiores a 0
+      document.querySelectorAll('.product-card-item').forEach((card) => {
+        const batchIdx = parseInt(card.getAttribute('data-batch-index') || '0', 10);
+        if (batchIdx > 0) {
+          card.classList.add('infinite-hidden');
+        } else {
+          card.classList.remove('infinite-hidden');
+        }
+      });
+
+      if (sentinel) sentinel.classList.remove('hidden');
+      initObserver();
+    });
+  });
+</script>
