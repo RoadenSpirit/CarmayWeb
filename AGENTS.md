@@ -153,3 +153,28 @@ Para activar la herramienta sobre cualquier componente problemático:
 3. **Flujo de Ingesta en n8n (`bWC0jPNJYQ7d0D7H`):**
    - El nodo `Normalizar Datos` descarta cualquier producto del Sheet cuya columna `CATEGORÍA` esté vacía o no coincida con las 5 categorías oficiales.
    - El nodo `Detectar Huérfanos` escanea el Sheet y, si detecta ítems huérfanos, activa automáticamente el nodo `Enviar Alerta WhatsApp Admin` (HTTP Request a `http://baileys-sales-api:3000/send`) notificando la lista al Administrador (`+REDACTED_PHONE_1`).
+
+---
+
+## 7. Motor de Recomendaciones Semántico Multicriterio (`src/utils/productRecommender.ts`)
+
+### Propósito y Rendimiento
+Sustituye la antigua consulta aleatoria de WooCommerce por un algoritmo determinista precalculado en memoria durante el build ($1.1\text{ ms}$ por producto, 0 llamadas HTTP redundantes a la base de datos).
+
+### Reglas de Afinidad y Scoring Matemático
+$$\text{Score} = S_{\text{semántica}} + S_{\text{precio}} + S_{\text{comercial}} + S_{\text{desempate}}$$
+
+1. **Aislamiento Estricto por Categoría (Filtro Obligatorio):**
+   - El producto recomendado debe compartir **exactamente la misma categoría canónica** (`candidato.categorySlug === target.categorySlug`). Un calzado solo recomienda calzado; un inversor solo tecnología.
+   - Exclusión de productos propios (`slug !== target.slug`), agotados (`isInStock === true`) o sin imagen real.
+2. **Afinidad Léxica y Semántica ($+40\text{ a }+90\text{ pts}$):**
+   - Tokenización y lematización morfológica en español sin diacríticos ni stopwords (`sandalias` $\rightarrow$ `sandalia`, `inversores` $\rightarrow$ `inversor`).
+   - Coincidencia exacta de raíz: $+40\text{ pts}$ base $+ 25\text{ pts}$ por token adicional.
+   - Diccionario de familias complementarias (`CATEGORY_AFFINITY_MAP`): vincula familias afines como `inversor` $\leftrightarrow$ `panel`/`solar`/`bateria`, `timbre` $\leftrightarrow$ `camara`, `sandalia` $\leftrightarrow$ `chancleta` ($+25\text{ pts}$ base $+ 15\text{ pts}$ adicional).
+3. **Coherencia de Rango de Precio ($0\text{ a }20\text{ pts}$):**
+   - Ratio: $\frac{\min(P_A, P_B)}{\max(P_A, P_B)} \times 20$. Favorece productos en la misma franja económica y castiga desproporciones absurdas (ej. cables vs inversores).
+4. **Demanda Comercial y Popularidad ($0\text{ a }18\text{ pts}$):**
+   - Bonificación por volumen de ventas real (`totalSales` $\times 2.5$, máx 10).
+   - Bonificación por rebaja activa (`isOnSale` $+5\text{ pts}$) y tendencia (`isTrending` $+3\text{ pts}$).
+5. **Diversidad y Desempate Determinista ($0\text{ a }3\text{ pts}$):**
+   - Desempate por hash combinado de slugs $\text{hash}(S_A + S_B)$. Asegura que cada producto tenga un grupo de 4 recomendados único y diverso, evitando la repetición monótona en el catálogo.

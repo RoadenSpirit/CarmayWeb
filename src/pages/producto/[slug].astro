@@ -6,30 +6,29 @@ import ProductGallery from '../../components/product/ProductGallery.astro';
 import ProductStockStatus from '../../components/product/ProductStockStatus.astro';
 import ProductTrustBadges from '../../components/product/ProductTrustBadges.astro';
 import { woo } from '../../api';
-import type { ProductData } from '../../api/models/Product.js';
+import type { ProductData, ProductCardData } from '../../api/models/Product.js';
+import { getRecommendedProducts } from '../../utils/productRecommender.js';
 
 interface Props {
   product: ProductData;
+  relatedProducts: ProductCardData[];
 }
 
-// Generar paths estáticos para cada producto con categoría oficial válida
+// Generar paths estáticos precalculando recomendaciones semánticas en memoria (0 consultas redundantes)
 export async function getStaticPaths() {
-  const products = await woo.products.getAll();
-  return products
-    .filter(p => p.hasRealImage && p.hasValidCategory)
-    .map((product) => ({
-      params: { slug: product.slug },
-      props: { product: product.toJSON() },
-    }));
+  const allProducts = await woo.products.getAll();
+  const validProducts = allProducts.filter(p => p.hasRealImage && p.hasValidCategory);
+
+  return validProducts.map((product) => ({
+    params: { slug: product.slug },
+    props: {
+      product: product.toJSON(),
+      relatedProducts: getRecommendedProducts(product, validProducts, 4),
+    },
+  }));
 }
 
-const { product } = Astro.props;
-
-// Productos relacionados de la misma categoría
-const relatedProducts = await woo.products.getByCategory(product.categories[0]?.id ?? 0, 20);
-const relatedFiltered = relatedProducts
-  .filter(p => p.hasRealImage && p.isInStock && p.slug !== product.slug)
-  .slice(0, 4);
+const { product, relatedProducts = [] } = Astro.props;
 
 const formatCUP = (n: number) => `${(n || 0).toLocaleString('en-US')} CUP`;
 const formatUSD = (n: number) => {
@@ -309,32 +308,34 @@ const maxPhysicalStock = product.stockQuantity && product.stockQuantity > 0 ? pr
     </section>
   )}
 
-  <!-- ===== PRODUCTOS RELACIONADOS ===== -->
-  {relatedFiltered.length > 0 && (
-    <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-white/[0.06] reveal-on-scroll">
-      <div class="mb-10">
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Productos Relacionados</h2>
-        <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mt-2">También te puede interesar</span>
+  <!-- ===== PRODUCTOS RELACIONADOS (Motor Semántico Inteligente) ===== -->
+  {relatedProducts.length > 0 && (
+    <section class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-white/[0.06] reveal-on-scroll">
+      <div class="mb-6 sm:mb-8">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Productos Relacionados</h2>
+        <span class="text-amber-400 font-bold text-xs uppercase tracking-widest block mt-1">Recomendados para ti</span>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 items-start">
-        {relatedFiltered.map((p, idx) => (
-          <ProductCard
-            title={p.name}
-            price={p.priceFormatted}
-            regularPrice={p.regularPriceFormatted}
-            priceUSD={p.price}
-            priceCUP={p.priceCUP}
-            cupRate={p.cupRate}
-            regularPriceUSD={p.regularPrice}
-            regularPriceCUP={p.regularPriceCUP}
-            image={p.primaryImage}
-            category={p.categoryName}
-            categorySlug={p.categorySlug}
-            slug={p.slug}
-            isTrending={p.isTrending}
-            permalink={`/producto/${p.slug}/`}
-            revealDelayClass={`reveal-delay-${(idx % 4) + 1}`}
-          />
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6 items-stretch">
+        {relatedProducts.map((p, idx) => (
+          <div class={`reveal-card reveal-delay-${(idx % 4) + 1} h-full flex flex-col`}>
+            <ProductCard
+              title={p.title}
+              price={p.price}
+              regularPrice={p.regularPrice}
+              priceUSD={p.priceUSD}
+              priceCUP={p.priceCUP}
+              cupRate={p.cupRate}
+              regularPriceUSD={p.regularPriceUSD}
+              regularPriceCUP={p.regularPriceCUP}
+              image={p.image}
+              category={p.category}
+              categorySlug={p.categorySlug}
+              slug={p.slug}
+              isTrending={p.isTrending}
+              permalink={p.permalink}
+              uniformHeight={true}
+            />
+          </div>
         ))}
       </div>
     </section>
