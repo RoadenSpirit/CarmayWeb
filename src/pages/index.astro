@@ -39,35 +39,58 @@ const specialOffers = offersRaw
   <!-- 2. Banner de Valor Añadido con SVGs artesanales -->
   <ValueProps />
 
-  <!-- 3. Categorías Principales (5 Cards: Calzado, Ropa, Bolsos y Mochilas, Tecnología, Accesorios) -->
-  <Categories />
+  <!-- SECCIONES PROGRESIVAS OPTIMIZADAS (content-visibility: auto para conexiones lentas) -->
+  <div class="lazy-render-section">
+    <!-- 3. Categorías Principales (5 Cards: Calzado, Ropa, Bolsos y Mochilas, Tecnología, Accesorios) -->
+    <Categories />
+  </div>
 
-  <!-- 3.1 Banner de Tienda Física & Entrega Diaria Garantizada (Justo después de categorías) -->
-  <StoreBanner />
+  <div class="lazy-render-section">
+    <!-- 3.1 Banner de Tienda Física & Entrega Diaria Garantizada (Justo después de categorías) -->
+    <StoreBanner />
+  </div>
 
-  <!-- 4. Muestra Intercalada 1: Productos Más Vendidos -->
-  <ProductShowcase 
-    subtitle="Los favoritos de nuestros clientes" 
-    title="Productos Más Vendidos" 
-    products={bestSellers} 
-  />
+  <div class="lazy-render-section">
+    <!-- 4. Muestra Intercalada 1: Productos Más Vendidos -->
+    <ProductShowcase 
+      subtitle="Los favoritos de nuestros clientes" 
+      title="Productos Más Vendidos" 
+      products={bestSellers} 
+    />
+  </div>
 
-  <!-- 5. Visión y Proyecciones de la Empresa (Animación orquestada internamente) -->
-  <CompanyVision />
+  <div class="lazy-render-section">
+    <!-- 5. Visión y Proyecciones de la Empresa (Animación orquestada internamente) -->
+    <CompanyVision />
+  </div>
 
-  <!-- 6. Muestra Intercalada 2: Ofertas Especiales -->
-  <ProductShowcase 
-    subtitle="Aprovecha antes que se agoten" 
-    title="Rebajas y Ofertas Activas" 
-    products={specialOffers} 
-  />
+  <div class="lazy-render-section">
+    <!-- 6. Muestra Intercalada 2: Ofertas Especiales -->
+    <ProductShowcase 
+      subtitle="Aprovecha antes que se agoten" 
+      title="Rebajas y Ofertas Activas" 
+      products={specialOffers} 
+    />
+  </div>
 
-  <!-- 7. Opiniones de Clientes (Social Proof con Facebook) -->
-  <Testimonials />
+  <div class="lazy-render-section">
+    <!-- 7. Opiniones de Clientes (Social Proof con Facebook) -->
+    <Testimonials />
+  </div>
 
-  <!-- 8. Preguntas Frecuentes (FAQ animadas individualmente) -->
-  <FAQ />
+  <div class="lazy-render-section">
+    <!-- 8. Preguntas Frecuentes (FAQ animadas individualmente) -->
+    <FAQ />
+  </div>
 
   <!-- 9. Footer Rediseñado -->
   <Footer />
 </Layout>
+
+<style is:global>
+  /* Carga y Renderizado Progresivo Nativo: Posterga el cálculo del DOM fuera de pantalla */
+  .lazy-render-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+</style>

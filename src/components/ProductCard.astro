@@ -138,15 +138,20 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
   <!-- ENLACE MAESTRO: Toda la card redirige a los detalles del producto -->
   <a href={permalink} class={`card-details-link ${uniformHeight ? 'h-full flex flex-col justify-between' : 'block w-full'}`} aria-label={`Ver detalles de ${title}`}>
     
-    <!-- ================= 1. FOTO PROTAGONISTA (Uniforme en Index, Adaptativa en Catálogo) ================= -->
+    <!-- ================= 1. FOTO PROTAGONISTA (Con Skeleton Shimmer y Fade-in Suave) ================= -->
     <div class={`relative overflow-hidden w-full bg-[#0a0c15] ${uniformHeight ? 'aspect-square shrink-0' : ''}`}>
+      <!-- Capa de Esqueleto Shimmer Luminoso mientras se descarga la imagen -->
+      <div class="card-shimmer absolute inset-0 pointer-events-none"></div>
+
       <img 
         src={image} 
         alt={title} 
         width="600"
         height="600"
-        class={`group-hover:scale-105 transition-transform duration-500 ease-out block ${uniformHeight ? 'w-full h-full object-cover object-center' : 'w-full h-auto max-h-[380px] object-cover object-center'}`}
+        class={`card-img-fade group-hover:scale-105 transition-all duration-500 ease-out block opacity-0 ${uniformHeight ? 'w-full h-full object-cover object-center' : 'w-full h-auto max-h-[380px] object-cover object-center'}`}
         loading="lazy"
+        decoding="async"
+        onload="this.classList.remove('opacity-0')"
       />
       
       <!-- Insignias Superiores Flotantes sobre la Imagen (Píldora Única Exclusiva) -->
@@ -304,5 +309,30 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.25s ease-out,
                 border-color 0.25s ease-out;
+  }
+
+  /* Animación Shimmer Esqueleto para conexiones lentas */
+  .card-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(255, 255, 255, 0.07) 50%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    background-size: 200% 100%;
+    animation: cardSkeletonShimmer 2s infinite linear;
+  }
+
+  @keyframes cardSkeletonShimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .card-img-fade {
+    transition: opacity 0.4s ease-out, transform 0.5s ease-out;
   }
 </style>
