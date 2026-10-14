@@ -23,23 +23,23 @@ const testimonials = [
 
 <section class="py-8 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
   <div class="text-center max-w-2xl mx-auto mb-6 sm:mb-8 reveal-on-scroll">
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight">
       Lo que dicen nuestros clientes
     </h2>
-    <p class="text-amber-400 font-bold text-xs sm:text-sm uppercase tracking-widest block mt-2 mb-1">Opiniones Reales</p>
-    <p class="text-slate-300 text-sm sm:text-base mt-2">
+    <p class="text-amber-600 dark:text-amber-400 font-bold text-xs sm:text-sm uppercase tracking-widest block mt-2 mb-1">Opiniones Reales</p>
+    <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base mt-2">
       Testimonios 100% reales verificables en nuestra página oficial de Facebook.
     </p>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     {testimonials.map((t, idx) => (
-      <div class={`bg-[#121522]/95 backdrop-blur-xl p-7 sm:p-8 rounded-3xl flex flex-col justify-between border border-purple-500/20 hover:border-amber-400/40 relative shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1.5 ${idx === 0 ? 'reveal-slide-right' : idx === 2 ? 'reveal-slide-left' : 'reveal-scale'} reveal-delay-${idx + 1}`}>
+      <div class={`bg-white/95 dark:bg-[#121522]/95 backdrop-blur-xl p-7 sm:p-8 rounded-3xl flex flex-col justify-between border border-slate-200/90 dark:border-purple-500/20 hover:border-amber-500/40 dark:hover:border-amber-400/40 relative shadow-md dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1.5 ${idx === 0 ? 'reveal-slide-right' : idx === 2 ? 'reveal-slide-left' : 'reveal-scale'} reveal-delay-${idx + 1}`}>
         
         <!-- Contenido del comentario -->
         <div class="space-y-4">
           <!-- Comentario con comillas sutiles -->
-          <p class="text-slate-100 text-sm sm:text-base leading-relaxed font-normal">
+          <p class="text-slate-700 dark:text-slate-100 text-sm sm:text-base leading-relaxed font-normal">
             "{t.comment}"
           </p>
 
@@ -50,10 +50,10 @@ const testimonials = [
         </div>
 
         <!-- Footer con autor y botón a Facebook -->
-        <div class="flex items-center justify-between pt-6 mt-6 border-t border-white/10">
+        <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-200/80 dark:border-white/10">
           <div>
-            <h4 class="font-bold text-white text-base sm:text-lg">{t.name}</h4>
-            <span class="text-xs sm:text-sm text-amber-400 font-medium inline-flex items-center gap-1">
+            <h4 class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">{t.name}</h4>
+            <span class="text-xs sm:text-sm text-amber-600 dark:text-amber-400 font-medium inline-flex items-center gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                 <circle cx="12" cy="10" r="3" />

@@ -43,14 +43,31 @@ const catalogJson = JSON.stringify(searchableData);
     <meta name="description" content={description} />
     <slot name="head" />
 
+    <!-- Script Anti-Flicker Síncrono Inmediato (Previene destello de tema en carga) -->
+    <script is:inline>
+      (function() {
+        try {
+          const stored = localStorage.getItem('carmay_theme');
+          const isDark = stored ? stored === 'dark' : true; // Dark por defecto para Carmay
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#090b11] text-gray-100 antialiased selection:bg-purple-600 selection:text-white min-h-screen flex flex-col">
-    <!-- Grid overlay sutil -->
-    <div class="fixed inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none opacity-40"></div>
+  <body class="bg-slate-100 text-slate-900 dark:bg-[#090b11] dark:text-gray-100 antialiased selection:bg-purple-600 selection:text-white min-h-screen flex flex-col transition-colors duration-200">
+    <!-- Grid overlay sutil adaptativo -->
+    <div class="fixed inset-0 -z-10 bg-[linear-gradient(to_right,rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none opacity-60 dark:opacity-40"></div>
     <slot />
 
     <!-- Modal Global de Compra Rápida Directa -->
@@ -304,17 +321,26 @@ const catalogJson = JSON.stringify(searchableData);
     transition: opacity 0.4s ease;
   }
 
-  /* Neo-style glass cards */
-  .neo-card {
-    background: rgba(15, 17, 28, 0.6);
+  /* Cards Glassmorphism adaptativas a Modo Claro y Oscuro */
+  .glass-card, .neo-card {
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  }
+  html.dark .glass-card, html.dark .neo-card {
+    background: rgba(15, 17, 28, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.07);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
-  .neo-card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  .glass-card-hover:hover, .neo-card:hover {
+    border-color: rgba(15, 23, 42, 0.18);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+  html.dark .glass-card-hover:hover, html.dark .neo-card:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   /* Neo glow line horizontal */

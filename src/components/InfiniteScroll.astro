@@ -16,9 +16,9 @@ const { batchSize = 20 } = Astro.props;
   <!-- Spinner elegante de carga para el siguiente lote -->
   <div
     id="infinite-scroll-loading"
-    class="hidden items-center gap-2.5 text-xs text-amber-400 font-bold px-4 py-2 rounded-full bg-[#0d0f1a] border border-white/10 shadow-lg select-none"
+    class="hidden items-center gap-2.5 text-xs text-amber-600 dark:text-amber-400 font-bold px-4 py-2 rounded-full bg-white/90 border border-slate-200 shadow-md dark:bg-[#0d0f1a] dark:border-white/10 dark:shadow-lg select-none"
   >
-    <svg class="animate-spin w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24">
+    <svg class="animate-spin w-4 h-4 text-amber-500 dark:text-amber-400" fill="none" viewBox="0 0 24 24">
       <circle class="opacity-25" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3"></circle>
       <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"></path>
     </svg>
@@ -28,7 +28,7 @@ const { batchSize = 20 } = Astro.props;
   <!-- Fin del catálogo alcanzado -->
   <div
     id="infinite-scroll-end"
-    class="hidden text-xs text-slate-500 font-medium py-3 text-center select-none"
+    class="hidden text-xs text-slate-500 dark:text-slate-400 font-medium py-3 text-center select-none"
   >
     Has visto todos los productos disponibles
   </div>

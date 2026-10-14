@@ -23,18 +23,18 @@ const formatCUP = (n: number) => `$${n.toLocaleString('en-US')} CUP`;
 const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.toFixed(2)} USD`;
 ---
 
-<div class="product-pricing-block mt-2 w-full rounded-xl bg-white/[0.03] border border-white/[0.07] p-2 sm:p-2.5 flex flex-col justify-center gap-1 select-none overflow-hidden">
+<div class="product-pricing-block mt-2 w-full rounded-xl bg-slate-100/80 border border-slate-200/90 dark:bg-white/[0.03] dark:border-white/[0.07] p-2 sm:p-2.5 flex flex-col justify-center gap-1 select-none overflow-hidden transition-colors">
   
   <!-- ================= FILA 1: PRECIO CUP ARRIBA (Orientado a la izquierda) ================= -->
   <div class="flex items-baseline justify-between min-w-0 w-full overflow-hidden">
     <!-- Precio CUP Activo (Inmutable, naranja rgb(249 115 22) para máxima distinción visual) -->
-    <span class="text-sm sm:text-base font-black text-[#f97316] font-mono tracking-tight whitespace-nowrap shrink-0">
+    <span class="text-sm sm:text-base font-black text-[#ea580c] dark:text-[#f97316] font-mono tracking-tight whitespace-nowrap shrink-0">
       {priceCUP > 0 ? formatCUP(priceCUP) : formatUSD(priceUSD)}
     </span>
 
     <!-- Precio regular tachado si hay rebaja (Solo se muestra entero si hay espacio; en móvil estrecho desaparece para no cortarse) -->
     {onSale && regularPriceCUP && regularPriceCUP > priceCUP && (
-      <span class="hidden sm:inline-block text-xs font-mono text-slate-400/80 line-through whitespace-nowrap ml-2 text-right" title={`Antes: ${formatCUP(regularPriceCUP)}`}>
+      <span class="hidden sm:inline-block text-xs font-mono text-slate-400 dark:text-slate-400/80 line-through whitespace-nowrap ml-2 text-right" title={`Antes: ${formatCUP(regularPriceCUP)}`}>
         {formatCUP(regularPriceCUP)}
       </span>
     )}
@@ -42,15 +42,15 @@ const formatUSD = (n: number) => n % 1 === 0 ? `$${n.toFixed(0)} USD` : `$${n.to
 
   <!-- ================= FILA 2: PRECIO USD ABAJO (Orientado a la izquierda con IDÉNTICO tamaño) ================= -->
   {priceCUP > 0 && priceUSD > 0 && (
-    <div class="flex items-baseline justify-between min-w-0 w-full pt-1 border-t border-white/[0.04] overflow-hidden">
+    <div class="flex items-baseline justify-between min-w-0 w-full pt-1 border-t border-slate-200/80 dark:border-white/[0.04] overflow-hidden">
       <!-- Precio USD Activo (Exactamente el mismo tamaño font-black y jerarquía que CUP) -->
-      <span class="text-sm sm:text-base font-black text-emerald-400 font-mono tracking-tight whitespace-nowrap shrink-0">
+      <span class="text-sm sm:text-base font-black text-emerald-600 dark:text-emerald-400 font-mono tracking-tight whitespace-nowrap shrink-0">
         {formatUSD(priceUSD)}
       </span>
 
       <!-- Precio regular USD tachado si hay rebaja (Solo se muestra entero si hay espacio; en móvil estrecho desaparece para no cortarse) -->
       {onSale && regularPriceUSD && regularPriceUSD > priceUSD && (
-        <span class="hidden sm:inline-block text-xs font-mono text-slate-400/80 line-through whitespace-nowrap ml-2 text-right" title={`Antes: ${formatUSD(regularPriceUSD)}`}>
+        <span class="hidden sm:inline-block text-xs font-mono text-slate-400 dark:text-slate-400/80 line-through whitespace-nowrap ml-2 text-right" title={`Antes: ${formatUSD(regularPriceUSD)}`}>
           {formatUSD(regularPriceUSD)}
         </span>
       )}

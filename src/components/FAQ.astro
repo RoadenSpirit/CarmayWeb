@@ -22,23 +22,23 @@ const faqs = [
 
 <section class="py-8 sm:py-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
   <div class="text-center mb-5 sm:mb-6 reveal-on-scroll">
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight" style="font-family: 'Outfit', sans-serif;">
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight" style="font-family: 'Outfit', sans-serif;">
       Preguntas Frecuentes
     </h2>
-    <p class="text-amber-400 font-bold text-xs sm:text-sm uppercase tracking-widest block mt-2">Respuestas claras y al grano</p>
+    <p class="text-amber-600 dark:text-amber-400 font-bold text-xs sm:text-sm uppercase tracking-widest block mt-2">Respuestas claras y al grano</p>
   </div>
 
   <div class="space-y-3.5">
     {faqs.map((faq, idx) => (
-      <details class={`glass-card rounded-2xl p-5 sm:p-6 border border-white/10 group transition-all duration-300 reveal-on-scroll reveal-delay-${idx + 1}`}>
-        <summary class="font-bold text-white text-base sm:text-lg cursor-pointer flex items-center justify-between select-none">
+      <details class={`glass-card rounded-2xl p-5 sm:p-6 border border-slate-200/90 dark:border-white/10 group transition-all duration-300 reveal-on-scroll reveal-delay-${idx + 1}`}>
+        <summary class="font-bold text-slate-900 dark:text-white text-base sm:text-lg cursor-pointer flex items-center justify-between select-none">
           <span class="flex items-center gap-3">
-            <span class="text-amber-400 font-black font-mono">0{idx + 1}.</span>
+            <span class="text-amber-600 dark:text-amber-400 font-black font-mono">0{idx + 1}.</span>
             <span>{faq.question}</span>
           </span>
-          <span class="text-purple-400 group-open:rotate-180 transition-transform text-xl shrink-0 ml-2">↓</span>
+          <span class="text-purple-600 dark:text-purple-400 group-open:rotate-180 transition-transform text-xl shrink-0 ml-2">↓</span>
         </summary>
-        <p class="text-slate-200 text-sm sm:text-base mt-3 pl-8 leading-relaxed font-normal">
+        <p class="text-slate-600 dark:text-slate-200 text-sm sm:text-base mt-3 pl-8 leading-relaxed font-normal">
           {faq.answer}
         </p>
       </details>

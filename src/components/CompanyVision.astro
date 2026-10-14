@@ -3,15 +3,15 @@
 // Transición suave en degradado hacia el fondo negro, textos sintetizados y balanceados.
 ---
 
-<section class="py-8 sm:py-12 w-full relative overflow-hidden bg-gradient-to-b from-[#090b11] via-purple-950/25 to-[#090b11]">
+<section class="py-8 sm:py-12 w-full relative overflow-hidden bg-gradient-to-b from-slate-100 via-purple-50 to-slate-100 dark:from-[#090b11] dark:via-purple-950/25 dark:to-[#090b11] transition-colors">
   
-  <!-- Máscaras de desvanecimiento suave (eliminan cualquier corte físico y funden con el negro) -->
-  <div class="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#090b11] to-transparent z-10"></div>
-  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#090b11] to-transparent z-10"></div>
+  <!-- Máscaras de desvanecimiento suave (eliminan cualquier corte físico y funden con el fondo) -->
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-slate-100 dark:from-[#090b11] to-transparent z-10"></div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-100 dark:from-[#090b11] to-transparent z-10"></div>
 
   <!-- Fondos decorativos difuminados con brillo sutil y abstracto -->
-  <div class="absolute -right-24 -bottom-24 w-[450px] h-[450px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none z-0"></div>
-  <div class="absolute -left-24 -top-24 w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+  <div class="absolute -right-24 -bottom-24 w-[450px] h-[450px] bg-purple-500/10 dark:bg-purple-600/15 rounded-full blur-[140px] pointer-events-none z-0"></div>
+  <div class="absolute -left-24 -top-24 w-[450px] h-[450px] bg-amber-500/10 dark:bg-amber-500/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
 
   <!-- Contenedor centrado con margen interior cómodo -->
   <div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
@@ -28,15 +28,15 @@
         </div>
 
         <!-- Imagen Institucional limpia -->
-        <div class="w-full relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] border border-white/10 reveal-scale reveal-delay-2">
+        <div class="w-full relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] border border-slate-200 dark:border-white/10 reveal-scale reveal-delay-2">
           <img 
             src="/tienda-fisica.webp" 
             alt="Tienda Física Carmay Outfit en Camagüey" 
-            width="600"
-            height="450"
-            loading="lazy"
-            decoding="async"
-            class="w-full h-full object-cover"
+            width="600" 
+            height="450" 
+            loading="lazy" 
+            decoding="async" 
+            class="w-full h-full object-cover" 
           />
         </div>
       </div>
@@ -46,40 +46,40 @@
         
         <!-- Encabezado de la sección -->
         <div class="reveal-on-scroll">
-          <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight" style="font-family: 'Outfit', sans-serif;">
+          <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-950 dark:text-white tracking-tight leading-tight" style="font-family: 'Outfit', sans-serif;">
             Nuestra Visión y Compromiso
           </h2>
-          <span class="text-xs sm:text-sm font-bold text-amber-400 tracking-wider uppercase block mt-1.5">
+          <span class="text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400 tracking-wider uppercase block mt-1.5">
             Sobre Carmay Outfit
           </span>
         </div>
 
         <!-- Subtítulo de propuesta de valor -->
-        <h3 class="text-lg sm:text-2xl font-bold text-amber-300/90 tracking-wide leading-snug reveal-on-scroll reveal-delay-1">
+        <h3 class="text-lg sm:text-2xl font-bold text-amber-700 dark:text-amber-300/90 tracking-wide leading-snug reveal-on-scroll reveal-delay-1">
           La tienda de moda y tecnología más completa de Camagüey
         </h3>
 
         <!-- Párrafo único de visión: cercano, optimista y con los pilares de la empresa -->
-        <p class="text-slate-100 text-base sm:text-lg lg:text-xl leading-relaxed font-normal reveal-on-scroll reveal-delay-2 text-pretty">
-          En <strong class="text-white font-bold">Carmay Outfit</strong> nacimos para hacerte la vida más fácil: combinamos un <span class="text-amber-400 font-semibold">catálogo variado</span> con <span class="text-amber-400 font-semibold">precios accesibles</span>, un <span class="text-amber-400 font-semibold">trato estrella</span> donde siempre te atendemos con cercanía, y <span class="text-amber-400 font-semibold">entregas rápidas</span> que ponen lo que más te gusta directamente en la puerta de tu casa. Creemos que comprar debe ser una experiencia cómoda, alegre y al alcance de todos en Camagüey.
+        <p class="text-slate-700 dark:text-slate-100 text-base sm:text-lg lg:text-xl leading-relaxed font-normal reveal-on-scroll reveal-delay-2 text-pretty">
+          En <strong class="text-slate-900 dark:text-white font-bold">Carmay Outfit</strong> nacimos para hacerte la vida más fácil: combinamos un <span class="text-amber-600 dark:text-amber-400 font-semibold">catálogo variado</span> con <span class="text-amber-600 dark:text-amber-400 font-semibold">precios accesibles</span>, un <span class="text-amber-600 dark:text-amber-400 font-semibold">trato estrella</span> donde siempre te atendemos con cercanía, y <span class="text-amber-600 dark:text-amber-400 font-semibold">entregas rápidas</span> que ponen lo que más te gusta directamente en la puerta de tu casa. Creemos que comprar debe ser una experiencia cómoda, alegre y al alcance de todos en Camagüey.
         </p>
 
         <!-- Cifras métricas enriquecidas -->
         <div class="pt-4 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10 reveal-pop reveal-delay-3">
           <div class="space-y-1">
-            <span class="block text-2xl sm:text-4xl font-black text-amber-400 font-mono" style="font-family: 'Outfit', sans-serif;">
+            <span class="block text-2xl sm:text-4xl font-black text-amber-600 dark:text-amber-400 font-mono" style="font-family: 'Outfit', sans-serif;">
               +2 Años de experiencia
             </span>
-            <span class="text-xs sm:text-sm text-slate-300 font-medium block">
+            <span class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium block">
               Atención presencial en Calle Avellaneda No. 260
             </span>
           </div>
-          <div class="hidden sm:block w-px h-12 bg-white/15"></div>
+          <div class="hidden sm:block w-px h-12 bg-slate-300 dark:bg-white/15"></div>
           <div class="space-y-1">
-            <span class="block text-2xl sm:text-4xl font-black text-emerald-400 font-mono" style="font-family: 'Outfit', sans-serif;">
+            <span class="block text-2xl sm:text-4xl font-black text-emerald-600 dark:text-emerald-400 font-mono" style="font-family: 'Outfit', sans-serif;">
               100% Calidad Comprobada
             </span>
-            <span class="text-xs sm:text-sm text-slate-300 font-medium block">
+            <span class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium block">
               Probamos cada equipo antes de entregarlo
             </span>
           </div>

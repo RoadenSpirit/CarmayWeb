@@ -70,31 +70,36 @@ components:
 
 ## Overview
 
-Diseño neo-dark con estética futurista y elegante. Paleta oscura con acentos morados y dorados que transmiten calidad y lujo accesible. Enfoque en legibilidad y jerarquía visual clara.
+Diseño dual de alta costura: modo oscuro profundo por defecto (neo-dark) y modo claro marfil/slate de alta legibilidad, preservando los acentos morados y dorados de Carmay Outfit que transmiten calidad y lujo accesible.
 
 ## Colors
 
-### Primarios
-- **Morado Carmay** (`#6d1e68`): Color principal de marca, usado en acentos y gradientes
-- **Morado Claro** (`#a855f7`): Variante luminosa para highlights y glows
+### Primarios de Marca
+- **Morado Carmay** (`#6d1e68` / claro `#7e22ce`): Color principal de marca, acentos y gradientes
+- **Morado Luminoso** (`#a855f7`): Highlights y badges secundarios
 
-### Secundarios
-- **Dorado** (`#D4AF37`): Efecto de calidad y lujo, usado en títulos y CTAs
+### Secundarios de Calidad
+- **Dorado Carmay** (`#D4AF37` / `#d97706`): Títulos de acento y botones principales "Comprar Ahora"
 - **Dorado Claro** (`#F5D76B`): Variante para gradientes y énfasis
 
-### Superficies
+### Superficies (Modo Oscuro)
 - **Background** (`#090b11`): Negro suavizado, fondo principal
-- **Surface** (`#0e1019`): Superficie de cards y componentes
-- **Card** (`rgba(15, 17, 28, 0.6)`): Fondo glassmorphism con blur
+- **Surface** (`#0f1120`): Superficie de cards y componentes
+- **Card** (`rgba(15, 17, 28, 0.75)`): Fondo glassmorphism con blur
+- **Texto Primario** (`#f3f4f6` / `#ffffff`): Contraste máximo
+- **Texto Secundario** (`#9ca3af` / `#cbd5e1`): Metadatos y notas
 
-### Texto
-- **Primario** (`#f3f4f6`): Texto principal, alto contraste
-- **Secundario** (`#9ca3af`): Texto de soporte y metadata
+### Superficies (Modo Claro)
+- **Background** (`#f8fafc` / `#f1f5f9`): Slate suave marfil, fondo principal
+- **Surface** (`#ffffff`): Blanco puro para tarjetas, modales y drawers
+- **Card** (`rgba(255, 255, 255, 0.95)`): Elevación suave con borde `rgba(15, 23, 42, 0.08)`
+- **Texto Primario** (`#0f172a`): Slate 900 de alto contraste WCAG AAA
+- **Texto Secundario** (`#475569`): Slate 600 altamente legible
 
-### Acentos
-- **Naranja** (`#f97316`): CTAs principales, precios
-- **Ámbar** (`#f59e0b`): Hover states, badges
-- **Rosa** (`#f43f5e`): Ahorros, ofertas especiales
+### Acentos Oficiales de Precios
+- **Naranja CUP** (`#f97316` / `#ea580c`): Precio oficial en CUP
+- **Esmeralda USD** (`#34d399` / `#059669`): Precio oficial en USD
+- **Rosa Ofertas** (`#f43f5e`): Descuentos y rebajas activas
 
 ## Typography
 
