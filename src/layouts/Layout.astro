@@ -66,8 +66,17 @@ const catalogJson = JSON.stringify(searchableData);
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
   </head>
   <body class="bg-slate-100 text-slate-900 dark:bg-[#090b11] dark:text-gray-100 antialiased selection:bg-purple-600 selection:text-white min-h-screen flex flex-col transition-colors duration-200">
-    <!-- Grid overlay sutil adaptativo -->
-    <div class="fixed inset-0 -z-10 bg-[linear-gradient(to_right,rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none opacity-60 dark:opacity-40"></div>
+    <!-- Fondo ambiental etéreo: líneas finas y efecto humo con gradientes difuminados suaves -->
+    <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+      <!-- Halo superior humo morado Carmay muy rebajado -->
+      <div class="absolute -top-[15%] left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-purple-500/[0.05] dark:bg-purple-900/[0.14] rounded-full blur-[170px]"></div>
+      <!-- Halo central humo ámbar dorado cálido sutil -->
+      <div class="absolute top-[35%] -left-[10%] w-[700px] h-[500px] bg-amber-500/[0.03] dark:bg-amber-600/[0.07] rounded-full blur-[180px]"></div>
+      <!-- Halo inferior humo azul/slate profundo -->
+      <div class="absolute top-[65%] -right-[10%] w-[800px] h-[600px] bg-blue-500/[0.03] dark:bg-indigo-950/[0.12] rounded-full blur-[200px]"></div>
+      <!-- Filamentos de líneas finas horizontales con caída suave (reemplaza cuadrícula) -->
+      <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(15,23,42,0.012)_50%,transparent_100%)] dark:bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.008)_50%,transparent_100%)] bg-[size:100%_16rem] opacity-75"></div>
+    </div>
     <slot />
 
     <!-- Modal Global de Compra Rápida Directa -->
